@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- shiroFilter工厂 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- 构建securityManager环境 -->
+        <property name="securityManager" ref="securityManager" />
+        <!-- 用户没有认证通过返回的地址 -->
+        <property name="loginUrl" value="/user/login.action" />
+        <!-- 配置我们在登录页登录成功后的跳转地址，如果你访问的是非/login地址，则跳到您访问的地址 -->
+        <property name="successUrl" value="/user/success.action" />
+        <!-- 没有权限返回的地址 （拒绝访问路径）-->
+        <property name="unauthorizedUrl" value="/user/reject.action" />
+        <!--<property name="filterChainDefinitions">-->
+            <!--<value>-->
+                <!--/user/login.action=anon&lt;!&ndash; anon表示此地址不需要任何权限即可访问 &ndash;&gt;-->
+                <!--/user/index.action=user&lt;!&ndash;  表示用户不一定需要已经通过认证,只需要曾经被Shiro记住过登录状态就可以正常发起&ndash;&gt;-->
+                <!--/user/rememberme.action=authc&lt;!&ndash; 表示用户必须已通过认证 &ndash;&gt;-->
+                <!--/user/admin.action=roles[admin]&lt;!&ndash;匹配的是[]里的字符串，表示需要用户的角色是admin&ndash;&gt;-->
+                <!--/user/delete.action=perms[delete]&lt;!&ndash;匹配的是[]里的字符串，表示用户需要有delete权限&ndash;&gt;-->
+                <!--&lt;!&ndash;参数可写多个,多参时必须加上引号,且参数之间用逗号分割,如/admins/user/**=perms["user:add:*,user:modify:*"]&ndash;&gt;-->
+                <!--/**=anon-->
+            <!--</value>-->
+        <!--</property>-->
+    </bean>
+
+    <!-- remenberMe配置 -->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe" /><!-- Cookie的名字 -->
+        <property name="httpOnly" value="true" />
+        <!-- 记住7天（单位：秒） -->
+        <property name="maxAge" value="604800" /><!-- Cookie的有效期 -->
+    </bean>
+    <!-- rememberMe管理器 -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}" /><!-- 加密方式，默认AES算法 -->
+        <property name="cookie" ref="rememberMeCookie" />
+    </bean>
+
+    <!-- 配置 Shiro 的 SecurityManager Bean. -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="customRealm"/>
+        <property name="rememberMeManager" ref="rememberMeManager"></property><!-- 非常重要!!! -->
+    </bean>
+    <!-- Shiro生命周期处理器 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <!-- 定义默认的异常处理页面，当该异常类型的未注册时使用 -->
+        <!--<property name="defaultErrorView" value="redirect:/user/error.action"/>-->
+        <!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常以页名作为值 -->
+        <property name="exceptionMappings">
+            <props>
+                <!-- 创建所要自定义的异常类 -->
+                <!--登录-->
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">
+                    redirect:/user/login.action
+                </prop>
+                <!--授权-->
+                <prop key="org.apache.shiro.authz.UnauthorizedException">
+                    redirect:/user/reject.action
+                </prop>
+            </props>
+        </property>
+    </bean>
+</beans>

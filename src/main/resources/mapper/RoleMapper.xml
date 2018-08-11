@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.parker.bbs.mapper.RoleMapper">
+    <!--<cache></cache>-->
+    <select id="getUserRoles" resultType="com.parker.bbs.pojo.Role" useCache="true">
+        select role.id,role.name from role, user_role where role.id=user_role.role_id and user_role.user_id=#{user.id}
+    </select>
+    <select id="getRoleOperations" resultType="com.parker.bbs.pojo.Operation" useCache="true">
+        select operation.name from role_operation, operation
+        where role_operation.user_id=role.id and role_operation.operation_id=operation.id
+    </select>
+</mapper>

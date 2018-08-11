@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.parker.bbs.mapper.SubForumMapper">
+    <!--<cache></cache>-->
+    <resultMap id="subForum" type="com.parker.bbs.pojo.SubForum">
+        <id column="id" property="id"/>
+        <result property="name" column="name"/>
+        <result property="info" column="info"/>
+        <result property="createTime" column="create_time"/>
+        <association property="mainForum" column="main_forum_id" javaType="com.parker.bbs.pojo.MainForum"
+        select="com.parker.bbs.mapper.MainForumMapper.getMainForumById"/>
+    </resultMap>
+    <select id="getSubForumsByMainForumId" resultMap="subForum" useCache="true">
+        select * from sub_forum where main_forum_id = #{mainForumId}
+    </select>
+    <select id="getSubForumById" resultMap="subForum">
+        select * from sub_forum where id=#{id}
+    </select>
+    <insert id="insertSubForum" parameterType="com.parker.bbs.pojo.SubForum" useGeneratedKeys="true" keyProperty="user.id">
+        insert into sub_forum(main_forum_id, name, info, create_time)
+          values (#{subForum.mainForumId}, #{subForum.name}, #{subForum.info},#{subForum.createTime})
+    </insert>
+    <update id="updateSubForum" parameterType="com.parker.bbs.pojo.SubForum">
+        update sub_forum set name=#{subForum.name}, info=#{subForum.info},
+          create_time=#{subForum.createTime} where id=#{subForum.id}
+    </update>
+    <delete id="deleteSubForum" parameterType="com.parker.bbs.pojo.SubForum">
+        delete from sub_forum where id=#{subForum.id}
+    </delete>
+</mapper>

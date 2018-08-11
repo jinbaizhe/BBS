@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.parker.bbs.mapper.PostMapper">
+    <!--<cache></cache>-->
+    <select id="getPostById" resultType="com.parker.bbs.pojo.Post" useCache="true">
+        select * from post where id=#{id}
+    </select>
+    <select id="getPostsBySubForumId" resultType="com.parker.bbs.pojo.Post" useCache="true">
+        select * from post where sub_forum_id=#{subForumId}
+    </select>
+    <select id="getPostsNumBySubForumId" resultType="Integer" useCache="true">
+        select count(*) from post where sub_forum_id=#{subForumId}
+    </select>
+    <insert id="insertPost" parameterType="com.parker.bbs.pojo.Post" useGeneratedKeys="true" keyProperty="user.id">
+        insert into post(id,user_id, sub_forum_id, title, content, send_time,
+        update_time, type, top, view_num)
+          values (#{post.id}, #{post.userId}, #{post.subForumId}, #{post.title},
+          #{post.content}, #{post.sendTime}, #{post.updateTime}, #{post.type},
+          #{post.top}, #{post.viewNum})
+    </insert>
+    <update id="updatePost" parameterType="com.parker.bbs.pojo.Post">
+        update post set sub_forum_id=#{post.subForumId}, title=#{post.title}, content=#{post.content},
+        update_time=#{post.updateTime}, type=#{post.type}, top=#{post.top}, view_num=#{post.viewNum} where id=#{id}
+    </update>
+    <delete id="deletePost" parameterType="com.parker.bbs.pojo.Post">
+        delete from post where id=#{post.id}
+    </delete>
+    <select id="getPostsByUserId" resultType="com.parker.bbs.pojo.Post" useCache="true">
+        select * from post where user_id=#{userid}
+    </select>
+</mapper>

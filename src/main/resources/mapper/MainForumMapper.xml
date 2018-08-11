@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.parker.bbs.mapper.MainForumMapper">
+    <!--<cache></cache>-->
+    <resultMap id="mainForum" type="com.parker.bbs.pojo.MainForum">
+        <id column="id" property="id"/>
+        <result property="name" column="name"/>
+        <result property="info" column="info"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <select id="getAllMainForums" resultMap="mainForum" useCache="true">
+        select * from main_forum
+    </select>
+    <select id="getMainForumById" resultMap="mainForum" useCache="true">
+        select * from main_forum where id=#{id}
+    </select>
+    <insert id="insertMainForum" parameterType="com.parker.bbs.pojo.MainForum" useGeneratedKeys="true" keyProperty="user.id">
+        insert into main_forum(name, info, create_time)
+          values (#{mainForum.name}, #{mainForum.info},#{mainForum.createTime})
+    </insert>
+    <update id="updateMainForum" parameterType="com.parker.bbs.pojo.MainForum">
+        update main_forum set name=#{mainForum.name}, info=#{mainForum.info},
+          create_time=#{mainForum.createTime} where id=#{mainForum.id}
+    </update>
+    <delete id="deleteMainForum" parameterType="com.parker.bbs.pojo.MainForum">
+        delete from main_forum where id=#{mainForum.id}
+    </delete>
+</mapper>
