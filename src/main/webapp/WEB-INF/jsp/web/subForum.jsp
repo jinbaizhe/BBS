@@ -32,7 +32,7 @@
             <h3><c:out value="${subForum.name}"></c:out></h3>
             <p><c:out value="${subForum.info}"></c:out></p>
             <div class="float-right mb-sm-2">
-                <a class="btn btn-primary" href="/posting.action?subforumid=<c:out value="${subForum.id}"></c:out>">发帖</a>
+                <a class="btn btn-primary" href="/posting.action?sfid=<c:out value="${subForum.id}"></c:out>">发帖</a>
             </div>
             <div>
                 <c:choose>
@@ -78,8 +78,8 @@
                         </th>
                         <td><c:out value="${post.user.username}"></c:out></td>
                         <td><fmt:formatDate value="${post.sendTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <%--<td><fmt:formatDate value="${lastfollowpostsendtime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>--%>
-                        <%--<td><c:out value="${post.followposts.size}" default="0"></c:out>/<c:out value="${post.viewNum}"></c:out></td>--%>
+                        <td><%--<fmt:formatDate value="${lastfollowpostsendtime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>--%></td>
+                        <td><%--<c:out value="${post.followposts.size}" default="0"></c:out>--%>/<c:out value="${post.viewNum}"></c:out></td>
                     </tr>
                 </c:forEach>
                 </tbody>

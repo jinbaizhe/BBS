@@ -52,7 +52,7 @@
                                             <c:out value="${subforum.info}"></c:out>
                                         </td>
                                         <td>
-                                            帖数：<c:out value="${subforum.posts.size}"></c:out>
+                                            <%--帖数：<c:out value="${subforum.posts.size()}"></c:out>--%>
                                         </td>
                                     </tr>
                                 </c:forEach>

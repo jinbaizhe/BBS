@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UserMapper {
-    User getUser(@Param("id") int id);
+    User getUserById(@Param("id") int id);
     int insertUser(@Param("user") User user);
     int updateUser(@Param("user")User user);
     int deleteUser(@Param("user")User user);

@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE>
 <html lang="en">
 <head>
@@ -15,7 +16,7 @@
             obj.parentNode.parentNode.parentNode.removeChild(obj.parentNode.parentNode);
         }
     </script>
-    <title><s:property value="post.title"></s:property></title>
+    <title><c:out value="${post.title}"/></title>
 </head>
 <body>
 <%@ include file="header.jsp"%>
@@ -29,13 +30,13 @@
                         <a href="mainforum.action">全部</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="mainforum.action?mfid=<s:property value="post.subForum.mainForum.id"></s:property>"><s:property value="post.subForum.mainForum.name"></s:property></a>
+                        <a href="mainforum.action?mfid=<c:out value="${post.subForum.mainForum.id}"/>"><c:out value="${post.subForum.mainForum.name}"/></a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="subforum.action?sfid=<s:property value="post.subForum.id"></s:property>"><s:property value="post.subForum.name"></s:property></a>
+                        <a href="subforum.action?sfid=<c:out value="${post.subForum.id}"/>"><c:out value="${post.subForum.name}"/></a>
                     </li>
                     <li class="breadcrumb-item active">
-                        <s:property value="post.title"></s:property>
+                        <c:out value="${post.title}"></c:out>
                     </li>
                 </ol>
             </div>
@@ -43,14 +44,16 @@
         <div class="row my-sm-1">
             <div class="col-sm-12">
                 <div class="float-right">
-                    <s:if test="order=='asc'">
-                        <a class="btn btn-primary btn-sm active" href="/post.action?postid=<s:property value="post.id"></s:property>&order=asc">按回帖时间升序</a>
-                        <a class="btn btn-primary btn-sm" href="/post.action?postid=<s:property value="post.id"></s:property>&order=desc">按回帖时间降序</a>
-                    </s:if>
-                    <s:else>
-                        <a class="btn btn-primary btn-sm" href="/post.action?postid=<s:property value="post.id"></s:property>&order=asc">按回帖时间升序</a>
-                        <a class="btn btn-primary btn-sm active" href="/post.action?postid=<s:property value="post.id"></s:property>&order=desc">按回帖时间降序</a>
-                    </s:else>
+                    <c:choose>
+                        <c:when test="order=='asc'">
+                            <a class="btn btn-primary btn-sm active" href="/post.action?postid=<c:out value="${post.id}"/>&order=asc">按回帖时间升序</a>
+                            <a class="btn btn-primary btn-sm" href="/post.action?postid=<c:out value="${post.id}"/>&order=desc">按回帖时间降序</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="btn btn-primary btn-sm" href="/post.action?postid=<c:out value="${post.id}"/>&order=asc">按回帖时间升序</a>
+                            <a class="btn btn-primary btn-sm active" href="/post.action?postid=<c:out value="${post.id}"/>&order=desc">按回帖时间降序</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
@@ -61,26 +64,28 @@
                 <div class="post-head">
                     <div class="text-center">
                         <div>
-                            <a href="/userInfo.action?userid=<s:property value="post.user.id"></s:property>">
-                                <s:if test='post.user.picture.id!=""'>
-                                        <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<s:property value="post.user.picture.id"></s:property>"
+                            <a href="/userInfo.action?userid=<c:out value="${post.user.id}"/>">
+                                <c:choose>
+                                    <c:when test='post.user.picture.id!=""'>
+                                        <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<c:out value="${post.user.picture.id}"/>"
                                               style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
 
-                                </s:if>
-                                <s:else>
-                                    <img  alt="" class="img-responsive img-circle" src="/static/default.jpg"
-                                          style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
-                                </s:else>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img  alt="" class="img-responsive img-circle" src="/static/default.jpg"
+                                              style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
+                                    </c:otherwise>
+                                </c:choose>
                             </a>
                         </div>
                         <div>
-                            <span class="badge" style="background: #f1c40f;margin-top: 5px">发帖者:<s:property value="post.user.username"></s:property></span>
+                            <span class="badge" style="background: #f1c40f;margin-top: 5px">发帖者:<c:out value="${post.user.username}"/></span>
                         </div>
                         <div>
-                            <span class="badge" style="background: #2ecc71;margin-top: 5px">性别:<s:property value="post.user.sex"></s:property></span>
+                            <span class="badge" style="background: #2ecc71;margin-top: 5px">性别:<c:out value="${post.user.sex}"/></span>
                         </div>
                         <div>
-                            <span class="badge" style="background: #ff6927;margin-top: 5px">论坛等级:LV<s:property value="post.user.level"></s:property></span>
+                            <span class="badge" style="background: #ff6927;margin-top: 5px">论坛等级:LV<c:out value="${post.user.level}"/></span>
                         </div>
                     </div>
                 </div>
@@ -88,89 +93,96 @@
             <div class="col-sm-10" style="padding-left: 0px">
                 <div class="post-content">
                     <div class="post-title">
-                        <h2 style="margin-left:20px;color:black;"><s:property value="post.title"></s:property></h2>
+                        <h2 style="margin-left:20px;color:black;"><c:out value="${post.title}"/></h2>
                         <div style="margin-left:20px" >
                             <span class="glyphicon glyphicon-comment"></span>
-                            回复数:<s:property value="post.followposts.size()"></s:property>
+                            <%--回复数:<c:out value="${post.followposts.size()}"/>--%>
                             &nbsp;|&nbsp;
-                            浏览数:<s:property value="post.viewNum"></s:property>
+                            浏览数:<c:out value="${post.viewNum}"/>
                             &nbsp;|&nbsp;
-                            发表于:<s:date name="post.sendTime" format="yyyy-MM-dd HH:mm:ss"></s:date>
+                            发表于:<fmt:formatDate value="${post.sendTime}"  pattern="yyyy-MM-dd HH:mm:ss"/>
                             <strong style="float:right;margin-right:10px">
                                 <span class="badge" style="background: #ff6927;width: 50px;">楼主</span>
                             </strong>
-                            <s:if test="post.user.id==#session.user.id||#session.user.type==1">
-                                <a style="float:right;margin-right: 20px;" href="/deletePost.action?postid=<s:property value="post.id"></s:property>">删除</a>
-                            </s:if>
-                            <s:if test="post.user.id==#session.user.id">
-                                <a style="float:right;margin-right: 20px;" href="/updatePost?postid=<s:property value="post.id"></s:property>">编辑</a>
-                            </s:if>
+                            <c:if test="post.user.id==#session.user.id||#session.user.type==1">
+                                <a style="float:right;margin-right: 20px;" href="/deletePost.action?postid=<c:out value="${post.id}"/>">删除</a>
+                            </c:if>
+                            <c:if test="post.user.id==#session.user.id">
+                                <a style="float:right;margin-right: 20px;" href="/updatePost?postid=<c:out value="${post.id}"/>">编辑</a>
+                            </c:if>
 
 
-                            <s:if test="collection!=null">
-                                <a style="float:right;margin-right: 20px;" href="/unstarPost.action?postid=<s:property value="post.id"></s:property>">取消收藏</a>
-                            </s:if>
-                            <s:else>
-                                <a style="float:right;margin-right: 20px;" href="/starPost.action?postid=<s:property value="post.id"></s:property>">收藏</a>
-                            </s:else>
+                            <c:choose>
+                                <c:when test="collection!=null">
+                                    <a style="float:right;margin-right: 20px;" href="/unstarPost.action?postid=<c:out value="${post.id}"/>">取消收藏</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a style="float:right;margin-right: 20px;" href="/starPost.action?postid=<c:out value="${post.id}"/>">收藏</a>
+                                </c:otherwise>
+                            </c:choose>
 
 
-                            <s:if test="#session.user.type>=1">
-                                <s:if test="post.top==0">
-                                    <a style="float:right;margin-right: 20px;" href="/manage/setTop?postid=<s:property value="post.id"></s:property>">置顶</a>
-                                </s:if>
-                                <s:else>
-                                    <a style="float:right;margin-right: 20px;" href="/manage/unsetTop?postid=<s:property value="post.id"></s:property>">取消置顶</a>
-                                </s:else>
-                            </s:if>
 
-                            <s:if test="#session.user.type>=1">
-                                <s:if test="post.type==0">
-                                    <a style="float:right;margin-right: 20px;" href="/manage/setPostEssential?postid=<s:property value="post.id"></s:property>">精华</a>
-                                </s:if>
-                                <s:else>
-                                    <a style="float:right;margin-right: 20px;" href="/manage/unsetPostEssential?postid=<s:property value="post.id"></s:property>">取消精华</a>
-                                </s:else>
-                            </s:if>
+                            <c:if test="#session.user.type>=1">
+                                <c:choose>
+                                    <c:when test="post.top==0">
+                                        <a style="float:right;margin-right: 20px;" href="/manage/setTop?postid=<c:out value="${post.id}"/>">置顶</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a style="float:right;margin-right: 20px;" href="/manage/unsetTop?postid=<c:out value="${post.id}"></c:out>">取消置顶</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
 
-
+                            <c:if test="#session.user.type>=1">
+                                <c:choose>
+                                    <c:when test="post.type==0">
+                                        <a style="float:right;margin-right: 20px;" href="/manage/setPostEssential?postid=<c:out value="${post.id}"/>">精华</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a style="float:right;margin-right: 20px;" href="/manage/unsetPostEssential?postid=<c:out value="${post.id}"/>">取消精华</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
                         </div>
                     </div>
                     <div style="margin: 20px">
-                        ${post.content}
+                        <c:out value="${post.content}"/>
                     </div>
                 </div>
             </div>
         </div>
 
-        <s:iterator value="followposts" var="followpost" status="st">
+        <c:forEach items="${followposts}" var="followpost" varStatus="st">
             <!-- 回复内容 -->
             <div class="row" style="margin-top: 5px">
                 <div class="col-sm-2" style="padding-right: 0px;">
                     <div class="reply-head">
                         <div class="text-center">
                             <div>
-                                <a href="/user/userInfo.action?userid=<s:property value="#followpost.user.id"></s:property>">
-                                    <s:if test='#followpost.user.picture.id!=""'>
+                                <a href="/user/userInfo.action?userid=<c:out value="${followpost.user.id}"/>">
+                                    <c:choose>
+                                        <c:when test='#followpost.user.picture.id!=""'>
 
-                                            <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<s:property value="#followpost.user.picture.id"></s:property>"
+                                            <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<c:out value="${followpost.user.picture.id}"/>"
                                                   style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
 
-                                    </s:if>
-                                    <s:else>
-                                        <img  alt="" class="img-responsive img-circle" src="/static/default.jpg"
-                                              style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
-                                    </s:else>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img  alt="" class="img-responsive img-circle" src="/static/default.jpg"
+                                                  style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </a>
                             </div>
                             <div>
-                                <span class="badge" style="background: #f1c40f;margin-top: 5px">回帖者:<s:property value="#followpost.user.username"></s:property></span>
+                                <span class="badge" style="background: #f1c40f;margin-top: 5px">回帖者:<c:out value="${followpost.user.username}"/></span>
                             </div>
                             <div>
-                                <span class="badge" style="background: #2ecc71;margin-top: 5px">性别:<s:property value="#followpost.user.sex"></s:property></span>
+                                <span class="badge" style="background: #2ecc71;margin-top: 5px">性别:<c:out value="${followpost.user.sex}"/></span>
                             </div>
                             <div>
-                                <span class="badge" style="background: #ff6927;margin-top: 5px">论坛等级:LV<s:property value="#followpost.user.level"></s:property></span>
+                                <span class="badge" style="background: #ff6927;margin-top: 5px">论坛等级:LV<c:out value="${followpost.user.level}"/></span>
                             </div>
                         </div>
                     </div>
@@ -178,79 +190,81 @@
                 <div class="col-sm-10" style="padding-left: 0px;">
                     <div class="reply-content">
                         <div class="reply-time">
-                            <span style="color: gray">回复于:<s:date name="#followpost.sendTime" format="yyyy-MM-dd HH:mm:ss"></s:date></span>
+                            <span style="color: gray">回复于:<fmt:formatDate value="${followpost.sendTime}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
                             <div style="float:right;margin-right:10px">
-                                <span class="badge" style="float:right;margin-right:10px;background: #4b9ded;width: 50px;"><s:property value="#st.index+#request.pager.beginIndex"></s:property>楼</span>
+                                <span class="badge" style="float:right;margin-right:10px;background: #4b9ded;width: 50px;"><c:out value="${st.index}"/>楼</span>
                             </div>
-                            <s:if test="#followpost.user.id==#session.user.id||#session.user.type==1">
-                                <a style="float:right;margin-right: 20px;" href="deleteFollowpost.action?followpostid=<s:property value="#followpost.id"></s:property>">删除</a>
+                            <c:if test="#followpost.user.id==#session.user.id||#session.user.type==1">
+                                <a style="float:right;margin-right: 20px;" href="deleteFollowpost.action?followpostid=<c:out value="${followpost.id}"/>">删除</a>
 
-                            </s:if>
-                            <s:if test="#followpost.user.id==#session.user.id">
-                                <a style="float:right;margin-right: 20px;" href="updateFollowpost?followpostid=<s:property value="#followpost.id"></s:property>">编辑</a>
-                            </s:if>
+                            </c:if>
+                            <c:if test="#followpost.user.id==#session.user.id">
+                                <a style="float:right;margin-right: 20px;" href="updateFollowpost?followpostid=<c:out value="${followpost.id}"/>">编辑</a>
+                            </c:if>
                         </div>
                         <div style="margin: 20px;">
-                                ${followpost.content}
-                                <s:iterator value="#followpost.followpostPictures" var="item">
-                                    <img src="getPicture.action?id=<s:property value="#item.picture.id"></s:property>" width="200" height="150" alt="无法显示图片">
-                                </s:iterator>
+                                <c:out value="${followpost.content}"/>
+                                <%--<c:forEach items="${followpost.followpostPictures}" var="item">--%>
+                                    <%--<img src="getPicture.action?id=<c:out value="${item.picture.id}"/>" width="200" height="150" alt="无法显示图片">--%>
+                                <%--</c:forEach>--%>
                         </div>
                     </div>
                 </div>
             </div>
-        </s:iterator>
+        </c:forEach>
 
         <div class="row">
             <div class="col-sm-12">
                 <nav aria-label="Page navigation example" class="my-sm-3">
                     <ul class="pagination justify-content-center">
-                        <s:if test='#request.pager.isFirstPage!=true'>
+                        <c:if test='${request.pager.isFirstPage}!=true'>
                             <li class="page-item">
-                                <a class="page-link" href="post.action?postid=<s:property value="post.id"></s:property>&page=1">
+                                <a class="page-link" href="post.action?postid=<c:out value="${post.id}"/>&page=1">
                                     首页
                                 </a>
                             </li>
                             <li class="page-item">
                                 <a class="page-link"
-                                   href="post.action?postid=<s:property value="post.id"></s:property>&page=<s:property value="#request.pager.getCurrentPage-1"></s:property>" aria-label="Previous">
+                                   href="post.action?postid=<c:out value="${post.id}"/>&page=<c:out value="${request.pager.getCurrentPage-1}"/>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
                             </li>
-                        </s:if>
+                        </c:if>
 
-                        <s:iterator value='#request.pager.getPageList' var="item">
-                            <s:if test="#item==#request.pager.getCurrentPage">
-                                <li class="page-item active">
-                                    <a class="page-link" href=""><s:property value="#item"></s:property></a>
-                                </li>
-                            </s:if>
-                            <s:elseif test="#item=='...'">
-                                <li class="page-item">
-                                    <div class="page-link">
-                                        <s:property value="#item"></s:property>
-                                    </div>
-                                </li>
-                            </s:elseif>
-                            <s:else>
-                                <li class="page-item">
-                                    <a class="page-link"
-                                       href="post.action?postid=<s:property value="post.id"></s:property>&page=<s:property value="#item"></s:property>">
-                                        <s:property value="#item"></s:property>
-                                    </a>
-                                </li>
-                            </s:else>
-                        </s:iterator>
-                        <s:if test='#request.pager.isLastPage!=true'>
+                        <c:forEach items='#request.pager.getPageList' var="item">
+                            <c:choose>
+                                <c:when test="${item}==${request.pager.getCurrentPage}">
+                                    <li class="page-item active">
+                                        <a class="page-link" href=""><c:out value="${item}"/></a>
+                                    </li>
+                                </c:when>
+                                <c:when test="${item}=='...'">
+                                    <li class="page-item">
+                                        <div class="page-link">
+                                            <c:out value="${item}"/>
+                                        </div>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="post.action?postid=<c:out value="${post.id}"/>&page=<c:out value="${item}"/>">
+                                            <c:out value="${item}"/>
+                                        </a>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        <c:if test='${request.pager.isLastPage}!=true'>
                             <li class="page-item">
                                 <a class="page-link"
-                                   href="post.action?postid=<s:property value="post.id"></s:property>&page=<s:property value="#request.pager.getCurrentPage+1"></s:property>" aria-label="Next">
+                                   href="post.action?postid=<c:out value="${post.id}"/>&page=<c:out value="${request.pager.getCurrentPage}+1"/>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>
                             </li>
-                        </s:if>
+                        </c:if>
                     </ul>
                 </nav>
             </div>
@@ -268,7 +282,7 @@
                         </script>
                     </div>
                     <div class="my-sm-2" style="float:right;">
-                        <input type="hidden" name="postid" value="<s:property value="post.id"></s:property>">
+                        <input type="hidden" name="postid" value="<c:out value="${post.id}"/>">
                         <input type="submit" class="btn btn-primary" value="发表">
                     </div>
                 </form>

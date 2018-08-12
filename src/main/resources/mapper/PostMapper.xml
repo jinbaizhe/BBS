@@ -3,10 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.parker.bbs.mapper.PostMapper">
     <!--<cache></cache>-->
-    <select id="getPostById" resultType="com.parker.bbs.pojo.Post" useCache="true">
+    <resultMap id="post" type="com.parker.bbs.pojo.Post">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="type" column="type"/>
+        <result property="top" column="top"/>
+        <result property="viewNum" column="view_num"/>
+        <association property="user" column="user_id" javaType="com.parker.bbs.pojo.User"
+                     select="com.parker.bbs.mapper.UserMapper.getUserById"/>
+        <association property="subForum" column="sub_forum_id" javaType="com.parker.bbs.pojo.SubForum"
+                     select="com.parker.bbs.mapper.SubForumMapper.getSubForumById"/>
+    </resultMap>
+    <select id="getPostById" resultMap="post" useCache="true">
         select * from post where id=#{id}
     </select>
-    <select id="getPostsBySubForumId" resultType="com.parker.bbs.pojo.Post" useCache="true">
+    <select id="getPostsBySubForumId" resultMap="post" useCache="true">
         select * from post where sub_forum_id=#{subForumId}
     </select>
     <select id="getPostsNumBySubForumId" resultType="Integer" useCache="true">
@@ -26,7 +40,7 @@
     <delete id="deletePost" parameterType="com.parker.bbs.pojo.Post">
         delete from post where id=#{post.id}
     </delete>
-    <select id="getPostsByUserId" resultType="com.parker.bbs.pojo.Post" useCache="true">
+    <select id="getPostsByUserId"  resultMap="post" useCache="true">
         select * from post where user_id=#{userid}
     </select>
 </mapper>

@@ -6,13 +6,13 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface PostMapper {
-    Post getPostById(int id);
+    Post getPostById(@Param("id") int id);
     List getPostsBySubForumId(@Param(value = "subForumId") int subForumId, int currentPage, String order);
-    int getPostsNumBySubForumId(int subForumId);
-    Post insertPost(Post post);
-    Post updatePost(Post post);
-    void deletePost(Post post);
-    List getPostsByUserId(int userid, String order);
-    List getSearchResult(String keyWord, int currentPage, String order);
-    int getSearchResultNum(String keyWord,String order);
+    int getPostsNumBySubForumId(@Param("subForumId") int subForumId);
+    Post insertPost(@Param("post") Post post);
+    Post updatePost(@Param("post") Post post);
+    void deletePost(@Param("post") Post post);
+    List getPostsByUserId(@Param("userid") int userid, @Param("order") String order);
+    List getSearchResult(@Param("keyWord") String keyWord, @Param("currentPage") int currentPage, @Param("order") String order);
+    int getSearchResultNum(@Param("keyWord") String keyWord, @Param("order") String order);
 }

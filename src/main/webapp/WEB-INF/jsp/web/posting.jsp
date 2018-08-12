@@ -22,16 +22,16 @@
 <div class="container" style="margin-top: 50px" >
     <div class="row">
         <div class="col-sm-12">
-            <form action="commitPosting.action?subforumid=<s:property value="subForum.id"></s:property>"  method="post" enctype="multipart/form-data" >
+            <form action="posting.action?sfid=<c:out value="${subForum.id}"/>"  method="post" enctype="multipart/form-data" >
                 <ul class="list-group">
                     <li class="list-group-item" style="background-color: #F5F5F5">
                         <h3>发表帖子
                             <small>
-                                <a href="mainforum.action?mfid=<s:property value="subForum.mainForum.id"></s:property>">
-                                    <s:property value="subForum.mainForum.name"></s:property></a>
+                                <a href="mainforum.action?mfid=<c:out value="${subForum.mainForum.id}"/>">
+                                    <c:out value="${subForum.mainForum.name}"/></a>
                                     >>
-                                <a href="subforum.action?sfid=<s:property value="subForum.id"></s:property>">
-                                    <s:property value="subForum.name"></s:property>
+                                <a href="subforum.action?sfid=<c:out value="${subForum.id}"/>">
+                                    <c:out value="${subForum.name}"/>
                                 </a>
                             </small>
                         </h3>
@@ -52,7 +52,7 @@
 
                     <li class="list-group-item">
                         <div style="float:right;">
-                            <a href='subforum.action?sfid=<s:property value="subForum.id"></s:property>'>
+                            <a href='subforum.action?sfid=<c:out value="${subForum.id}"/>'>
                                 <button type="button" class="btn btn-primary">返回</button>
                             </a>
                         </div>
