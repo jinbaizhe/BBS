@@ -20,13 +20,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post insertPost(Post post) {
-        return postMapper.insertPost(post);
+    public void insertPost(Post post) {
+        postMapper.insertPost(post);
     }
 
     @Override
-    public Post updatePost(Post post) {
-        return postMapper.updatePost(post);
+    public void updatePost(Post post) {
+        postMapper.updatePost(post);
     }
 
     @Override
@@ -35,9 +35,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List getPostsBySubForumId(int subForumId, int currentPage) {
-        String order = "send_time desc";
-        return postMapper.getPostsBySubForumId(subForumId, currentPage, order);
+    public List getPostsBySubForumId(int subForumId, int page, int num, String order) {
+        int beginIndex = (page-1)*num;
+        //page*num等价于(page-1)*num+num
+        int endIndex = page*num;
+        return postMapper.getPostsBySubForumId(subForumId, beginIndex, endIndex, order);
     }
 
     @Override

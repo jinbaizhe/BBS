@@ -19,10 +19,12 @@ public class FollowpostServiceImpl implements FollowpostService {
     }
 
     @Override
-    public List getFollowpostsByPostId(int postId) {
-        int currentPage=0;
-        String order="";
-        return followpostMapper.getFollowpostsByPostId(postId, currentPage, order);
+    public List getFollowpostsByPostId(int postId, int page, int num, String order) {
+        int beginIndex = (page-1)*num;
+        //page*num等价于(page-1)*num+num
+        int endIndex = page*num;
+        order = "send_time "+order;
+        return followpostMapper.getFollowpostsByPostId(postId, beginIndex, endIndex, order);
     }
 
     @Override

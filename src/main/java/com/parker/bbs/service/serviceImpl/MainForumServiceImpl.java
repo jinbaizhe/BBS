@@ -25,9 +25,8 @@ public class MainForumServiceImpl implements MainForumService {
     }
 
     @Override
-    public MainForum addMainForum(MainForum mainForum) {
+    public void insertMainForum(MainForum mainForum) {
         mainForumMapper.insertMainForum(mainForum);
-        return mainForum;
     }
 
     @Override

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.parker.bbs.mapper.PictureMapper">
+    <!--<cache></cache>-->
+    <resultMap id="picture" type="com.parker.bbs.pojo.Picture">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="uploadTime" column="upload_time"/>
+        <association property="user" column="user_id"
+                     select="com.parker.bbs.mapper.UserMapper.getUserById"/>
+    </resultMap>
+    <select id="getPictureById" resultMap="picture" useCache="true">
+        select * from picture where id=#{id}
+    </select>
+    <select id="getPicturesByPostId" resultMap="picture" useCache="true">
+        select * from picture where post_id=#{postId}
+    </select>
+    <select id="getPicturesByFollowpostId" resultMap="picture" useCache="true">
+        select count(*) from picture where post_id=#{postId}
+    </select>
+    <insert id="insertPicture" parameterType="com.parker.bbs.pojo.Picture" useGeneratedKeys="true" keyProperty="picture.id">
+        insert into picture(name ,upload_time, user_id)
+          values (#{picture.name}, #{picture.uploadTime},#{picture.user.id})
+    </insert>
+    <delete id="deletePicture" parameterType="com.parker.bbs.pojo.Picture">
+        delete from picture where id=#{picture.id}
+    </delete>
+
+</mapper>

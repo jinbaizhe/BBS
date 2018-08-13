@@ -6,11 +6,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface FollowpostService {
-     Followpost getFollowpostById(@Param("id") int id);
-     List getFollowpostsByPostId(@Param("postId") int postId);
-     int getFollowpostsNumByPostId(@Param("postId") int postId);
-     void insertFollowpost(@Param("followpost") Followpost followpost);
-     void updateFollowpost(@Param("followpost") Followpost followpost);
-     void deleteFollowpost(@Param("followpost") Followpost followpost);
-     List getFollowpostsByUserId(@Param("userId") int userId, @Param("order") String order);
+     Followpost getFollowpostById(int id);
+     List getFollowpostsByPostId(int postId, int page, int num, String order);
+     int getFollowpostsNumByPostId(int postId);
+     void insertFollowpost(Followpost followpost);
+     void updateFollowpost(Followpost followpost);
+     void deleteFollowpost(Followpost followpost);
+     List getFollowpostsByUserId(int userId, String order);
 }

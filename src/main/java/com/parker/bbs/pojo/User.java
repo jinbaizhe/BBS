@@ -14,7 +14,7 @@ public class User implements java.io.Serializable {
     // Fields
 
     private Integer id;
-//    private Picture avatar;
+    private Picture avatar;
     private String username;
     private String password;
     private String info;
@@ -31,6 +31,14 @@ public class User implements java.io.Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Picture getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Picture avatar) {
+        this.avatar = avatar;
     }
 
     public String getUsername() {

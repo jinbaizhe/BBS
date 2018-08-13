@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface PostService {
     Post getPostById(int id);
-    Post insertPost(Post post);
-    Post updatePost(Post post);
+    void insertPost(Post post);
+    void updatePost(Post post);
     void deletePost(Post post);
-    List getPostsBySubForumId(int subForumId, int currentPage);
+    List getPostsBySubForumId(int subForumId, int page, int num, String order);
     int getPostsNumBySubForumId(int subForumId);
     List getPostsByUserId(int userid);
     void updatePostAllAttr(Post post);

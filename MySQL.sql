@@ -138,7 +138,8 @@ create table message
 create table picture
 (
    id                   int not null auto_increment  comment '',
-   picture              char(30)  comment '',
+   name              	char(30)  comment '',
+   user_id				int,
    upload_time          datetime  comment '',
    primary key (id)
 );
@@ -240,6 +241,9 @@ alter table log add constraint FK_LOG_RELATIONS_USER foreign key (user_id)
 
 alter table message add constraint FK_MESSAGE_RELATIONS_USER foreign key (user_id)
       references user (id) on delete cascade on update cascade;
+
+alter table picture add constraint FK_PICTURE_RELATIONS_USER foreign key (user_id)
+      references user (id) on delete cascade on update cascade;	  
 
 alter table post add constraint FK_POST_RELATIONS_USER foreign key (user_id)
       references user (id) on delete cascade on update cascade;

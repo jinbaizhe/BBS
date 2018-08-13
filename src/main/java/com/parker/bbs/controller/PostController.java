@@ -7,7 +7,9 @@ import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.FollowpostService;
 import com.parker.bbs.service.PostService;
 import com.parker.bbs.service.SubForumService;
+import com.parker.bbs.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +21,10 @@ import java.util.List;
 
 @Controller
 public class PostController {
+
+    @Value("#{configProperties['followpostsNumPerPage']}")
+    private int followpostsNumPerPage;
+
     @Autowired
     private PostService postService;
     @Autowired
@@ -26,14 +32,20 @@ public class PostController {
     @Autowired
     private SubForumService subForumService;
 
+
+
     @RequestMapping("/post")
-    public ModelAndView browserPost(@RequestParam("postid") int postid) {
+    public ModelAndView browserPost(@RequestParam("postid") int postid, @RequestParam(value = "page", defaultValue = "1") int page) {
         ModelAndView modelAndView = new ModelAndView();
         Post post=postService.getPostById(postid);
         int totalFollowpostsNum=followpostService.getFollowpostsNumByPostId(postid);
-        List<Followpost> followposts=followpostService.getFollowpostsByPostId(postid);
+        List<Followpost> followposts=followpostService.getFollowpostsByPostId(postid, page, followpostsNumPerPage,"asc");
+        Pager pager = new Pager(page,followpostsNumPerPage,totalFollowpostsNum);
+        List pageList = pager.getPageList();
         modelAndView.addObject("post", post);
         modelAndView.addObject("followposts", followposts);
+        modelAndView.addObject("pager", pager);
+        modelAndView.addObject("pageList", pageList);
         modelAndView.setViewName("web/post");
         return modelAndView;
 
@@ -51,10 +63,13 @@ public class PostController {
     }
 
     @RequestMapping(value = "/posting", method = RequestMethod.POST)
-    public ModelAndView commitAddPost(@SessionAttribute("user") User user, Post post, @RequestParam("sfid") int subforumId)
+    public ModelAndView commitAddPost(@SessionAttribute("user") User user, @RequestParam("title")String title, @RequestParam("content")String content, @RequestParam("sfid") int subforumId)
     {
 //        if(post==null||post.getTitle().equals("")||post.getContent().equals(""))
 //            return ERROR;
+        Post post = new Post();
+        post.setTitle(title);
+        post.setContent(content);
         post.setSubForum(subForumService.getSubForumById(subforumId));
         post.setUser(user);
         postService.insertPost(post);

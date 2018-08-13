@@ -217,7 +217,7 @@
             <div class="col-sm-12">
                 <nav aria-label="Page navigation example" class="my-sm-3">
                     <ul class="pagination justify-content-center">
-                        <c:if test='${request.pager.isFirstPage}!=true'>
+                        <c:if test='${pager.firstPage!=true}'>
                             <li class="page-item">
                                 <a class="page-link" href="post.action?postid=<c:out value="${post.id}"/>&page=1">
                                     首页
@@ -225,21 +225,21 @@
                             </li>
                             <li class="page-item">
                                 <a class="page-link"
-                                   href="post.action?postid=<c:out value="${post.id}"/>&page=<c:out value="${request.pager.getCurrentPage-1}"/>" aria-label="Previous">
+                                   href="post.action?postid=<c:out value="${post.id}"/>&page=<c:out value="${pager.getCurrentPage()-1}"/>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
                             </li>
                         </c:if>
 
-                        <c:forEach items='#request.pager.getPageList' var="item">
+                        <c:forEach items='${pager.pageList}' var="item">
                             <c:choose>
-                                <c:when test="${item}==${request.pager.getCurrentPage}">
+                                <c:when test="${item == pager.currentPage.toString()}">
                                     <li class="page-item active">
                                         <a class="page-link" href=""><c:out value="${item}"/></a>
                                     </li>
                                 </c:when>
-                                <c:when test="${item}=='...'">
+                                <c:when test='${item=="..."}'>
                                     <li class="page-item">
                                         <div class="page-link">
                                             <c:out value="${item}"/>
@@ -256,10 +256,11 @@
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
-                        <c:if test='${request.pager.isLastPage}!=true'>
+
+                        <c:if test='${pager.lastPage!=true}'>
                             <li class="page-item">
                                 <a class="page-link"
-                                   href="post.action?postid=<c:out value="${post.id}"/>&page=<c:out value="${request.pager.getCurrentPage}+1"/>" aria-label="Next">
+                                   href="post.action?postid=<c:out value="${post.id}"/>&page=<c:out value="${pager.getCurrentPage()+1}"/>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>

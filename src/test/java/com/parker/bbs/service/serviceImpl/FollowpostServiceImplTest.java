@@ -1,7 +1,10 @@
 package com.parker.bbs.service.serviceImpl;
 
 import com.parker.bbs.pojo.Followpost;
+import com.parker.bbs.pojo.Post;
+import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.FollowpostService;
+import com.parker.bbs.util.Util;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -37,7 +41,7 @@ public class FollowpostServiceImplTest {
 
     @Test
     public void getFollowpostsByPostId() {
-        List<Followpost> list = followpostService.getFollowpostsByPostId(2);
+        List<Followpost> list = followpostService.getFollowpostsByPostId(1,1, 5, "asc");
         Assert.assertNotEquals(0, list.size());
         Followpost followpost = list.get(0);
         testFollowpostAttr(followpost);
@@ -45,15 +49,29 @@ public class FollowpostServiceImplTest {
 
     @Test
     public void getFollowpostsNumByPostId() {
-        Assert.assertNotEquals(0, followpostService.getFollowpostsNumByPostId(2));
+        Assert.assertNotEquals(0, followpostService.getFollowpostsNumByPostId(1));
     }
 
     @Test
     public void insertFollowpost() {
+        Followpost followpost = new Followpost();
+        followpost.setContent("test followpost");
+        User user = new User();
+        user.setId(1);
+        followpost.setUser(user);
+        Post post = new Post();
+        post.setId(1);
+        followpost.setPost(post);
+        followpost.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        followpost.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        followpostService.insertFollowpost(followpost);
     }
 
     @Test
     public void updateFollowpost() {
+        for (int i=0; i<30;i++) {
+            insertFollowpost();
+        }
     }
 
     @Test

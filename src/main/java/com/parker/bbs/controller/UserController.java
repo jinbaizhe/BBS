@@ -9,14 +9,12 @@ import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/user")
+@SessionAttributes("user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -69,7 +67,9 @@ public class UserController {
         }
         try{
             subject.login(token);
-            modelAndView.setViewName("redirect:index.action");
+            User realUser = userService.getUserByUsername(user.getUsername());
+            modelAndView.addObject("user", realUser);
+            modelAndView.setViewName("redirect:/mainforum.action");
         }catch (AuthenticationException e){
             modelAndView.addObject("message","登录失败："+e.getMessage());
             modelAndView.setViewName("user/login");

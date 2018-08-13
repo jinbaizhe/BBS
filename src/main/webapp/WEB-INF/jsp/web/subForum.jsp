@@ -87,54 +87,54 @@
         </div>
     </div>
     <div class="row">
-        <%--<div class="col-sm-12">--%>
-            <%--<nav aria-label="Page navigation example" class="my-sm-3">--%>
-                <%--<ul class="pagination justify-content-center">--%>
-                    <%--<c:if test='#request.pager.isFirstPage!=true'>--%>
-                        <%--<li class="page-item">--%>
-                            <%--<a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&page=1">--%>
-                                <%--首页--%>
-                            <%--</a>--%>
-                        <%--</li>--%>
-                        <%--<li class="page-item">--%>
-                            <%--<a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&page=<c:out value="${request.pager.getCurrentPage-1}"></c:out>" aria-label="Previous">--%>
-                                <%--<span aria-hidden="true">&laquo;</span>--%>
-                                <%--<span class="sr-only">Previous</span>--%>
-                            <%--</a>--%>
-                        <%--</li>--%>
-                    <%--</c:if>--%>
-                    <%--<c:forEach items='#request.pager.getPageList' var="item">--%>
-                        <%--<c:choose>--%>
-                            <%--<c:when test="#item==#request.pager.getCurrentPage">--%>
-                                <%--<li class="page-item active">--%>
-                                    <%--<a class="page-link" href=""><c:out value="${item}"></c:out></a>--%>
-                                <%--</li>--%>
-                            <%--</c:when>--%>
-                            <%--<c:when test="#item=='...'">--%>
-                                <%--<li class="page-item">--%>
-                                    <%--<div class="page-link">--%>
-                                        <%--<c:out value="${item}"></c:out>--%>
-                                    <%--</div>--%>
-                                <%--</li>--%>
-                            <%--</c:when>--%>
-                            <%--<c:otherwise>--%>
-                                <%--<li class="page-item">--%>
-                                    <%--<a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&page=<c:out value="${item}"></c:out>"><c:out value="${item}"></c:out></a>--%>
-                                <%--</li>--%>
-                            <%--</c:otherwise>--%>
-                        <%--</c:choose>--%>
-                    <%--</c:forEach>--%>
-                    <%--<c:if test='#request.pager.isLastPage!=true'>--%>
-                        <%--<li class="page-item">--%>
-                            <%--<a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&page=<c:out value="${request.pager.getCurrentPage+1}"></c:out>" aria-label="Next">--%>
-                                <%--<span aria-hidden="true">&raquo;</span>--%>
-                                <%--<span class="sr-only">Next</span>--%>
-                            <%--</a>--%>
-                        <%--</li>--%>
-                    <%--</c:if>--%>
-                <%--</ul>--%>
-            <%--</nav>--%>
-        <%--</div>--%>
+        <div class="col-sm-12">
+            <nav aria-label="Page navigation example" class="my-sm-3">
+                <ul class="pagination justify-content-center">
+                    <c:if test='${pager.firstPage!=true}'>
+                        <li class="page-item">
+                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&page=1">
+                                首页
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&page=<c:out value="${pager.currentPage-1}"></c:out>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:forEach items='${pager.pageList}' var="item">
+                        <c:choose>
+                            <c:when test="${item==pager.currentPage.toString()}">
+                                <li class="page-item active">
+                                    <a class="page-link" href=""><c:out value="${item}"/></a>
+                                </li>
+                            </c:when>
+                            <c:when test="${item=='...'}">
+                                <li class="page-item">
+                                    <div class="page-link">
+                                        <c:out value="${item}"/>
+                                    </div>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item">
+                                    <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${item}"/>"><c:out value="${item}"/></a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    <c:if test='${pager.lastPage!=true}'>
+                        <li class="page-item">
+                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${pager.currentPage+1}"/>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </c:if>
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
 

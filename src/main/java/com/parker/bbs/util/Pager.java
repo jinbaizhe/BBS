@@ -1,9 +1,16 @@
 package com.parker.bbs.util;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class Pager {
+    private int showPageListSize=3;
     private int currentPage;
     private int showItemsPerPageNum;
     private int totalPageNum;
@@ -11,18 +18,33 @@ public class Pager {
     private int beginIndex;
     public Pager(int currentPage,int showItemsPerPageNum,int totalItemNum)
     {
+
+        try {
+            Properties properties = new Properties();
+            FileInputStream fileInputStream = new FileInputStream("classpath:setting.properties");
+            properties.load(fileInputStream);
+            String temp = properties.getProperty("showPageListSize");
+            showPageListSize = Integer.valueOf(temp);
+        } catch (FileNotFoundException e) {
+            System.out.println("找不到setting.properties文件，showPageListSize变量使用默认值3");
+        }catch (IOException e){
+            System.out.println("加载setting.properties文件失败");
+        }
+
         this.currentPage=currentPage;
         this.showItemsPerPageNum=showItemsPerPageNum;
         this.totalItemNum=totalItemNum;
-        if(totalItemNum==0)
-            this.totalPageNum=1;
-        else
-            this.totalPageNum=totalItemNum/showItemsPerPageNum
-                    +(totalItemNum%showItemsPerPageNum==0?0:1);
+        if(totalItemNum==0) {
+            this.totalPageNum = 1;
+        }
+        else {
+            this.totalPageNum = totalItemNum / showItemsPerPageNum
+                    + (totalItemNum % showItemsPerPageNum == 0 ? 0 : 1);
+        }
         beginIndex=(currentPage-1)*showItemsPerPageNum+1;
     }
 
-    public int getCurrentPage() {
+    public Integer getCurrentPage() {
         return currentPage;
     }
 
@@ -75,26 +97,23 @@ public class Pager {
             return true;
         return false;
     }
-/*
-    public List getPageList()
-    {
-        //读取web.xml获取ShowFollowpostsPerPageNum参数
-        ServletContext servletContext =ServletActionContext.getServletContext();
-        final int ShowPageListSize=Integer.valueOf(servletContext.getInitParameter("ShowPageListSize"));
 
+    public List<String> getPageList()
+    {
         List<String> list=new ArrayList();
         int start_pos=1,end_pos=totalPageNum;
-        if(totalPageNum>ShowPageListSize)
+        if(totalPageNum>showPageListSize)
         {
-            start_pos=currentPage-ShowPageListSize/2;
-            end_pos=currentPage+ShowPageListSize/2;
+            start_pos=currentPage-showPageListSize/2;
+            end_pos=currentPage+showPageListSize/2;
         }
         if(start_pos<1)
         {
             start_pos = 1;
         }
-        if(end_pos>totalPageNum)
-            end_pos=totalPageNum;
+        if(end_pos>totalPageNum) {
+            end_pos = totalPageNum;
+        }
         if(start_pos>1)
         {
             list.add("...");
@@ -103,9 +122,10 @@ public class Pager {
         {
             list.add(String.valueOf(i));
         }
-        if(end_pos<totalPageNum)
+        if(end_pos<totalPageNum) {
             list.add("...");
+        }
         return list;
     }
-    */
+
 }

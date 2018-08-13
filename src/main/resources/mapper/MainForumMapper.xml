@@ -15,7 +15,7 @@
     <select id="getMainForumById" resultMap="mainForum" useCache="true">
         select * from main_forum where id=#{id}
     </select>
-    <insert id="insertMainForum" parameterType="com.parker.bbs.pojo.MainForum" useGeneratedKeys="true" keyProperty="user.id">
+    <insert id="insertMainForum" parameterType="com.parker.bbs.pojo.MainForum" useGeneratedKeys="true" keyProperty="mainForum.id">
         insert into main_forum(name, info, create_time)
           values (#{mainForum.name}, #{mainForum.info},#{mainForum.createTime})
     </insert>

@@ -6,7 +6,7 @@ import java.util.List;
 public interface MainForumService {
     List getAllMainForums();
     MainForum getMainForumById(int id);
-    MainForum addMainForum(MainForum mainForum);
+    void insertMainForum(MainForum mainForum);
     void updateMainForum(MainForum mainForum);
     void deleteMainForum(MainForum mainForum);
 }

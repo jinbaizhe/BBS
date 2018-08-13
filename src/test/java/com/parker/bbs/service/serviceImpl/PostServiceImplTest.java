@@ -1,14 +1,19 @@
 package com.parker.bbs.service.serviceImpl;
 
 import com.parker.bbs.pojo.Post;
+import com.parker.bbs.pojo.SubForum;
+import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.PostService;
+import com.parker.bbs.util.Util;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -20,9 +25,28 @@ public class PostServiceImplTest {
     @Autowired
     private PostService postService;
 
+    @Before
+    public void before(){
+        Post post = new Post();
+        SubForum subForum = new SubForum();
+        subForum.setId(1);
+        post.setSubForum(subForum);
+        User user = new User();
+        user.setId(1);
+        post.setUser(user);
+        post.setContent("test post content");
+        post.setTitle("test post title");
+        post.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        post.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        post.setTop(0);
+        post.setType(0);
+        post.setViewNum(0);
+        postService.insertPost(post);
+    }
+
     @Test
     public void getPostById() {
-        Post post = postService.getPostById(2);
+        Post post = postService.getPostById(1);
         Assert.assertNotNull(post);
         Assert.assertNotNull(post.getSendTime());
         Assert.assertNotNull(post.getSubForum());

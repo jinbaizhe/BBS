@@ -38,11 +38,11 @@
                     </li>
                     <li class="list-group-item">
                         <h4><b>帖子标题</b></h4>
-                        <input type="text" name="post.title" value="" class="form-control" placeholder="请输入标题">
+                        <input type="text" name="title" value="" class="form-control" placeholder="请输入标题">
                     </li>
                     <li class="list-group-item">
                         <h4><b>帖子内容</b></h4>
-                        <textarea name="post.content" id="editor1" class="form-control;"></textarea>
+                        <textarea name="content" id="editor1" class="form-control;"></textarea>
                         <script>
                             // Replace the <textarea id="editor1"> with a CKEditor
                             // instance, using default configuration.

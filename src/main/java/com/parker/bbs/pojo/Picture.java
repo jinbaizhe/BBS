@@ -12,9 +12,9 @@ import java.util.Set;
 public class Picture implements java.io.Serializable {
 
 	private Integer id;
-	private String picture;
+	private String name;
+	private User user;
 	private Timestamp uploadTime;
-
     public Integer getId() {
         return id;
     }
@@ -23,12 +23,20 @@ public class Picture implements java.io.Serializable {
         this.id = id;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getName() {
+        return name;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Timestamp getUploadTime() {

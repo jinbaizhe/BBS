@@ -17,15 +17,14 @@
         select * from followpost where id=#{id}
     </select>
     <select id="getFollowpostsByPostId" resultMap="followpost" useCache="true">
-        select * from followpost where post_id=#{postId}
+        select * from followpost where post_id=#{postId} order by #{order} limit #{beginIndex},#{endIndex}
     </select>
     <select id="getFollowpostsNumByPostId" resultType="Integer" useCache="true">
         select count(*) from followpost where post_id=#{postId}
     </select>
-    <insert id="insertFollowpost" parameterType="com.parker.bbs.pojo.Followpost" useGeneratedKeys="true" keyProperty="user.id">
-        insert into followpost(user_id, post_id, content, send_time,
-        update_time)
-          values (#{followpost.user.id}, #{followpost.post.id},#{followpost.content},
+    <insert id="insertFollowpost" parameterType="com.parker.bbs.pojo.Followpost" useGeneratedKeys="true" keyProperty="followpost.id">
+        insert into followpost(user_id, post_id, content, send_time, update_time)
+          values (2, #{followpost.post.id},#{followpost.content},
             #{followpost.sendTime}, #{followpost.updateTime})
     </insert>
     <update id="updateFollowpost" parameterType="com.parker.bbs.pojo.Followpost">
