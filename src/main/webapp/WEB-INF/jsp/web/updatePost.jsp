@@ -13,29 +13,29 @@
 <div class="container" style="margin-top: 50px" >
     <div class="row">
         <div class="col-sm-12">
-            <form action="commitUpdatePost.action"  method="post" enctype="multipart/form-data" >
+            <form action="/commitUpdatePost.action"  method="post" enctype="multipart/form-data" >
                 <ul class="list-group">
                     <li class="list-group-item" style="background-color: #F5F5F5">
                         <h3>修改帖子
                             <small>
-                                <a href="mainforum.action?mfid=<s:property value="post.subForum.mainForum.id"></s:property>">
-                                    <s:property value="post.subForum.mainForum.name"></s:property></a>
+                                <a href="mainforum.action?mfid=<c:out value="${post.subForum.mainForum.id}"/>">
+                                    <c:out value="post.subForum.mainForum.name"></c:out></a>
                                     >>
-                                <a href="subforum.action?sfid=<s:property value="post.subForum.id"></s:property>">
-                                    <s:property value="post.subForum.name"></s:property>
+                                <a href="subforum.action?sfid=<c:out value="${post.subForum.id}"/>">
+                                    <c:out value="${post.subForum.name}"/>
                                 </a>
                             </small>
                         </h3>
                     </li>
-                    <input type="hidden" name="postid" value="<s:property value="post.id"></s:property>">
-                    <input type="hidden" name="post.id" value="<s:property value="post.id"></s:property>">
+                    <input type="hidden" name="postid" value="<c:out value="${post.id}"/>">
+                    <input type="hidden" name="post.id" value="<c:out value="${post.id}"/>">
                     <li class="list-group-item">
                         <h4><b>帖子标题</b></h4>
-                        <input type="text" name="post.title" value="<s:property value="post.title"></s:property>" class="form-control" placeholder="请输入标题">
+                        <input type="text" name="post.title" value="<c:out value="${post.title}"/>" class="form-control" placeholder="请输入标题">
                     </li>
                     <li class="list-group-item">
                         <h4><b>帖子内容</b></h4>
-                        <textarea name="post.content" id="editor1" class="form-control"><s:property value="post.content"></s:property></textarea>
+                        <textarea name="post.content" id="editor1" class="form-control"><c:out value="${post.content}"/></textarea>
                         <script>
                             // Replace the <textarea id="editor1"> with a CKEditor
                             // instance, using default configuration.
@@ -44,7 +44,7 @@
                     </li>
                     <li class="list-group-item">
                         <div style="float:right;">
-                            <a href='post.action?postid=<s:property value="post.id"></s:property>'>
+                            <a href='post.action?postid=<c:out value="${post.id}"/>'>
                                 <button type="button" class="btn btn-primary">返回</button>
                             </a>
                         </div>

@@ -27,7 +27,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav navbar-right">
-                <li class="nav-item mx-sm-5">
+                <li class="nav-item">
                     <form class="form-inline my-sm-0" action="/searchPosts.action" method="get">
                         <div class="input-group">
                             <input class="form-control" type="text" name="searchKeyWord" placeholder="搜索帖子">
@@ -40,7 +40,7 @@
                 </li>
                 <c:choose>
                     <c:when test="${sessionScope.user!=null}">
-                        <li class="nav-item">
+                        <li class="nav-item ml-sm-5">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">欢迎您，${sessionScope.user.getUsername()}</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">

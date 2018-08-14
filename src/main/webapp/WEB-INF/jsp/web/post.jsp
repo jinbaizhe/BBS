@@ -64,9 +64,9 @@
                 <div class="post-head">
                     <div class="text-center">
                         <div>
-                            <a href="/userInfo.action?userid=<c:out value="${post.user.id}"/>">
+                            <a href="/user/userInfo.action?userid=<c:out value="${post.user.id}"/>">
                                 <c:choose>
-                                    <c:when test='post.user.picture.id!=""'>
+                                    <c:when test='${post.user.avatar!=null}'>
                                         <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<c:out value="${post.user.picture.id}"/>"
                                               style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
 
@@ -104,13 +104,13 @@
                             <strong style="float:right;margin-right:10px">
                                 <span class="badge" style="background: #ff6927;width: 50px;">楼主</span>
                             </strong>
-                            <c:if test="post.user.id==#session.user.id||#session.user.type==1">
+                            <c:if test="${post.user.id==sessionScope.user.id}">
+                                <%--还需要加入管理员删除的权限验证--%>
                                 <a style="float:right;margin-right: 20px;" href="/deletePost.action?postid=<c:out value="${post.id}"/>">删除</a>
                             </c:if>
-                            <c:if test="post.user.id==#session.user.id">
+                            <c:if test="${post.user.id==sessionScope.user.id}">
                                 <a style="float:right;margin-right: 20px;" href="/updatePost?postid=<c:out value="${post.id}"/>">编辑</a>
                             </c:if>
-
 
                             <c:choose>
                                 <c:when test="collection!=null">
@@ -121,9 +121,7 @@
                                 </c:otherwise>
                             </c:choose>
 
-
-
-                            <c:if test="#session.user.type>=1">
+                            <shiro:hasRole name="admin">
                                 <c:choose>
                                     <c:when test="post.top==0">
                                         <a style="float:right;margin-right: 20px;" href="/manage/setTop?postid=<c:out value="${post.id}"/>">置顶</a>
@@ -132,9 +130,6 @@
                                         <a style="float:right;margin-right: 20px;" href="/manage/unsetTop?postid=<c:out value="${post.id}"></c:out>">取消置顶</a>
                                     </c:otherwise>
                                 </c:choose>
-                            </c:if>
-
-                            <c:if test="#session.user.type>=1">
                                 <c:choose>
                                     <c:when test="post.type==0">
                                         <a style="float:right;margin-right: 20px;" href="/manage/setPostEssential?postid=<c:out value="${post.id}"/>">精华</a>
@@ -143,7 +138,7 @@
                                         <a style="float:right;margin-right: 20px;" href="/manage/unsetPostEssential?postid=<c:out value="${post.id}"/>">取消精华</a>
                                     </c:otherwise>
                                 </c:choose>
-                            </c:if>
+                            </shiro:hasRole>
                         </div>
                     </div>
                     <div style="margin: 20px">
@@ -162,11 +157,9 @@
                             <div>
                                 <a href="/user/userInfo.action?userid=<c:out value="${followpost.user.id}"/>">
                                     <c:choose>
-                                        <c:when test='#followpost.user.picture.id!=""'>
-
+                                        <c:when test='${followpost.user.avatar!=null}'>
                                             <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<c:out value="${followpost.user.picture.id}"/>"
                                                   style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
-
                                         </c:when>
                                         <c:otherwise>
                                             <img  alt="" class="img-responsive img-circle" src="/static/default.jpg"
@@ -273,9 +266,9 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <form action="commitFollowpost.action" method="post" enctype="multipart/form-data">
+                <form action="/commitFollowpost.action" method="post">
                     <div class="my-sm-2">
-                        <textarea name="followpost.content" id="editor1" class="form-control"></textarea>
+                        <textarea name="content" id="editor1" class="form-control"></textarea>
                         <script>
                             // Replace the <textarea id="editor1"> with a CKEditor
                             // instance, using default configuration.

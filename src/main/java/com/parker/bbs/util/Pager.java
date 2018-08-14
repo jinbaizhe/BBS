@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -21,8 +22,8 @@ public class Pager {
 
         try {
             Properties properties = new Properties();
-            FileInputStream fileInputStream = new FileInputStream("classpath:setting.properties");
-            properties.load(fileInputStream);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("setting.properties");
+            properties.load(inputStream);
             String temp = properties.getProperty("showPageListSize");
             showPageListSize = Integer.valueOf(temp);
         } catch (FileNotFoundException e) {

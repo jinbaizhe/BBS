@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PostService {
     Post getPostById(int id);
-    void insertPost(Post post);
+    void insertPost(Post post, int subForumid, int userid);
     void updatePost(Post post);
     void deletePost(Post post);
     List getPostsBySubForumId(int subForumId, int page, int num, String order);

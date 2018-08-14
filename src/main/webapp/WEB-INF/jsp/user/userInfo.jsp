@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE>
 <html lang="en">
 <head>
@@ -8,7 +8,7 @@
     <title>个人信息</title>
 </head>
 <body>
-<%@include file="/WEB-INF/jsp/web/header.jsp"%>
+<jsp:include page="/WEB-INF/jsp/web/header.jsp"/>
 
 <div class="container">
     <div class="row">
@@ -48,11 +48,11 @@
                 </a>
 
                 <c:choose>
-                    <c:when test="type=='followpost'">
-                        <a class="nav-link active" id="v-pills-star-tab" data-toggle="pill" href="#v-pills-star" role="tab" aria-controls="v-pills-star" aria-selected="true">
+                    <c:when test="${type=='collection'}">
+                        <a class="nav-link active" id="v-pills-collection-tab" data-toggle="pill" href="#v-pills-collection" role="tab" aria-controls="v-pills-collection" aria-selected="true">
                     </c:when>
                     <c:otherwise>
-                        <a class="nav-link" id="v-pills-star-tab" data-toggle="pill" href="#v-pills-star" role="tab" aria-controls="v-pills-star" aria-selected="false">
+                        <a class="nav-link" id="v-pills-collection-tab" data-toggle="pill" href="#v-pills-collection" role="tab" aria-controls="v-pills-collection" aria-selected="false">
                     </c:otherwise>
                 </c:choose>
                     查看ta的收藏
@@ -62,7 +62,7 @@
         <div class="col-sm-8">
             <div class="tab-content" id="v-pills-tabContent">
                 <c:choose>
-                    <c:when test="type=='info'">
+                    <c:when test="${type=='info'}">
                         <div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab">
                     </c:when>
                     <c:otherwise>
@@ -72,12 +72,12 @@
                 <div class="row">
                     <div class="col-sm-6">
                             <div class="form-group">
-                                <p class="text-danger"><c:out value="message_info"/></p>
+                                <p class="text-danger"><c:out value="${message_info}"/></p>
                             </div>
                             <div class="form-group">
                                 <c:choose>
-                                    <c:when test='user.picture.id!=""'>
-                                        <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<c:out value="${sessionScope.user.picture.id}"></c:out>"
+                                    <c:when test='${user.avatar!=null}'>
+                                        <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<c:out value="${user.avatar.id}"/>"
                                               style="margin:1px 1px;width: 120px;height: 120px;margin: 30px auto;"/>
                                     </c:when>
                                     <c:otherwise>
@@ -88,7 +88,7 @@
                             </div>
                             <div class="form-group">
                                 <label>用户名</label>
-                                <input type=text class="form-control" name="user.username" placeholder="请输入用户名" value="<c:out value="${user.username}"></c:out>" readonly>
+                                <input type=text class="form-control" name="user.username" placeholder="请输入用户名" value="<c:out value="${user.username}"/>" readonly>
                                 <!--<small class="form-text text-muted" name=""></small>-->
                             </div>
                             <div class="form-group">
@@ -109,11 +109,11 @@
                             <div class="form-group">
                                 <label>性别</label>
                                 <c:choose>
-                                    <c:when test='user.sex=="男"'>
+                                    <c:when test='${user.sex=="男"}'>
                                         <input type="radio" class="" name="user.sex" value="男" checked disabled>男
                                         <input type="radio" class="" name="user.sex" value="女" disabled>女
                                     </c:when>
-                                    <c:when test='user.sex=="女"'>
+                                    <c:when test='${user.sex=="女"}'>
                                         <input type="radio" class="" name="user.sex" value="男" disabled>男
                                         <input type="radio" class="" name="user.sex" value="女" checked disabled>女
                                     </c:when>
@@ -122,13 +122,13 @@
                             </div>
                             <div class="form-group">
                                 <label>邮箱</label>
-                                <input type="email" class="form-control" name="user.email" placeholder="请输入邮箱" value="<c:out value="user.email"></c:out>" disabled>
+                                <input type="email" class="form-control" name="user.email" placeholder="请输入邮箱" value="<c:out value="${user.email}"/>" disabled>
                                 <!--<small class="form-text text-muted" name=""></small>-->
                             </div>
 
                             <div class="form-group">
                                 <label>注册时间</label>
-                                <input type="text" class="form-control" name="user.registerTime" readonly value="<fmt:formatDate value="user.registerTime" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>">
+                                <input type="text" class="form-control" name="user.registerTime" readonly value="<fmt:formatDate value="${user.registerTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>">
                             </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                             <c:forEach items="${posts}" var="post">
                                 <div class="card my-sm-3">
                                     <div class="card-body">
-                                        <h5 class="card-title">帖子标题：<a href="/post.action?postid=<c:out value="${post.id}"></c:out>"><c:out value="${post.title}"/></a></h5>
+                                        <h5 class="card-title">帖子标题：<a href="/post.action?postid=<c:out value="${post.id}"/>"><c:out value="${post.title}"/></a></h5>
                                         <p class="card-text">
                                             <c:out value="${post.content}"/>
                                         </p>
@@ -188,11 +188,11 @@
                 </c:choose>
 
                 <c:choose>
-                    <c:when test="${type=='star'}">
-                        <div class="tab-pane fade show active" id="v-pills-star" role="tabpanel" aria-labelledby="v-pills-star-tab">
+                    <c:when test="${type}=='collection'">
+                        <div class="tab-pane fade show active" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
                     </c:when>
                     <c:otherwise>
-                        <div class="tab-pane fade show" id="v-pills-star" role="tabpanel" aria-labelledby="v-pills-star-tab">
+                        <div class="tab-pane fade show" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
                             <div class="row">
                                 <div class="col-sm-10">
                                     <c:if test="${collections.size()==0}">

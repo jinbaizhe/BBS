@@ -67,7 +67,7 @@
                 </prop>
                 <!--授权-->
                 <prop key="org.apache.shiro.authz.UnauthorizedException">
-                    redirect:/user/reject.action
+                    redirect:/reject.action
                 </prop>
             </props>
         </property>

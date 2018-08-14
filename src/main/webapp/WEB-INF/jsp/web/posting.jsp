@@ -22,7 +22,7 @@
 <div class="container" style="margin-top: 50px" >
     <div class="row">
         <div class="col-sm-12">
-            <form action="posting.action?sfid=<c:out value="${subForum.id}"/>"  method="post" enctype="multipart/form-data" >
+            <form action="posting.action?sfid=<c:out value="${subForum.id}"/>"  method="post">
                 <ul class="list-group">
                     <li class="list-group-item" style="background-color: #F5F5F5">
                         <h3>发表帖子
@@ -43,11 +43,11 @@
                     <li class="list-group-item">
                         <h4><b>帖子内容</b></h4>
                         <textarea name="content" id="editor1" class="form-control;"></textarea>
-                        <script>
-                            // Replace the <textarea id="editor1"> with a CKEditor
-                            // instance, using default configuration.
-                            CKEDITOR.replace( 'editor1');
-                        </script>
+                            <script>
+                                // Replace the <textarea id="editor1"> with a CKEditor
+                                // instance, using default configuration.
+                                CKEDITOR.replace( 'editor1');
+                            </script>
                     </li>
 
                     <li class="list-group-item">

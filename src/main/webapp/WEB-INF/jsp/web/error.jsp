@@ -21,7 +21,7 @@
 		<div class="col-sm-12">
 			<div class="text-center">
 				<h1>操作失败</h1>
-				<a href="${requestScope.get("referURL")}">返回页面</a>
+				<a href="${sessionScope.get("referURL")}">返回页面</a>
 			</div>
 		</div>
 	</div>

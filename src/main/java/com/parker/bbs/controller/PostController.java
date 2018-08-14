@@ -8,6 +8,7 @@ import com.parker.bbs.service.FollowpostService;
 import com.parker.bbs.service.PostService;
 import com.parker.bbs.service.SubForumService;
 import com.parker.bbs.util.Pager;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -52,6 +53,7 @@ public class PostController {
 
     }
 
+    @RequiresUser
     @RequestMapping(value = "/posting", method = RequestMethod.GET)
     public ModelAndView getAddPostPage(@RequestParam("sfid") int subforumId)
     {
@@ -62,17 +64,16 @@ public class PostController {
         return modelAndView;
     }
 
+    @RequiresUser
     @RequestMapping(value = "/posting", method = RequestMethod.POST)
-    public ModelAndView commitAddPost(@SessionAttribute("user") User user, @RequestParam("title")String title, @RequestParam("content")String content, @RequestParam("sfid") int subforumId)
+    public ModelAndView commitAddPost(@SessionAttribute(value = "sessionUser", required = false) User user, @RequestParam("title")String title, @RequestParam("content")String content, @RequestParam("sfid") int subforumId)
     {
 //        if(post==null||post.getTitle().equals("")||post.getContent().equals(""))
 //            return ERROR;
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
-        post.setSubForum(subForumService.getSubForumById(subforumId));
-        post.setUser(user);
-        postService.insertPost(post);
+        postService.insertPost(post, subforumId, user.getId());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "帖子发表成功");
         modelAndView.addObject("message", "发表成功");
@@ -80,9 +81,11 @@ public class PostController {
         return modelAndView;
     }
 
+    @RequiresUser
     @RequestMapping(value = "/updatePost", method = RequestMethod.GET)
     public ModelAndView getUpdatePostPage(@RequestParam("postid") int postId)
     {
+        // TODO: 2018/8/14 还需加入用户权限的判断
         Post post=postService.getPostById(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("post", post);
@@ -90,9 +93,11 @@ public class PostController {
         return modelAndView;
     }
 
+    @RequiresUser
     @RequestMapping(value = "/updatePost", method = RequestMethod.POST)
     public ModelAndView commitUpdatePost(Post post)
     {
+        // TODO: 2018/8/14 还需加入用户权限的判断
         postService.updatePost(post);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "修改成功");
@@ -101,8 +106,10 @@ public class PostController {
         return modelAndView;
     }
 
+    @RequiresUser
     public ModelAndView commitDeletePost(@RequestParam("postid") int postId)
     {
+        // TODO: 2018/8/14 还需加入用户权限的判断
         Post post=postService.getPostById(postId);
         postService.deletePost(post);
         ModelAndView modelAndView = new ModelAndView();

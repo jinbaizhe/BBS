@@ -10,7 +10,7 @@
 <!DOCTYPE>
 <html>
   <head>
-    <META HTTP-EQUIV="Refresh" CONTENT="0;URL=mainforum.action">
+    <META HTTP-EQUIV="Refresh" CONTENT="0;URL=/mainforum.action">
   </head>
   <body>
   </body>

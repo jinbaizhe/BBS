@@ -28,20 +28,9 @@ public class PostServiceImplTest {
     @Before
     public void before(){
         Post post = new Post();
-        SubForum subForum = new SubForum();
-        subForum.setId(1);
-        post.setSubForum(subForum);
-        User user = new User();
-        user.setId(1);
-        post.setUser(user);
         post.setContent("test post content");
         post.setTitle("test post title");
-        post.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
-        post.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
-        post.setTop(0);
-        post.setType(0);
-        post.setViewNum(0);
-        postService.insertPost(post);
+        postService.insertPost(post, 1, 1);
     }
 
     @Test

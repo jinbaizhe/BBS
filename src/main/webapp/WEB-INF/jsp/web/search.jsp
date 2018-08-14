@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fnt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE>
 <html>
 <head>
@@ -19,36 +20,36 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6" style="margin-left: auto;margin-right: auto">
-            <h3>搜索关键字：<strong><s:property value="searchKeyWord"></s:property></strong></h3>
-            <h4 class="my-sm-4 text-center text-danger"><s:property value="search_info"></s:property></h4>
-            <s:if test="posts.size==0">
+            <h3>搜索关键字：<strong><c:out value="searchKeyWord"/></strong></h3>
+            <h4 class="my-sm-4 text-center text-danger"><c:out value="search_info"/></h4>
+            <c:if test="${posts.size()==0}">
                 <h4 class="my-sm-4 text-center">无搜索结果</h4>
-            </s:if>
-            <s:iterator value="posts" var="post">
+            </c:if>
+            <c:forEach items="${posts}" var="post">
                 <div class="card my-sm-3">
                     <div class="card-header">
                         <span class="mx-sm-2">
-                            版块：<strong><s:property value="#post.subForum.mainForum.name"></s:property></strong>>><strong><s:property value="#post.subForum.name"></s:property></strong>
+                            版块：<strong><c:out value="${post.subForum.mainForum.name}"/></strong>>><strong><c:out value="${post.subForum.name}"/></strong>
                         </span>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">帖子标题：<a href="/post.action?postid=<s:property value="#post.id"></s:property>"><s:property value="#post.title"></s:property></a></h5>
+                        <h5 class="card-title">帖子标题：<a href="/post.action?postid=<c:out value="${post.id}"/>"><c:out value="${post.title}"/></a></h5>
                         <div class=" ml-sm-3">
                             <p class="card-text">
-                                <s:property value="#post.content" escapeHtml="false"></s:property>
+                                <c:out value="${post.content}"></c:out>
                             </p>
                         </div>
                     </div>
                     <div class="card-footer">
                         <span class="mx-sm-2">
-                            发帖者：<s:property value="#post.user.username"></s:property>
+                            发帖者：<c:out value="${post.user.username}"></c:out>
                         </span>
                         <span class="mx-sm-2">
-                            发表时间：<s:date name="#post.sendTime" format="yyyy-MM-dd hh:mm:ss"></s:date>
+                            发表时间：<fnt:formatDate value="${post.sendTime}" pattern="yyyy-MM-dd hh:mm:ss"/>
                         </span>
                     </div>
                 </div>
-            </s:iterator>
+            </c:forEach>
         </div>
     </div>
 
@@ -56,46 +57,48 @@
         <div class="col-sm-12">
             <nav aria-label="Page navigation example" class="my-sm-3">
                 <ul class="pagination justify-content-center">
-                    <s:if test='#request.pager.isFirstPage!=true'>
+                    <c:if test='${pager.firstPage!=true}'>
                         <li class="page-item">
-                            <a class="page-link" href="searchPosts.action?searchKeyWord=<s:property value="searchKeyWord"></s:property>&page=1">
+                            <a class="page-link" href="searchPosts.action?searchKeyWord=<c:out value="${searchKeyWord}"/>&page=1">
                                 首页
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="searchPosts.action?searchKeyWord=<s:property value="searchKeyWord"></s:property>&page=<s:property value="#request.pager.getCurrentPage-1"></s:property>" aria-label="Previous">
+                            <a class="page-link" href="searchPosts.action?searchKeyWord=<c:out value="${searchKeyWord}"/>&page=<c:out value="${pager.currentPage-1}"/>" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
                             </a>
                         </li>
-                    </s:if>
-                    <s:iterator value='#request.pager.getPageList' var="item">
-                        <s:if test="#item==#request.pager.getCurrentPage">
-                            <li class="page-item active">
-                                <a class="page-link" href=""><s:property value="#item"></s:property></a>
-                            </li>
-                        </s:if>
-                        <s:elseif test="#item=='...'">
-                            <li class="page-item">
-                                <div class="page-link">
-                                    <s:property value="#item"></s:property>
-                                </div>
-                            </li>
-                        </s:elseif>
-                        <s:else>
-                            <li class="page-item">
-                                <a class="page-link" href="searchPosts.action?searchKeyWord=<s:property value="searchKeyWord"></s:property>&page=<s:property value="#item"></s:property>"><s:property value="#item"></s:property></a>
-                            </li>
-                        </s:else>
-                    </s:iterator>
-                    <s:if test='#request.pager.isLastPage!=true'>
+                    </c:if>
+                    <c:forEach items='${pager.pageList}' var="item">
+                        <c:choose>
+                            <c:when test="${item==pager.currentPage}">
+                                <li class="page-item active">
+                                    <a class="page-link" href=""><c:out value="${item}"/></a>
+                                </li>
+                            </c:when>
+                            <c:when test="${item=='...'}">
+                                <li class="page-item">
+                                    <div class="page-link">
+                                        <c:out value="${item}"></c:out>
+                                    </div>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item">
+                                    <a class="page-link" href="searchPosts.action?searchKeyWord=<c:out value="${searchKeyWord}"/>&page=<c:out value="${item}"/>"><c:out value="${item}"/></a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    <c:if test='${pager.lastPage!=true}'>
                         <li class="page-item">
-                            <a class="page-link" href="searchPosts.action?searchKeyWord=<s:property value="searchKeyWord"></s:property>&page=<s:property value="#request.pager.getCurrentPage+1"></s:property>" aria-label="Next">
+                            <a class="page-link" href="searchPosts.action?searchKeyWord=<c:out value="${searchKeyWord}"/>&page=<c:out value="${pager.currentPage+1}"/>" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>
                             </a>
                         </li>
-                    </s:if>
+                    </c:if>
                 </ul>
             </nav>
         </div>

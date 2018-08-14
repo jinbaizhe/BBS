@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE>
 <html lang="en">
 <head>
@@ -19,18 +19,18 @@
                     <a href="mainforum.action">全部</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="mainforum.action?mfid=<c:out value="${mainForum.id}"></c:out>"><c:out value="${mainForum.name}"></c:out></a>
+                    <a href="mainforum.action?mfid=<c:out value="${mainForum.id}"/>"><c:out value="${mainForum.name}"/></a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <c:out value="${subForum.name}"></c:out>
+                    <c:out value="${subForum.name}"/>
                 </li>
             </ol>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <h3><c:out value="${subForum.name}"></c:out></h3>
-            <p><c:out value="${subForum.info}"></c:out></p>
+            <h3><c:out value="${subForum.name}"/></h3>
+            <p><c:out value="${subForum.info}"/></p>
             <div class="float-right mb-sm-2">
                 <a class="btn btn-primary" href="/posting.action?sfid=<c:out value="${subForum.id}"></c:out>">发帖</a>
             </div>
@@ -71,15 +71,15 @@
                             <c:if test="${post.top==1}">
                                 [<span style="color: red">置顶</span>]
                             </c:if>
-                            <a href="post.action?postid=<c:out value="${post.id}"></c:out>">
-                                <c:out value="${post.title}"></c:out>
+                            <a href="post.action?postid=<c:out value="${post.id}"/>">
+                                <c:out value="${post.title}"/>
 
                             </a>
                         </th>
-                        <td><c:out value="${post.user.username}"></c:out></td>
-                        <td><fmt:formatDate value="${post.sendTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+                        <td><a href="/user/userInfo.action?userid=<c:out value="${post.user.id}"/>"><c:out value="${post.user.username}"/></a></td>
+                        <td><fmt:formatDate value="${post.sendTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td><%--<fmt:formatDate value="${lastfollowpostsendtime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>--%></td>
-                        <td><%--<c:out value="${post.followposts.size}" default="0"></c:out>--%>/<c:out value="${post.viewNum}"></c:out></td>
+                        <td><%--<c:out value="${post.followposts.size}" default="0"></c:out>--%>/<c:out value="${post.viewNum}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -138,7 +138,7 @@
     </div>
 </div>
 
-<jsp:include page="footer.jsp"></jsp:include>
+<jsp:include page="footer.jsp"/>
 <%@include file="foot.jsp"%>
 </body>
 </html>

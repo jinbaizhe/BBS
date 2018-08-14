@@ -9,7 +9,7 @@ public interface FollowpostService {
      Followpost getFollowpostById(int id);
      List getFollowpostsByPostId(int postId, int page, int num, String order);
      int getFollowpostsNumByPostId(int postId);
-     void insertFollowpost(Followpost followpost);
+     void insertFollowpost(Followpost followpost, int postid, int userid);
      void updateFollowpost(Followpost followpost);
      void deleteFollowpost(Followpost followpost);
      List getFollowpostsByUserId(int userId, String order);

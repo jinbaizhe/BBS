@@ -2,9 +2,14 @@ package com.parker.bbs.service.serviceImpl;
 
 import com.parker.bbs.mapper.FollowpostMapper;
 import com.parker.bbs.pojo.Followpost;
+import com.parker.bbs.pojo.Post;
+import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.FollowpostService;
+import com.parker.bbs.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -33,7 +38,15 @@ public class FollowpostServiceImpl implements FollowpostService {
     }
 
     @Override
-    public void insertFollowpost(Followpost followpost) {
+    public void insertFollowpost(Followpost followpost, int postid, int userid) {
+        Post post = new Post();
+        post.setId(postid);
+        User user = new User();
+        user.setId(userid);
+        followpost.setPost(post);
+        followpost.setUser(user);
+        followpost.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        followpost.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
         followpostMapper.insertFollowpost(followpost);
     }
 

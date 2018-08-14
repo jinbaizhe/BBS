@@ -56,15 +56,7 @@ public class FollowpostServiceImplTest {
     public void insertFollowpost() {
         Followpost followpost = new Followpost();
         followpost.setContent("test followpost");
-        User user = new User();
-        user.setId(1);
-        followpost.setUser(user);
-        Post post = new Post();
-        post.setId(1);
-        followpost.setPost(post);
-        followpost.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
-        followpost.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
-        followpostService.insertFollowpost(followpost);
+        followpostService.insertFollowpost(followpost, 1, 1);
     }
 
     @Test

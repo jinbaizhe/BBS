@@ -1,11 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fnt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 
 <!DOCTYPE>
 <html lang="en">
 <head>
     <%@include file="/WEB-INF/jsp/web/head.jsp"%>
-    <title><s:property value="game.away"></s:property>&nbsp;VS&nbsp;<s:property value="game.home"></s:property></title>
+    <title><c:out value="${game.away}"/>&nbsp;VS&nbsp;<c:out value="${game.home}"/></title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/web/header.jsp"></jsp:include>
@@ -14,25 +15,25 @@
     <div class="row">
         <div class="col-sm-10" style="margin-left: auto;margin-right: auto">
             <h2 class="text-center">
-                <s:date name="game.date" format="yyyy-MM-dd"></s:date>：
-                <strong><s:property value="game.away"></s:property></strong>
+                <fnt:formatDate value="game.date" pattern="yyyy-MM-dd"/>：
+                <strong><c:out value="${game.away}"/></strong>
                 &nbsp;VS&nbsp;
-                <strong><s:property value="game.home"></s:property></strong>
+                <strong><c:out value="${game.home}"/></strong>
             </h2>
-            <s:if test="gameLinks.size==0">
+            <c:if test="${gameLinks.size()==0}">
                 <h2 style="text-align: center">暂无该场比赛的直播信息</h2>
                 <h3 style="text-align: center">比赛前一小时左右更新直播链接</h3>
-            </s:if>
-            <s:iterator value="gameLinks" var="gameLink">
+            </c:if>
+            <c:forEach items="${gameLinks}" var="gameLink">
                 <div class="card my-sm-5">
                     <div class="card-body">
                         <h5 class="card-title">链接：</h5>
                         <p class="card-text">
-                            <s:property value="#gameLink.info" escapeHtml="false"></s:property>
+                            <c:out value="${gameLink.info}"/>
                         </p>
                     </div>
                 </div>
-            </s:iterator>
+            </c:forEach>
         </div>
     </div>
 </div>

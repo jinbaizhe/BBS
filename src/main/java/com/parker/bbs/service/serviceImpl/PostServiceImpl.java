@@ -2,10 +2,14 @@ package com.parker.bbs.service.serviceImpl;
 
 import com.parker.bbs.mapper.PostMapper;
 import com.parker.bbs.pojo.Post;
+import com.parker.bbs.pojo.SubForum;
+import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.PostService;
+import com.parker.bbs.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service("postService")
@@ -20,7 +24,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void insertPost(Post post) {
+    public void insertPost(Post post, int subForumid, int userid) {
+        SubForum subForum = new SubForum();
+        subForum.setId(subForumid);
+        User user = new User();
+        user.setId(userid);
+        post.setSubForum(subForum);
+        post.setUser(user);
+        post.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        post.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        post.setViewNum(0);
+        post.setTop(0);
+        post.setType(0);
         postMapper.insertPost(post);
     }
 

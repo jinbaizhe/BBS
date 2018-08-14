@@ -8,10 +8,8 @@
     <context:annotation-config></context:annotation-config>
 
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations">
-            <list>
-                <value>classpath:setting.properties</value>
-            </list>
+        <property name="location">
+            <value>classpath:setting.properties</value>
         </property>
     </bean>
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
