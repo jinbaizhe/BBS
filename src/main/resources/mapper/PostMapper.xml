@@ -35,7 +35,7 @@
     </insert>
     <update id="updatePost" parameterType="com.parker.bbs.pojo.Post">
         update post set sub_forum_id=#{post.subForum.id}, title=#{post.title}, content=#{post.content},
-        update_time=#{post.updateTime}, type=#{post.type}, top=#{post.top}, view_num=#{post.viewNum} where id=#{id}
+        update_time=#{post.updateTime}, type=#{post.type}, top=#{post.top}, view_num=#{post.viewNum} where id=#{post.id}
     </update>
     <delete id="deletePost" parameterType="com.parker.bbs.pojo.Post">
         delete from post where id=#{post.id}

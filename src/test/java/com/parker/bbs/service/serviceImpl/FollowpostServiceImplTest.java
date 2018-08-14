@@ -54,9 +54,8 @@ public class FollowpostServiceImplTest {
 
     @Test
     public void insertFollowpost() {
-        Followpost followpost = new Followpost();
-        followpost.setContent("test followpost");
-        followpostService.insertFollowpost(followpost, 1, 1);
+        String content = "test followpost";
+        followpostService.insertFollowpost(content, 1, 1);
     }
 
     @Test

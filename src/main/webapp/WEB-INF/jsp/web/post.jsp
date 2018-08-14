@@ -109,7 +109,7 @@
                                 <a style="float:right;margin-right: 20px;" href="/deletePost.action?postid=<c:out value="${post.id}"/>">删除</a>
                             </c:if>
                             <c:if test="${post.user.id==sessionScope.user.id}">
-                                <a style="float:right;margin-right: 20px;" href="/updatePost?postid=<c:out value="${post.id}"/>">编辑</a>
+                                <a style="float:right;margin-right: 20px;" href="/updatePost.action?postid=<c:out value="${post.id}"/>">编辑</a>
                             </c:if>
 
                             <c:choose>
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <div style="margin: 20px">
-                        <c:out value="${post.content}"/>
+                        <c:out value="${post.content}" escapeXml="false"/>
                     </div>
                 </div>
             </div>
@@ -187,16 +187,19 @@
                             <div style="float:right;margin-right:10px">
                                 <span class="badge" style="float:right;margin-right:10px;background: #4b9ded;width: 50px;"><c:out value="${st.index}"/>楼</span>
                             </div>
-                            <c:if test="#followpost.user.id==#session.user.id||#session.user.type==1">
-                                <a style="float:right;margin-right: 20px;" href="deleteFollowpost.action?followpostid=<c:out value="${followpost.id}"/>">删除</a>
+                            <shiro:user>
+                                <c:if test="${followpost.user.id==sessionScope.user.id}">
+                                    <%--还需增加管理员权限--%>
+                                    <a style="float:right;margin-right: 20px;" href="deleteFollowpost.action?followpostid=<c:out value="${followpost.id}"/>">删除</a>
 
-                            </c:if>
-                            <c:if test="#followpost.user.id==#session.user.id">
-                                <a style="float:right;margin-right: 20px;" href="updateFollowpost?followpostid=<c:out value="${followpost.id}"/>">编辑</a>
-                            </c:if>
+                                </c:if>
+                                <c:if test="${followpost.user.id==sessionScope.user.id}">
+                                    <a style="float:right;margin-right: 20px;" href="updateFollowpost.action?followpostid=<c:out value="${followpost.id}"/>">编辑</a>
+                                </c:if>
+                            </shiro:user>
                         </div>
                         <div style="margin: 20px;">
-                                <c:out value="${followpost.content}"/>
+                                <c:out value="${followpost.content}" escapeXml="false"/>
                                 <%--<c:forEach items="${followpost.followpostPictures}" var="item">--%>
                                     <%--<img src="getPicture.action?id=<c:out value="${item.picture.id}"/>" width="200" height="150" alt="无法显示图片">--%>
                                 <%--</c:forEach>--%>

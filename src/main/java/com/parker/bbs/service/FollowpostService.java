@@ -9,8 +9,9 @@ public interface FollowpostService {
      Followpost getFollowpostById(int id);
      List getFollowpostsByPostId(int postId, int page, int num, String order);
      int getFollowpostsNumByPostId(int postId);
-     void insertFollowpost(Followpost followpost, int postid, int userid);
-     void updateFollowpost(Followpost followpost);
+     void insertFollowpost(String content, int postid, int userId);
+     void updateFollowpost(int followpostId, String content);
      void deleteFollowpost(Followpost followpost);
+     void deleteFollowpost(int followpostId);
      List getFollowpostsByUserId(int userId, String order);
 }

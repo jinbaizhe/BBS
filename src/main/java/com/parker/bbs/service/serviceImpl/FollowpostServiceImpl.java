@@ -38,11 +38,13 @@ public class FollowpostServiceImpl implements FollowpostService {
     }
 
     @Override
-    public void insertFollowpost(Followpost followpost, int postid, int userid) {
+    public void insertFollowpost(String content, int postid, int userId) {
         Post post = new Post();
         post.setId(postid);
         User user = new User();
-        user.setId(userid);
+        user.setId(userId);
+        Followpost followpost = new Followpost();
+        followpost.setContent(content);
         followpost.setPost(post);
         followpost.setUser(user);
         followpost.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
@@ -51,12 +53,21 @@ public class FollowpostServiceImpl implements FollowpostService {
     }
 
     @Override
-    public void updateFollowpost(Followpost followpost) {
+    public void updateFollowpost(int followpostId, String content) {
+        Followpost followpost = followpostMapper.getFollowpostById(followpostId);
+        followpost.setContent(content);
+        followpost.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
         followpostMapper.updateFollowpost(followpost);
     }
 
     @Override
     public void deleteFollowpost(Followpost followpost) {
+        followpostMapper.deleteFollowpost(followpost);
+    }
+
+    @Override
+    public void deleteFollowpost(int followpostId) {
+        Followpost followpost = new Followpost();
         followpostMapper.deleteFollowpost(followpost);
     }
 

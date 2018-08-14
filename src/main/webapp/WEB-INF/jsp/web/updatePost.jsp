@@ -13,7 +13,7 @@
 <div class="container" style="margin-top: 50px" >
     <div class="row">
         <div class="col-sm-12">
-            <form action="/commitUpdatePost.action"  method="post" enctype="multipart/form-data" >
+            <form action="/updatePost.action"  method="post">
                 <ul class="list-group">
                     <li class="list-group-item" style="background-color: #F5F5F5">
                         <h3>修改帖子
@@ -28,14 +28,13 @@
                         </h3>
                     </li>
                     <input type="hidden" name="postid" value="<c:out value="${post.id}"/>">
-                    <input type="hidden" name="post.id" value="<c:out value="${post.id}"/>">
                     <li class="list-group-item">
                         <h4><b>帖子标题</b></h4>
-                        <input type="text" name="post.title" value="<c:out value="${post.title}"/>" class="form-control" placeholder="请输入标题">
+                        <input type="text" name="title" value="<c:out value="${post.title}"/>" class="form-control" placeholder="请输入标题">
                     </li>
                     <li class="list-group-item">
                         <h4><b>帖子内容</b></h4>
-                        <textarea name="post.content" id="editor1" class="form-control"><c:out value="${post.content}"/></textarea>
+                        <textarea name="content" id="editor1" class="form-control"><c:out value="${post.content}"/></textarea>
                         <script>
                             // Replace the <textarea id="editor1"> with a CKEditor
                             // instance, using default configuration.
@@ -49,7 +48,7 @@
                             </a>
                         </div>
                         <div style="float:right;margin-right: 20px;margin-left: 20px;">
-                            <input type="hidden" name="sub_forumid" value="">
+                            <%--<input type="hidden" name="sub_forumid" value="">--%>
                             <input type="submit" class="btn btn-primary" value="发表">
                         </div>
                     </li>

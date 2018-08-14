@@ -27,10 +27,9 @@ public class PostServiceImplTest {
 
     @Before
     public void before(){
-        Post post = new Post();
-        post.setContent("test post content");
-        post.setTitle("test post title");
-        postService.insertPost(post, 1, 1);
+        String content = "test post content";
+        String title = "test post title";
+        postService.insertPost(title, content, 1, 1);
     }
 
     @Test

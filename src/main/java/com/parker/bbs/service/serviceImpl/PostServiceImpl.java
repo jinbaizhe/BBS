@@ -24,11 +24,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void insertPost(Post post, int subForumid, int userid) {
+    public void insertPost(String title, String content, int subForumId, int userId) {
+        Post post = new Post();
         SubForum subForum = new SubForum();
-        subForum.setId(subForumid);
+        subForum.setId(subForumId);
         User user = new User();
-        user.setId(userid);
+        user.setId(userId);
+        post.setTitle(title);
+        post.setContent(content);
         post.setSubForum(subForum);
         post.setUser(user);
         post.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
@@ -40,8 +43,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void updatePost(Post post) {
+    public void updatePost(int postId, String title, String content) {
+        Post post = postMapper.getPostById(postId);
+        post.setTitle(title);
+        post.setContent(content);
+        post.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
         postMapper.updatePost(post);
+    }
+
+    @Override
+    public void deletePost(int postId) {
+        Post post = new Post();
+        post.setId(postId);
+        postMapper.deletePost(post);
     }
 
     @Override
@@ -63,15 +77,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List getPostsByUserId(int userid) {
+    public List getPostsByUserId(int userId) {
         String order="send_time desc";
-        return postMapper.getPostsByUserId(userid, order);
+        return postMapper.getPostsByUserId(userId, order);
     }
 
-    @Override
-    public void updatePostAllAttr(Post post) {
-        postMapper.updatePost(post);
-    }
 
     @Override
     public List getSearchResults(String keyWord, int currentPage, String order) {

@@ -20,13 +20,11 @@ public class FollowpostController {
 
     @RequiresUser
     @RequestMapping(value = "/commitFollowpost", method = RequestMethod.POST)
-    public ModelAndView commitAddFollowpost(@SessionAttribute(value = "sessionUser", required = false)User user, @RequestParam(value = "content",required = false  ) String content, @RequestParam(value = "postid",required = false) int postid)
+    public ModelAndView commitAddFollowpost(@SessionAttribute(value = "user", required = false)User user, @RequestParam(value = "content",required = false  ) String content, @RequestParam(value = "postid",required = false) int postid)
     {
         ModelAndView modelAndView = new ModelAndView();
-        int userid = user.getId();
-        Followpost followpost = new Followpost();
-        followpost.setContent(content);
-        followpostService.insertFollowpost(followpost, postid, userid);
+        int userId = user.getId();
+        followpostService.insertFollowpost(content, postid, userId);
         modelAndView.addObject("title", "回帖发表成功");
         modelAndView.addObject("content", "发表成功");
         modelAndView.setViewName("web/operationStatus");
@@ -41,7 +39,7 @@ public class FollowpostController {
         ModelAndView modelAndView = new ModelAndView();
         Followpost followpost=followpostService.getFollowpostById(followpostid);
         modelAndView.addObject("followpost", followpost);
-        modelAndView.setViewName("web/operationStatus");
+        modelAndView.setViewName("web/updateFollowpost");
         return modelAndView;
     }
 
@@ -51,9 +49,7 @@ public class FollowpostController {
     {
         // TODO: 2018/8/14 还需加入用户权限的判断
         ModelAndView modelAndView = new ModelAndView();
-        Followpost followpost = followpostService.getFollowpostById(followpostid);
-        followpost.setContent(content);
-        followpostService.updateFollowpost(followpost);
+        followpostService.updateFollowpost(followpostid, content);
         modelAndView.addObject("title", "回帖修改成功");
         modelAndView.addObject("content", "修改成功");
         modelAndView.setViewName("web/operationStatus");

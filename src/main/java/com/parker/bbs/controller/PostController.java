@@ -66,14 +66,9 @@ public class PostController {
 
     @RequiresUser
     @RequestMapping(value = "/posting", method = RequestMethod.POST)
-    public ModelAndView commitAddPost(@SessionAttribute(value = "sessionUser", required = false) User user, @RequestParam("title")String title, @RequestParam("content")String content, @RequestParam("sfid") int subforumId)
+    public ModelAndView commitAddPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("title")String title, @RequestParam("content")String content, @RequestParam("sfid") int subforumId)
     {
-//        if(post==null||post.getTitle().equals("")||post.getContent().equals(""))
-//            return ERROR;
-        Post post = new Post();
-        post.setTitle(title);
-        post.setContent(content);
-        postService.insertPost(post, subforumId, user.getId());
+        postService.insertPost(title, content, subforumId, user.getId());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "帖子发表成功");
         modelAndView.addObject("message", "发表成功");
@@ -95,10 +90,10 @@ public class PostController {
 
     @RequiresUser
     @RequestMapping(value = "/updatePost", method = RequestMethod.POST)
-    public ModelAndView commitUpdatePost(Post post)
+    public ModelAndView commitUpdatePost(@RequestParam("postid") int postId, @RequestParam("title") String title,@RequestParam("content") String content)
     {
         // TODO: 2018/8/14 还需加入用户权限的判断
-        postService.updatePost(post);
+        postService.updatePost(postId, title, content);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "修改成功");
         modelAndView.addObject("title", "帖子修改成功");
@@ -107,11 +102,11 @@ public class PostController {
     }
 
     @RequiresUser
+    @RequestMapping("/deletePost")
     public ModelAndView commitDeletePost(@RequestParam("postid") int postId)
     {
         // TODO: 2018/8/14 还需加入用户权限的判断
-        Post post=postService.getPostById(postId);
-        postService.deletePost(post);
+        postService.deletePost(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "删除成功");
         modelAndView.addObject("title", "帖子删除成功");

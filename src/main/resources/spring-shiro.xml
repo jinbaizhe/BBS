@@ -3,6 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--rememberMe的一个过滤器，用于解决记住我功能session中user不存在的问题-->
+    <bean id="rememberMeFilter" class="com.parker.bbs.shiro.RememberMeFilter"/>
+
     <!-- shiroFilter工厂 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <!-- 构建securityManager环境 -->
@@ -13,17 +16,24 @@
         <property name="successUrl" value="/user/success.action" />
         <!-- 没有权限返回的地址 （拒绝访问路径）-->
         <property name="unauthorizedUrl" value="/user/reject.action" />
-        <!--<property name="filterChainDefinitions">-->
-            <!--<value>-->
-                <!--/user/login.action=anon&lt;!&ndash; anon表示此地址不需要任何权限即可访问 &ndash;&gt;-->
-                <!--/user/index.action=user&lt;!&ndash;  表示用户不一定需要已经通过认证,只需要曾经被Shiro记住过登录状态就可以正常发起&ndash;&gt;-->
-                <!--/user/rememberme.action=authc&lt;!&ndash; 表示用户必须已通过认证 &ndash;&gt;-->
-                <!--/user/admin.action=roles[admin]&lt;!&ndash;匹配的是[]里的字符串，表示需要用户的角色是admin&ndash;&gt;-->
-                <!--/user/delete.action=perms[delete]&lt;!&ndash;匹配的是[]里的字符串，表示用户需要有delete权限&ndash;&gt;-->
-                <!--&lt;!&ndash;参数可写多个,多参时必须加上引号,且参数之间用逗号分割,如/admins/user/**=perms["user:add:*,user:modify:*"]&ndash;&gt;-->
-                <!--/**=anon-->
-            <!--</value>-->
-        <!--</property>-->
+
+        <property name="filters">
+            <map>
+                <entry key="rememberMe" value-ref="rememberMeFilter"/>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <!--/user/login.action=anon&lt;!&ndash; anon表示此地址不需要任何权限即可访问 &ndash;&gt;-->
+            <!--/user/index.action=user&lt;!&ndash;  表示用户不一定需要已经通过认证,只需要曾经被Shiro记住过登录状态就可以正常发起&ndash;&gt;-->
+            <!--/user/rememberme.action=authc&lt;!&ndash; 表示用户必须已通过认证 &ndash;&gt;-->
+            <!--/user/admin.action=roles[admin]&lt;!&ndash;匹配的是[]里的字符串，表示需要用户的角色是admin&ndash;&gt;-->
+            <!--/user/delete.action=perms[delete]&lt;!&ndash;匹配的是[]里的字符串，表示用户需要有delete权限&ndash;&gt;-->
+            <!--&lt;!&ndash;参数可写多个,多参时必须加上引号,且参数之间用逗号分割,如/admins/user/**=perms["user:add:*,user:modify:*"]&ndash;&gt;-->
+            <!--/**=anon-->
+            <value>
+                /** = rememberMe
+            </value>
+        </property>
     </bean>
 
     <!-- remenberMe配置 -->

@@ -24,7 +24,7 @@
     </select>
     <insert id="insertFollowpost" parameterType="com.parker.bbs.pojo.Followpost" useGeneratedKeys="true" keyProperty="followpost.id">
         insert into followpost(user_id, post_id, content, send_time, update_time)
-          values (2, #{followpost.post.id},#{followpost.content},
+          values (#{followpost.user.id}, #{followpost.post.id},#{followpost.content},
             #{followpost.sendTime}, #{followpost.updateTime})
     </insert>
     <update id="updateFollowpost" parameterType="com.parker.bbs.pojo.Followpost">
