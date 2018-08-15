@@ -1,5 +1,6 @@
 package com.parker.bbs.util;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -20,4 +21,9 @@ public class Util {
         return value.toString();
     }
 
+    public static void addReferURL(String referURL, HttpSession session){
+        if (referURL!=null){
+            session.setAttribute("referURL", referURL);
+        }
+    }
 }

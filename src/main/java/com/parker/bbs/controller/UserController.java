@@ -6,6 +6,7 @@ import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.FollowpostService;
 import com.parker.bbs.service.PostService;
 import com.parker.bbs.service.UserService;
+import com.parker.bbs.util.Util;
 import com.sun.deploy.net.HttpResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -60,7 +61,8 @@ public class UserController {
 
     @RequiresGuest
     @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public ModelAndView loginPage(){
+    public ModelAndView loginPage(@RequestHeader(value = "Referer", required = false)String referURL, HttpSession session){
+        Util.addReferURL(referURL, session);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user/login");
         return modelAndView;
@@ -68,7 +70,7 @@ public class UserController {
 
     @RequiresGuest
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ModelAndView loginUser(HttpSession session, User user, @RequestParam(value = "autoLogin",defaultValue = "false") boolean isAutoLogin){
+    public ModelAndView loginUser(User user, @RequestParam(value = "autoLogin",defaultValue = "false") boolean isAutoLogin, HttpSession session){
         ModelAndView modelAndView = new ModelAndView();
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
@@ -79,7 +81,12 @@ public class UserController {
             subject.login(token);
             User realUser = userService.getUserByUsername(user.getUsername());
             session.setAttribute("user", realUser);
-            modelAndView.setViewName("redirect:/mainforum.action");
+            String referURL = (String)session.getAttribute("referURL");
+            if (referURL!=null){
+                modelAndView.setViewName("redirect:" + referURL);
+            }else {
+                modelAndView.setViewName("redirect:/mainforum.action");
+            }
         }catch (AuthenticationException e){
             modelAndView.addObject("message","登录失败："+e.getMessage());
             modelAndView.setViewName("user/login");

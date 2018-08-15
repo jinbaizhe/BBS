@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PostMapper {
     Post getPostById(@Param("id") int id);
-    List getPostsBySubForumId(@Param(value = "subForumId") int subForumId, @Param("beginIndex") int beginIndex, @Param("endIndex")int endIndex, @Param("order") String order);
+    List getPostsBySubForumId(@Param(value = "subForumId") int subForumId, @Param("beginIndex") int beginIndex, @Param("num")int endIndex, @Param("order") String order);
     int getPostsNumBySubForumId(@Param("subForumId") int subForumId);
     int insertPost(@Param("post") Post post);
     int updatePost(@Param("post") Post post);

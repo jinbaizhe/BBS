@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FollowpostMapper {
      Followpost getFollowpostById(@Param("id") int id);
-     List getFollowpostsByPostId(@Param("postId") int postId, @Param("beginIndex") int beginIndex, @Param("endIndex")int endIndex, @Param("order") String order);
+     List getFollowpostsByPostId(@Param("postId") int postId, @Param("beginIndex") int beginIndex, @Param("num")int num, @Param("order") String order);
      int getFollowpostsNumByPostId(@Param("postId") int postId);
      int insertFollowpost(@Param("followpost") Followpost followpost);
      int updateFollowpost(@Param("followpost") Followpost followpost);

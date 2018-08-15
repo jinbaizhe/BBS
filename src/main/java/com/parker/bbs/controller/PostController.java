@@ -8,16 +8,15 @@ import com.parker.bbs.service.FollowpostService;
 import com.parker.bbs.service.PostService;
 import com.parker.bbs.service.SubForumService;
 import com.parker.bbs.util.Pager;
+import com.parker.bbs.util.Util;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -32,8 +31,6 @@ public class PostController {
     private FollowpostService followpostService;
     @Autowired
     private SubForumService subForumService;
-
-
 
     @RequestMapping("/post")
     public ModelAndView browserPost(@RequestParam("postid") int postid, @RequestParam(value = "page", defaultValue = "1") int page) {
@@ -55,8 +52,9 @@ public class PostController {
 
     @RequiresUser
     @RequestMapping(value = "/posting", method = RequestMethod.GET)
-    public ModelAndView getAddPostPage(@RequestParam("sfid") int subforumId)
+    public ModelAndView getAddPostPage(@RequestParam("sfid") int subforumId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
+        Util.addReferURL(referURL,session);
         SubForum subForum=subForumService.getSubForumById(subforumId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("subForum", subForum);
@@ -78,9 +76,10 @@ public class PostController {
 
     @RequiresUser
     @RequestMapping(value = "/updatePost", method = RequestMethod.GET)
-    public ModelAndView getUpdatePostPage(@RequestParam("postid") int postId)
+    public ModelAndView getUpdatePostPage(@RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         // TODO: 2018/8/14 还需加入用户权限的判断
+        Util.addReferURL(referURL, session);
         Post post=postService.getPostById(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("post", post);
@@ -103,9 +102,10 @@ public class PostController {
 
     @RequiresUser
     @RequestMapping("/deletePost")
-    public ModelAndView commitDeletePost(@RequestParam("postid") int postId)
+    public ModelAndView commitDeletePost(@RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         // TODO: 2018/8/14 还需加入用户权限的判断
+        Util.addReferURL(referURL, session);
         postService.deletePost(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "删除成功");

@@ -22,7 +22,7 @@
                 <entry key="rememberMe" value-ref="rememberMeFilter"/>
             </map>
         </property>
-        <property name="filterChainDefinitions">
+        <!--<property name="filterChainDefinitions">-->
             <!--/user/login.action=anon&lt;!&ndash; anon表示此地址不需要任何权限即可访问 &ndash;&gt;-->
             <!--/user/index.action=user&lt;!&ndash;  表示用户不一定需要已经通过认证,只需要曾经被Shiro记住过登录状态就可以正常发起&ndash;&gt;-->
             <!--/user/rememberme.action=authc&lt;!&ndash; 表示用户必须已通过认证 &ndash;&gt;-->
@@ -30,10 +30,10 @@
             <!--/user/delete.action=perms[delete]&lt;!&ndash;匹配的是[]里的字符串，表示用户需要有delete权限&ndash;&gt;-->
             <!--&lt;!&ndash;参数可写多个,多参时必须加上引号,且参数之间用逗号分割,如/admins/user/**=perms["user:add:*,user:modify:*"]&ndash;&gt;-->
             <!--/**=anon-->
-            <value>
-                /** = rememberMe
-            </value>
-        </property>
+            <!--<value>-->
+                <!--/** = rememberMe-->
+            <!--</value>-->
+        <!--</property>-->
     </bean>
 
     <!-- remenberMe配置 -->

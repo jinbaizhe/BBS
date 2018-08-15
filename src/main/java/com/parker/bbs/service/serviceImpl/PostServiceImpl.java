@@ -66,9 +66,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List getPostsBySubForumId(int subForumId, int page, int num, String order) {
         int beginIndex = (page-1)*num;
-        //page*num等价于(page-1)*num+num
-        int endIndex = page*num;
-        return postMapper.getPostsBySubForumId(subForumId, beginIndex, endIndex, order);
+        return postMapper.getPostsBySubForumId(subForumId, beginIndex, num, order);
     }
 
     @Override

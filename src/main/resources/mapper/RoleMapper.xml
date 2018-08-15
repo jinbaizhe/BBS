@@ -7,7 +7,6 @@
         select role.id,role.name from role, user_role where role.id=user_role.role_id and user_role.user_id=#{user.id}
     </select>
     <select id="getRoleOperations" resultType="com.parker.bbs.pojo.Operation" useCache="true">
-        select operation.name from role_operation, operation
-        where role_operation.user_id=role.id and role_operation.operation_id=operation.id
+        select operation.name from role_operation, operation where role_operation.operation_id=operation.id and role_operation.role_id=${role.id};
     </select>
 </mapper>

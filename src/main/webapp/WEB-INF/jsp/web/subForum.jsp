@@ -36,7 +36,7 @@
             </div>
             <div>
                 <c:choose>
-                    <c:when test="order=='postsend'">
+                    <c:when test="${order=='postsend'}">
                         <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&order=lastfollowpost">按最后回复时间排序</a>
                         <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&order=postsend">按发帖时间排序</a>
                     </c:when>

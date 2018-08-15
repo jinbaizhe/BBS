@@ -28,18 +28,25 @@ public class SubForumController {
     private int postsNumPerPage;
 
     @RequestMapping("/subforum")
-    public ModelAndView browserSubForum(@RequestParam(value = "sfid") int sfid, @RequestParam(value = "page",defaultValue = "1")int page)
+    public ModelAndView browserSubForum(@RequestParam(value = "sfid") int sfid, @RequestParam(value = "page",defaultValue = "1")int page, @RequestParam(value = "order", defaultValue = "lastfollowpost")String order)
     {
         ModelAndView modelAndView = new ModelAndView();
         SubForum subForum = subForumService.getSubForumById(sfid);
         MainForum mainForum = mainForumService.getMainForumById(subForum.getMainForum().getId());
         int totalPostsNum=postService.getPostsNumBySubForumId(sfid);
         Pager pager = new Pager(page, postsNumPerPage, totalPostsNum);
-        List<Post> posts=postService.getPostsBySubForumId(sfid, page, postsNumPerPage ,"send_time desc");
+        //暂时默认按发帖时间排序
+        String realOrder = "send_time desc";
+        // TODO: 2018/8/15 还需增加帖子按最后回帖时间排序
+//        if (order.equals("postsend")){
+//            realOrder = "";
+//        }
+        List<Post> posts=postService.getPostsBySubForumId(sfid, page, postsNumPerPage ,realOrder);
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("subForum", subForum);
         modelAndView.addObject("mainForum", mainForum);
         modelAndView.addObject("pager", pager);
+        modelAndView.addObject("order", order);
         modelAndView.setViewName("web/subForum");
         return modelAndView;
     }

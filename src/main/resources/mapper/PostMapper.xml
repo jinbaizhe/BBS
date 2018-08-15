@@ -21,7 +21,7 @@
         select * from post where id=#{id}
     </select>
     <select id="getPostsBySubForumId" resultMap="post" useCache="true">
-        select * from post where sub_forum_id=#{subForumId} order by #{order} limit #{beginIndex},#{endIndex}
+        select * from post where sub_forum_id=#{subForumId} order by #{order} limit #{beginIndex},#{num}
     </select>
     <select id="getPostsNumBySubForumId" resultType="Integer" useCache="true">
         select count(*) from post where sub_forum_id=#{subForumId}

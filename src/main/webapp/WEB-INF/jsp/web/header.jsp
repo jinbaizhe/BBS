@@ -46,10 +46,10 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="/user/setting.action">个人中心</a>
                                     <a class="dropdown-item" href="/user/logout.action"><span class="fa fa-fw fa-sign-out"></span>退出</a>
-                                    <c:if test="#session.user.getType()>=1">
+                                    <shiro:hasRole name="admin">
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="/manage/index.action">后台管理</a>
-                                    </c:if>
+                                    </shiro:hasRole>
                                 </div>
                             </li>
                         </li>
