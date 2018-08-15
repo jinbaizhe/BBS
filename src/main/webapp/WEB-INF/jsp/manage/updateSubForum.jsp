@@ -17,27 +17,26 @@
                 <a href="/manage/index.action">后台管理系统</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="/manage/subforum.action?mfid=<s:property value="subForum.mainForum.id"></s:property>">子版块管理</a>
+                <a href="/manage/subforum.action?mfid=<c:out value="${mainForum.id}"/>">子版块管理</a>
             </li>
             <li class="breadcrumb-item active">修改子版块</li>
         </ol>
 
         <div class="row">
             <div class="col-sm-6" style="margin-left: auto;margin-right: auto">
-                <form action="/manage/commitupdatesubforum.action" method="post">
+                <form action="/manage/updateSubForum.action" method="post">
                     <div class="form-group">
                         <label>所属主板块</label>
-                        <input type="text" value="<s:property value="subForum.mainForum.name"></s:property>" class="form-control" disabled>
+                        <input type="text" value="<c:out value="${subForum.mainForum.name}"/>" class="form-control" disabled>
                     </div>
-                    <input type="hidden" name="subForum.id" value="<s:property value="subForum.id"></s:property>">
-                    <input type="hidden" name="mfid" value="<s:property value="subForum.mainForum.id"></s:property>">
+                    <input type="hidden" name="sfid" value="<c:out value="${subForum.id}"/>">
                     <div class="form-group">
                         <label>子板块名</label>
-                        <input type="text" name="subForum.name" value="<s:property value="subForum.name"></s:property>" class="form-control">
+                        <input type="text" name="name" value="<c:out value="${subForum.name}"/>" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>子板块简介</label>
-                        <input type="text" name="subForum.info" value="<s:property value="subForum.info"></s:property>" class="form-control">
+                        <input type="text" name="info" value="<c:out value="${subForum.info}"/>" class="form-control">
                     </div>
                     <div class="form-group float-right">
                         <input type="submit" class="btn btn-primary" value="提交修改">

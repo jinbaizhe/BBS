@@ -6,7 +6,7 @@ import java.util.List;
 public interface SubForumService {
     List getSubForumsByMainForumId(int mainForumId);
     SubForum getSubForumById(int id);
-    void insertSubForum(SubForum subForum);
-    void updateSubForum(SubForum subForum);
-    void deleteSubForum(SubForum subForum);
+    void insertSubForum(int mainForumId, String name, String info);
+    void updateSubForum(int id, String name, String info);
+    void deleteSubForum(int id);
 }

@@ -121,9 +121,9 @@
                                 </c:otherwise>
                             </c:choose>
 
-                            <shiro:hasRole name="admin">
+                            <shiro:hasAnyRoles name="Admin,SuperAdmin">
                                 <c:choose>
-                                    <c:when test="post.top==0">
+                                    <c:when test="${post.top==0}">
                                         <a style="float:right;margin-right: 20px;" href="/manage/setTop?postid=<c:out value="${post.id}"/>">置顶</a>
                                     </c:when>
                                     <c:otherwise>
@@ -131,14 +131,14 @@
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
-                                    <c:when test="post.type==0">
+                                    <c:when test="${post.type==0}">
                                         <a style="float:right;margin-right: 20px;" href="/manage/setPostEssential?postid=<c:out value="${post.id}"/>">精华</a>
                                     </c:when>
                                     <c:otherwise>
                                         <a style="float:right;margin-right: 20px;" href="/manage/unsetPostEssential?postid=<c:out value="${post.id}"/>">取消精华</a>
                                     </c:otherwise>
                                 </c:choose>
-                            </shiro:hasRole>
+                            </shiro:hasAnyRoles>
                         </div>
                     </div>
                     <div style="margin: 20px">

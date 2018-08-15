@@ -30,13 +30,10 @@ public class SubForumServiceImplTest {
     @Before
     public void before(){
         SubForum subForum = new SubForum();
-        subForum.setName("test专区");
-        subForum.setInfo("testinfo");
-        subForum.setCreateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
-        MainForum mainForum = new MainForum();
-        mainForum.setId(1);
-        subForum.setMainForum(mainForum);
-        subForumService.insertSubForum(subForum);
+        String name = "test专区";
+        String info = "testinfo";
+        int mainForumId = 1;
+        subForumService.insertSubForum(mainForumId, name, info);
     }
 
 

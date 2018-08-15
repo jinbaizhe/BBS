@@ -38,7 +38,7 @@
             <div class="modal-body">退出当前账号？</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
-                <a class="btn btn-primary" href="/logout.action">退出</a>
+                <a class="btn btn-primary" href="/user/logout.action">退出</a>
             </div>
         </div>
     </div>

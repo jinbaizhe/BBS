@@ -48,8 +48,8 @@
                 </div>
 
                 <div class="form-group">
-                    <a class="float-sm-left" href="/forgetPassword.action">忘记密码?</a>
-                    <a class="float-sm-right" href="/register.action">立即注册</a>
+                    <a class="float-sm-left" href="/user/forgetPassword.action">忘记密码?</a>
+                    <a class="float-sm-right" href="/user/register.action">立即注册</a>
                 </div>
             </form>
         </div>

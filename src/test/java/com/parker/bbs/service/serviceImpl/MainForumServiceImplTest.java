@@ -26,10 +26,9 @@ public class MainForumServiceImplTest {
     @Before
     public void before(){
         MainForum mainForum = new MainForum();
-        mainForum.setName("test篮球场");
-        mainForum.setInfo("test篮球场简介");
-        mainForum.setCreateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
-        mainForumService.insertMainForum(mainForum);
+        String name = "test篮球场";
+        String info = "test篮球场简介";
+        mainForumService.insertMainForum(name, info);
     }
 
     @Test

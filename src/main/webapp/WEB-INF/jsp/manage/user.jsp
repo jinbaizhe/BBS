@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="s" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE>
 <html>
 <head>
@@ -48,33 +50,36 @@
                     <th scope="col">操作</th>
                 </tr>
                 </thead>
-                <s:if test="users.size()==0">
+                <c:if test="${users.size()==0}">
                     <tr>
                         <td colspan="6">
                             <h4 class="text-center">暂无用户数据</h4>
                         </td>
                     </tr>
-                </s:if>
-                <s:iterator value="users" var="user">
+                </c:if>
+                <c:forEach items="${users}" var="user">
                     <tr>
-                        <th scope="row"><s:property value="#user.id"></s:property></th>
-                        <td><s:property value="#user.username"></s:property></td>
-                        <td><s:property value="#user.type"></s:property></td>
-                        <td><s:property value="#user.email"></s:property></td>
-                        <td><s:date name="#user.registerTime"  format="yyyy-MM-dd HH:mm:ss"></s:date></td>
+                        <th scope="row"><c:out value="${user.id}"/></th>
+                        <td><c:out value="${user.username}"/></td>
+                        <td><c:out value="${user.type}"/></td>
+                        <td><c:out value="${user.email}"/></td>
+                        <td><fmt:formatDate value="${user.registerTime}"  pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td>
-                            <s:if test="#user.type==0">
-                                <a class="btn btn-primary btn-sm mr-sm-2" href="/manage/setAdmin.action?userid=<s:property value="#user.id"></s:property>">设为管理员</a>
-                            </s:if>
-                            <s:elseif test="#user.type==1">
-                                <a class="btn btn-primary btn-sm mr-sm-2" href="/manage/unsetAdmin.action?userid=<s:property value="#user.id"></s:property>">撤销管理员</a>
-                            </s:elseif>
+                            <c:choose>
+                                <c:when test="${user.type==0}">
+                                    <a class="btn btn-primary btn-sm mr-sm-2" href="/manage/setAdmin.action?userid=<c:out value="${user.id}"/>">设为管理员</a>
+                                </c:when>
+                                <s:when test="${user.type==1}">
+                                    <a class="btn btn-primary btn-sm mr-sm-2" href="/manage/unsetAdmin.action?userid=<c:out value="${user.id}"/>">撤销管理员</a>
+                                </s:when>
+                            </c:choose>
+
                             <!--
                             <a class="btn btn-primary btn-sm mr-sm-2" href="#">删除</a>
                             -->
                         </td>
                     </tr>
-                </s:iterator>
+                </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -83,52 +88,55 @@
                 <nav aria-label="Page navigation example" class="my-sm-3">
                     <ul class="pagination justify-content-center">
 
-                        <s:if test='#request.pager.isFirstPage!=true'>
+                        <c:if test='${pager.firstPage!=true}'>
                             <li class="page-item">
                                 <a class="page-link" href="/manage/user.action?page=1">
                                     首页
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="/manage/user.action?page=<s:property value="#request.pager.getCurrentPage-1"></s:property>" aria-label="Previous">
+                                <a class="page-link" href="/manage/user.action?page=<c:out value="${pager.getCurrentPage-1}"/>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
                             </li>
-                        </s:if>
-                        <s:iterator value='#request.pager.getPageList' var="item">
-                            <s:if test="#item==#request.pager.getCurrentPage">
-                                <li class="page-item active">
-                                    <a class="page-link" href="/manage/user.action?page=<s:property value="#item"></s:property>">
-                                        <s:property value="#item"></s:property>
-                                    </a>
-                                </li>
-                            </s:if>
-                            <s:elseif test="#item=='...'">
-                                <li class="page-item">
-                                    <div class="page-link">
-                                        <s:property value="#item"></s:property>
-                                    </div>
-                                </li>
-                            </s:elseif>
-                            <s:else>
-                                <li class="page-item">
-                                    <a class="page-link" href="/manage/user.action?page=<s:property value="#item"></s:property>">
-                                        <s:property value="#item"></s:property>
-                                    </a>
-                                </li>
-                            </s:else>
+                        </c:if>
+                        <c:forEach items='${pager.pageList}' var="item">
+                            <c:choose>
+                                <c:when test="${item==pager.currentPage}">
+                                    <li class="page-item active">
+                                        <a class="page-link" href="/manage/user.action?page=<c:out value="${item}"/>">
+                                            <c:out value="${item}"/>
+                                        </a>
+                                    </li>
+                                </c:when>
+                                <c:when test="${item=='...'}">
+                                    <li class="page-item">
+                                        <div class="page-link">
+                                            <c:out value="${item}"></c:out>
+                                        </div>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/manage/user.action?page=<c:out value="${item}"/>">
+                                            <c:out value="${item}"/>
+                                        </a>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
 
 
-                        </s:iterator>
-                        <s:if test='#request.pager.isLastPage!=true'>
+
+                        </c:forEach>
+                        <c:if test='${pager.lastPage!=true}'>
                             <li class="page-item">
-                                <a class="page-link" href="/manage/user.action?page=<s:property value="#request.pager.getCurrentPage+1"></s:property>" aria-label="Next">
+                                <a class="page-link" href="/manage/user.action?page=<c:out value="${pager.getCurrentPage+1}"/>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>
                             </li>
-                        </s:if>
+                        </c:if>
                     </ul>
                 </nav>
             </div>

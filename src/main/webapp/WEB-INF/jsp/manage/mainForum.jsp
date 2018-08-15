@@ -23,30 +23,30 @@
 
         <div class="row">
             <div class="col-sm-3">
-                <a class="btn btn-primary" href="/manage/addmainforum.action">增加主版块</a>
+                <a class="btn btn-primary" href="/manage/addMainForum.action">增加主版块</a>
             </div>
         </div>
 
         <div class="row">
-            <s:iterator value="mainForums" var="forum" status="forumStatus">
+            <c:forEach items="${mainForums}" var="forum" varStatus="forumStatus">
                 <div class="col-sm-4 my-sm-3">
                     <div class="card">
-                        <div class="card-header"><s:property value="#forum.name"></s:property></div>
+                        <div class="card-header"><c:out value="${forum.name}"/></div>
                         <div class="card-body">
-                            <ul><s:property value="#forum.info"></s:property></ul>
+                            <ul><c:out value="${forum.info}"/></ul>
                             <ul>
-                                <a class="btn" href="/manage/subforum.action?mfid=<s:property value="#forum.id"></s:property>">查看子版块</a>
-                                <a class="btn" href="/manage/updatemainforum.action?mfid=<s:property value="#forum.id"></s:property>">修改版块</a>
-                                <a class="btn" href="/manage/deletemainforum.action?mfid=<s:property value="#forum.id"></s:property>">删除版块</a>
+                                <a class="btn" href="/manage/subForum.action?mfid=<c:out value="${forum.id}"/>">查看子版块</a>
+                                <a class="btn" href="/manage/updateMainForum.action?mfid=<c:out value="${forum.id}"/>">修改版块</a>
+                                <a class="btn" href="/manage/deleteMainForum.action?mfid=<c:out value="${forum.id}"/>">删除版块</a>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <s:if test="(#forumStatus.index+1)%3==0">
+                <c:if test="${(forumStatus.index+1)%3==0}">
                 </div>
                 <div class="row">
-                </s:if>
-            </s:iterator>
+                </c:if>
+            </c:forEach>
         </div>
     </div>
 </div>

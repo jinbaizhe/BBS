@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -15,7 +16,7 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="webManage">
                     <li>
-                        <a href="/manage/mainforum.action">版块管理</a>
+                        <a href="/manage/mainForum.action">版块管理</a>
                     </li>
                     <!--
                     <li>
@@ -37,11 +38,11 @@
                     <span class="nav-link-text">用户管理</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="userManage">
-                <s:if test="#session.user.type>=2">
-                    <li>
-                        <a href="/manage/user.action">用户设置</a>
-                    </li>
-                </s:if>
+                    <shiro:hasRole name="SuperAdmin">
+                        <li>
+                            <a href="/manage/user.action">用户设置</a>
+                        </li>
+                    </shiro:hasRole>
                 </ul>
             </li>
 
@@ -53,8 +54,8 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="userSetting">
                     <li>
-                        <a href="/setting.action?type=info">修改个人信息</a>
-                        <a href="/setting.action?type=password">修改密码</a>
+                        <a href="/user/setting.action?type=info">修改个人信息</a>
+                        <a href="/user/setting.action?type=password">修改密码</a>
                     </li>
                 </ul>
             </li>

@@ -17,20 +17,20 @@
             <li class="breadcrumb-item">
                 <a href="/manage/index.action">后台管理系统</a>
             </li>
-            <li class="breadcrumb-item active">主版块管理</li>
+            <li class="breadcrumb-item active">
+                <a href="/manage/mainForum.action">主版块管理</a>
+            </li>
         </ol>
-
-
         <div class="row">
             <div class="col-sm-6" style="margin-left: auto;margin-right: auto">
-                <form action="/manage/commitaddmainforum.action" method="post">
+                <form action="/manage/addMainForum.action" method="post">
                     <div class="form-group">
                         <label>主板块名</label>
-                        <input type="text" name="mainForum.name" placeholder="请输入主版块名" class="form-control">
+                        <input type="text" name="name" placeholder="请输入主版块名" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>主板块简介</label>
-                        <input type="text" name="mainForum.info" placeholder="请输入主版块简介" class="form-control">
+                        <input type="text" name="info" placeholder="请输入主版块简介" class="form-control">
                     </div>
                     <div class="form-group float-right">
                         <input type="submit" class="btn btn-primary" value="提交">
