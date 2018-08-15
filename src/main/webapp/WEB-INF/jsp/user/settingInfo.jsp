@@ -9,7 +9,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/web/header.jsp"/>
-
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
@@ -92,46 +91,46 @@
                 </c:choose>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <form action="/updateUserInfo.action" method="post">
+                                    <form action="/user/updateUserInfo.action" method="post">
                                         <div class="form-group">
-                                            <%--<p class="text-danger"><c:out value="${message_info}"/></p>--%>
+                                            <p class="text-success"><c:out value="${message_info}"/></p>
                                         </div>
                                         <div class="form-group">
                                             <label>用户名</label>
-                                            <input type=text class="form-control" name="user.username" placeholder="请输入用户名" value="<c:out value="${user.username}"/>" readonly>
-                                            <!--<small class="form-text text-muted" name=""></small>-->
-                                        </div>
-                                        <div class="form-group">
-                                            <label>用户类型</label>
-                                            <%--<input type="text" class="form-control" name="user.type" readonly value="<c:out value="${user.type}"/>">--%>
+                                            <input type=text class="form-control" name="username" placeholder="请输入用户名" value="<c:out value="${user.username}"/>" readonly>
                                             <!--<small class="form-text text-muted" name=""></small>-->
                                         </div>
                                         <div class="form-group">
                                             <label>账号状态</label>
-                                            <input type="text" class="form-control" name="user.status" readonly value="<c:out value="${user.status}"></c:out>">
+                                            <input type="text" class="form-control" name="status" readonly value="<c:out value="${user.status}"></c:out>">
                                             <!--<small class="form-text text-muted" name=""></small>-->
                                         </div>
                                         <div class="form-group">
                                             <label>论坛等级</label>
-                                            <input type="text" class="form-control" name="user.level" readonly value="<c:out value="${user.level}"/>">
+                                            <input type="text" class="form-control" name="level" readonly value="<c:out value="${user.level}"/>">
+                                            <!--<small class="form-text text-muted" name=""></small>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <label>个人简介</label>
+                                            <input type="text" class="form-control" name="info" value="<c:out value="${user.info}"/>">
                                             <!--<small class="form-text text-muted" name=""></small>-->
                                         </div>
                                         <div class="form-group">
                                             <label>性别</label>
                                             <c:choose>
                                                 <c:when test='${user.sex=="男"}'>
-                                                    <input type="radio" class="" name="user.sex" value="男" checked>男
-                                                    <input type="radio" class="" name="user.sex" value="女">女
+                                                    <input type="radio" class="" name="sex" value="男" checked>男
+                                                    <input type="radio" class="" name="sex" value="女">女
                                                 </c:when>
                                                 <c:when test='${user.sex=="女"}'>
-                                                    <input type="radio" class="" name="user.sex" value="男">男
-                                                    <input type="radio" class="" name="user.sex" value="女" checked>女
+                                                    <input type="radio" class="" name="sex" value="男">男
+                                                    <input type="radio" class="" name="sex" value="女" checked>女
                                                 </c:when>
                                             </c:choose>
                                         </div>
                                         <div class="form-group">
                                             <label>邮箱</label>
-                                            <input type="email" class="form-control" name="user.email" placeholder="请输入邮箱" value="<c:out value="${user.email}"/>">
+                                            <input type="email" class="form-control" name="email" placeholder="请输入邮箱" value="<c:out value="${user.email}"/>">
                                             <c:choose>
                                                 <c:when test="${user.status==0}">
                                                     <a href="www.jinbaizhe.tech/sendActiveMail.action">验证邮箱</a>
@@ -202,23 +201,23 @@
             </c:choose>
                         <div class="row">
                             <div class="col-sm-6">
-                                <form action="/updateUserPassword.action" method="post">
+                                <form action="/user/updateUserPassword.action" method="post">
                                     <div class="form-group">
                                         <p class="text-danger"><c:out value="${message_password}"></c:out></p>
                                     </div>
                                     <div class="form-group">
                                         <label>旧密码</label>
-                                        <input type="password" class="form-control" name="password_old" placeholder="请输入密码">
+                                        <input type="password" class="form-control" name="oldpassword" placeholder="请输入密码">
                                         <!--<small class="form-text text-muted" name=""></small>-->
                                     </div>
                                     <div class="form-group">
                                         <label>新密码</label>
-                                        <input type="password" class="form-control" name="user.password" placeholder="请输入密码">
+                                        <input type="password" class="form-control" name="password" placeholder="请输入密码">
                                         <!--<small class="form-text text-muted" name=""></small>-->
                                     </div>
                                     <div class="form-group">
                                         <label>再次确认密码</label>
-                                        <input type="password" class="form-control" name="password_repeat" placeholder="请再次输入密码">
+                                        <input type="password" class="form-control" name="repeatpassword" placeholder="请再次输入密码">
                                         <!--<small class="form-text text-muted" name=""></small>-->
                                     </div>
 
@@ -239,7 +238,7 @@
             </c:choose>
                         <div class="row">
                             <div class="col-sm-10">
-                                <c:if test="${posts.size()}==0">
+                                <c:if test="${posts.size()==0}">
                                     <h4>暂无发帖记录</h4>
                                 </c:if>
                                 <c:forEach items="${posts}" var="post">

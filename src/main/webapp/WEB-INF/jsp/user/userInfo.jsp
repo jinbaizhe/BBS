@@ -72,9 +72,6 @@
                 <div class="row">
                     <div class="col-sm-6">
                             <div class="form-group">
-                                <p class="text-danger"><c:out value="${message_info}"/></p>
-                            </div>
-                            <div class="form-group">
                                 <c:choose>
                                     <c:when test='${user.avatar!=null}'>
                                         <img  alt="" class="img-responsive img-circle" src="/getPicture.action?id=<c:out value="${user.avatar.id}"/>"
@@ -101,11 +98,16 @@
                                 <input type="text" class="form-control" name="user.status" readonly value="<c:out value="${user.status}"/>">
                                 <!--<small class="form-text text-muted" name=""></small>-->
                             </div>
-                        <div class="form-group">
-                            <label>论坛等级</label>
-                            <input type="text" class="form-control" name="user.level" readonly value="<c:out value="${user.level}"/>">
-                            <!--<small class="form-text text-muted" name=""></small>-->
-                        </div>
+                            <div class="form-group">
+                                <label>论坛等级</label>
+                                <input type="text" class="form-control" name="user.level" readonly value="<c:out value="${user.level}"/>">
+                                <!--<small class="form-text text-muted" name=""></small>-->
+                            </div>
+                            <div class="form-group">
+                                <label>个人简介</label>
+                                <input type="text" class="form-control" name="user.info" readonly value="<c:out value="${user.info}"/>">
+                                <!--<small class="form-text text-muted" name=""></small>-->
+                            </div>
                             <div class="form-group">
                                 <label>性别</label>
                                 <c:choose>
@@ -134,7 +136,7 @@
                 </div>
             </div>
                 <c:choose>
-                    <c:when test="type=='post'">
+                    <c:when test="${type=='post'}">
                         <div class="tab-pane fade show active" id="v-pills-post" role="tabpanel" aria-labelledby="v-pills-post-tab">
                     </c:when>
                     <c:otherwise>
@@ -188,7 +190,7 @@
                 </c:choose>
 
                 <c:choose>
-                    <c:when test="${type}=='collection'">
+                    <c:when test="${type=='collection'}">
                         <div class="tab-pane fade show active" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
                     </c:when>
                     <c:otherwise>
@@ -213,7 +215,6 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-
             </div>
         </div>
     </div>

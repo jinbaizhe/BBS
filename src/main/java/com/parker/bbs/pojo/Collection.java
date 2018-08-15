@@ -7,19 +7,9 @@ import java.sql.Timestamp;
  */
 
 public class Collection implements java.io.Serializable {
-
-	private Integer id;
 	private User user;
 	private Post post;
-	private Timestamp time;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	private Timestamp starTime;
 
     public User getUser() {
         return user;
@@ -37,11 +27,11 @@ public class Collection implements java.io.Serializable {
         this.post = post;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public Timestamp getStarTime() {
+        return starTime;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setStarTime(Timestamp starTime) {
+        this.starTime = starTime;
     }
 }

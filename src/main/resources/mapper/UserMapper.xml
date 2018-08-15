@@ -40,7 +40,7 @@
         update user set username=#{user.username},
         password=#{user.password}, info=#{user.info}, sex=#{user.sex},
               email=#{user.email}, status=#{user.status}, level=#{user.level},
-              register_time=#{user.registerTime}, active_key=#{active_key} where id=#{id}
+              register_time=#{user.registerTime}, active_key=#{user.activeKey} where id=#{user.id}
     </update>
     <delete id="deleteUser" parameterType="com.parker.bbs.pojo.User">
         delete from user where id=#{user.id}
@@ -48,7 +48,28 @@
     <select id="getUserByUsername" parameterType="String" resultMap="user" useCache="true">
         select * from user where username=#{username}
     </select>
-    <select id="getAllUsers" resultMap="user" useCache="true">
-        select * from user
+    <select id="getUsersExceptAdminAndSuperAdmin" resultMap="user" useCache="true">
+        select * from user where id not in
+        (select user_role.user_id from user_role,role where user_role.role_id=role.id and role.name like '%Admin')
+        order by #{order} limit #{beginIndex},#{num}
+    </select>
+    <select id="getUsersNumExceptAdminAndSuperAdmin" resultType="Integer" useCache="true">
+        select count(*) from user where id not in
+        (select user_role.user_id from user_role,role where user_role.role_id=role.id and role.name like '%Admin')
+    </select>
+    <insert id="setUserAdmin">
+        insert into user_role(user_id, role_id) values(#{userId},(select id from role where name='Admin'))
+    </insert>
+    <delete id="unsetUserAdmin">
+        delete from user_role where user_id = #{userId} and role_id=(select id from role where name='Admin')
+    </delete>
+    <select id="getAdmins" resultMap="user" useCache="true">
+        select * from user where id in
+        (select user_role.user_id from user_role,role where user_role.role_id=role.id and role.name='Admin')
+        order by #{order} limit #{beginIndex},#{num}
+    </select>
+    <select id="getAdminsNum" resultType="Integer" useCache="true">
+        select count(*) from user where id in
+        (select user_role.user_id from user_role,role where user_role.role_id=role.id and role.name='Admin')
     </select>
 </mapper>

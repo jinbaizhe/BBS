@@ -1,9 +1,7 @@
 package com.parker.bbs.controller;
 
-import com.parker.bbs.pojo.Followpost;
-import com.parker.bbs.pojo.Post;
-import com.parker.bbs.pojo.SubForum;
-import com.parker.bbs.pojo.User;
+import com.parker.bbs.pojo.*;
+import com.parker.bbs.service.CollectionService;
 import com.parker.bbs.service.FollowpostService;
 import com.parker.bbs.service.PostService;
 import com.parker.bbs.service.SubForumService;
@@ -31,13 +29,19 @@ public class PostController {
     private FollowpostService followpostService;
     @Autowired
     private SubForumService subForumService;
+    @Autowired
+    private CollectionService collectionService;
 
     @RequestMapping("/post")
-    public ModelAndView browserPost(@RequestParam("postid") int postid, @RequestParam(value = "page", defaultValue = "1") int page) {
+    public ModelAndView browserPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postid, @RequestParam(value = "page", defaultValue = "1") int page) {
         ModelAndView modelAndView = new ModelAndView();
         Post post=postService.getPostById(postid);
         int totalFollowpostsNum=followpostService.getFollowpostsNumByPostId(postid);
         List<Followpost> followposts=followpostService.getFollowpostsByPostId(postid, page, followpostsNumPerPage,"asc");
+        if (user != null){
+            Collection collection = collectionService.getCollection(user.getId(), postid);
+            modelAndView.addObject("collection", collection);
+        }
         Pager pager = new Pager(page,followpostsNumPerPage,totalFollowpostsNum);
         List pageList = pager.getPageList();
         modelAndView.addObject("post", post);

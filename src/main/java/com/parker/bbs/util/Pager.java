@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class Pager {
-    private int showPageListSize=3;
+    private int pageListSize=3;
     private int currentPage;
     private int showItemsPerPageNum;
     private int totalPageNum;
@@ -24,10 +24,10 @@ public class Pager {
             Properties properties = new Properties();
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("setting.properties");
             properties.load(inputStream);
-            String temp = properties.getProperty("showPageListSize");
-            showPageListSize = Integer.valueOf(temp);
+            String temp = properties.getProperty("pageListSize");
+            pageListSize = Integer.valueOf(temp);
         } catch (FileNotFoundException e) {
-            System.out.println("找不到setting.properties文件，showPageListSize变量使用默认值3");
+            System.out.println("找不到setting.properties文件，pageListSize变量使用默认值3");
         }catch (IOException e){
             System.out.println("加载setting.properties文件失败");
         }
@@ -103,10 +103,10 @@ public class Pager {
     {
         List<String> list=new ArrayList();
         int start_pos=1,end_pos=totalPageNum;
-        if(totalPageNum>showPageListSize)
+        if(totalPageNum > pageListSize)
         {
-            start_pos=currentPage-showPageListSize/2;
-            end_pos=currentPage+showPageListSize/2;
+            start_pos = currentPage-pageListSize/2;
+            end_pos = currentPage+pageListSize/2;
         }
         if(start_pos<1)
         {

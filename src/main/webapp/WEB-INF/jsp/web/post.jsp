@@ -104,23 +104,24 @@
                             <strong style="float:right;margin-right:10px">
                                 <span class="badge" style="background: #ff6927;width: 50px;">楼主</span>
                             </strong>
-                            <c:if test="${post.user.id==sessionScope.user.id}">
-                                <%--还需要加入管理员删除的权限验证--%>
-                                <a style="float:right;margin-right: 20px;" href="/deletePost.action?postid=<c:out value="${post.id}"/>">删除</a>
-                            </c:if>
-                            <c:if test="${post.user.id==sessionScope.user.id}">
-                                <a style="float:right;margin-right: 20px;" href="/updatePost.action?postid=<c:out value="${post.id}"/>">编辑</a>
-                            </c:if>
+                            <shiro:user>
+                                <c:if test="${post.user.id==sessionScope.user.id}">
+                                    <%--还需要加入管理员删除的权限验证--%>
+                                    <a style="float:right;margin-right: 20px;" href="/deletePost.action?postid=<c:out value="${post.id}"/>">删除</a>
+                                </c:if>
+                                <c:if test="${post.user.id==sessionScope.user.id}">
+                                    <a style="float:right;margin-right: 20px;" href="/updatePost.action?postid=<c:out value="${post.id}"/>">编辑</a>
+                                </c:if>
 
-                            <c:choose>
-                                <c:when test="collection!=null">
-                                    <a style="float:right;margin-right: 20px;" href="/unstarPost.action?postid=<c:out value="${post.id}"/>">取消收藏</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a style="float:right;margin-right: 20px;" href="/starPost.action?postid=<c:out value="${post.id}"/>">收藏</a>
-                                </c:otherwise>
-                            </c:choose>
-
+                                <c:choose>
+                                    <c:when test="${collection!=null}">
+                                        <a style="float:right;margin-right: 20px;" href="/user/unstarPost.action?postid=<c:out value="${post.id}"/>">取消收藏</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a style="float:right;margin-right: 20px;" href="/user/starPost.action?postid=<c:out value="${post.id}"/>">收藏</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </shiro:user>
                             <shiro:hasAnyRoles name="Admin,SuperAdmin">
                                 <c:choose>
                                     <c:when test="${post.top==0}">

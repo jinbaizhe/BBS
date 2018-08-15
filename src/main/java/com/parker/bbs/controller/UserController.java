@@ -1,8 +1,10 @@
 package com.parker.bbs.controller;
 
+import com.parker.bbs.pojo.Collection;
 import com.parker.bbs.pojo.Followpost;
 import com.parker.bbs.pojo.Post;
 import com.parker.bbs.pojo.User;
+import com.parker.bbs.service.CollectionService;
 import com.parker.bbs.service.FollowpostService;
 import com.parker.bbs.service.PostService;
 import com.parker.bbs.service.UserService;
@@ -15,6 +17,7 @@ import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,10 @@ public class UserController {
     private PostService postService;
     @Autowired
     private FollowpostService followpostService;
+    @Autowired
+    private CollectionService collectionService;
+    @Value("#{configProperties['collectionsNumPerPage']}")
+    private int collectionsNumPerPage;
 
     @RequiresGuest
     @RequestMapping(value = "/register",method = RequestMethod.GET)
@@ -112,6 +119,8 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         List<Post> posts =  postService.getPostsByUserId(user.getId());
         List<Followpost> followposts = followpostService.getFollowpostsByUserId(user.getId(), "asc");
+        // TODO: 2018/8/15 收藏页面还需分页，暂未实现 ，以及collectionService还需修改
+        List<Collection> collections = collectionService.getCollectionsByUserId(user.getId(), 1, collectionsNumPerPage, "desc");
         modelAndView.addObject("user", user);
         modelAndView.addObject("type", type);
         modelAndView.addObject("posts", posts);
@@ -144,6 +153,70 @@ public class UserController {
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("followposts", followposts);
         modelAndView.addObject("user", real_user);
+        return modelAndView;
+    }
+
+    @RequiresUser
+    @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
+    public ModelAndView updateUserInfo(HttpSession session, @RequestParam("info")String info, @RequestParam("sex") String sex, @RequestParam("email") String email)
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        User user = (User)session.getAttribute("user");
+        userService.updateUserInfo(user.getId(), info, sex, email);
+        user = userService.getUserByid(user.getId());
+        session.setAttribute("user", user);
+        modelAndView.addObject("message_info", "资料修改成功");
+        modelAndView.addObject("type", "info");
+        modelAndView.setViewName("forward:/user/setting.action?type=info");
+        return modelAndView;
+    }
+
+    @RequiresUser
+    @RequestMapping(value = "/updateUserPassword", method = RequestMethod.POST)
+    public ModelAndView updateUserPassword(HttpSession session, @RequestParam("oldpassword")String oldPassword, @RequestParam("password")String password, @RequestParam("repeatpassword")String repeatPassword)
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        User user = (User)session.getAttribute("user");
+        String s = "密码修改成功";
+        try {
+            if (!password.equals(repeatPassword)){
+                throw new Exception("两次密码输入不一致");
+            }
+            userService.updateUserPassword(user.getId(), oldPassword, password);
+            user = userService.getUserByid(user.getId());
+            session.setAttribute("user", user);
+        } catch (Exception e) {
+            s = e.getMessage();
+        }
+        modelAndView.addObject("message_password", s);
+        modelAndView.addObject("type", "password");
+        modelAndView.setViewName("forward:/user/setting.action?type=password");
+        return modelAndView;
+    }
+
+    @RequiresUser
+    @RequestMapping(value = "/starPost")
+    public ModelAndView starPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
+    {
+        Util.addReferURL(referURL, session);
+        collectionService.insertCollection(user.getId(), postId);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", "收藏成功");
+        modelAndView.addObject("message", "收藏成功");
+        modelAndView.setViewName("web/operationStatus");
+        return modelAndView;
+    }
+
+    @RequiresUser
+    @RequestMapping(value = "/unstarPost")
+    public ModelAndView unstarPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
+    {
+        Util.addReferURL(referURL, session);
+        collectionService.deleteCollection(user.getId(), postId);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", "取消收藏成功");
+        modelAndView.addObject("message", "取消收藏成功");
+        modelAndView.setViewName("web/operationStatus");
         return modelAndView;
     }
 }

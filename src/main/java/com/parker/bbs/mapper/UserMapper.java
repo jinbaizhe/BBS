@@ -11,5 +11,10 @@ public interface UserMapper {
     int updateUser(@Param("user")User user);
     int deleteUser(@Param("user")User user);
     User getUserByUsername(@Param("username") String username);
-    List<User> getAllUsers();
+    List<User> getUsersExceptAdminAndSuperAdmin(@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
+    int getUsersNumExceptAdminAndSuperAdmin();
+    int setUserAdmin(@Param("userId") int userId);
+    int unsetUserAdmin(@Param("userId") int userId);
+    List<User> getAdmins(@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
+    int getAdminsNum();
 }

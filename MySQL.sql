@@ -48,7 +48,7 @@ create table collection
 (
    user_id              int not null  comment '',
    post_id              int not null  comment '',
-   time                 datetime  comment '',
+   star_time                 datetime  comment '',
    primary key (user_id, post_id)
 );
 

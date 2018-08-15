@@ -13,7 +13,7 @@
 <html>
 <head>
     <%@include file="head.jsp"%>
-    <title>用户管理</title>
+    <title><c:out value="${title}"/></title>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -28,15 +28,10 @@
             <li class="breadcrumb-item active">用户设置</li>
         </ol>
         <div class="text-center">
-            <h1>用户设置</h1>
-            <!--
-            {% if error_message %}
-            <h4 class="text-danger text-center">{{ error_message }}</h4>
-            {% endif %}
-            {% if success_message %}
-            <h4 class="text-success text-center">{{ success_message }}</h4>
-            {% endif %}
-            -->
+            <h1><c:out value="${title}"/></h1>
+            <c:if test="${message!=null}">
+                <h4 class="text-success text-center"><c:out value="${message}"/></h4>
+            </c:if>
         </div>
         <div class="row">
             <table class="table table-hover">
@@ -44,7 +39,7 @@
                 <tr>
                     <th scope="col">用户ID</th>
                     <th scope="col">用户名</th>
-                    <th scope="col">用户类型</th>
+                    <%--<th scope="col">用户类型</th>--%>
                     <th scope="col">邮箱</th>
                     <th scope="col">注册时间</th>
                     <th scope="col">操作</th>
@@ -53,7 +48,7 @@
                 <c:if test="${users.size()==0}">
                     <tr>
                         <td colspan="6">
-                            <h4 class="text-center">暂无用户数据</h4>
+                            <h4 class="text-center">暂无用户</h4>
                         </td>
                     </tr>
                 </c:if>
@@ -61,19 +56,16 @@
                     <tr>
                         <th scope="row"><c:out value="${user.id}"/></th>
                         <td><c:out value="${user.username}"/></td>
-                        <td><c:out value="${user.type}"/></td>
+                        <%--<td><c:out value="${user.type}"/></td>--%>
                         <td><c:out value="${user.email}"/></td>
                         <td><fmt:formatDate value="${user.registerTime}"  pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td>
-                            <c:choose>
-                                <c:when test="${user.type==0}">
-                                    <a class="btn btn-primary btn-sm mr-sm-2" href="/manage/setAdmin.action?userid=<c:out value="${user.id}"/>">设为管理员</a>
-                                </c:when>
-                                <s:when test="${user.type==1}">
-                                    <a class="btn btn-primary btn-sm mr-sm-2" href="/manage/unsetAdmin.action?userid=<c:out value="${user.id}"/>">撤销管理员</a>
-                                </s:when>
-                            </c:choose>
-
+                            <c:if test="${type=='user'}">
+                                <a class="btn btn-primary btn-sm mr-sm-2" href="/manage/setUserAdmin.action?userid=<c:out value="${user.id}"/>">授予管理员权限</a>
+                            </c:if>
+                            <c:if test="${type=='admin'}">
+                                <a class="btn btn-primary btn-sm mr-sm-2" href="/manage/unsetUserAdmin.action?userid=<c:out value="${user.id}"/>">撤销管理员权限</a>
+                            </c:if>
                             <!--
                             <a class="btn btn-primary btn-sm mr-sm-2" href="#">删除</a>
                             -->

@@ -66,68 +66,68 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        userMapper.updateUser(user);
-    }
-
-    @Override
     public boolean isExistUser(String username) {
         return false;
     }
 
     @Override
-    public List getAllUsersExceptSelf(User user, int currentPage, int totalItemsPerPage) {
-        return null;
+    public List getUsersExceptAdminAndSuperAdmin(int currentPage, int totalItemsPerPage) {
+        int beginIndex = (currentPage-1)*totalItemsPerPage;
+        String order = "user.id desc";
+        return userMapper.getUsersExceptAdminAndSuperAdmin(beginIndex, totalItemsPerPage, order);
     }
 
     @Override
-    public int getAllUsersNumExceptSelf(User user) {
-        return 0;
+    public int getUsersNumExceptAdminAndSuperAdmin() {
+        return userMapper.getUsersNumExceptAdminAndSuperAdmin();
     }
 
     @Override
-    public void updateUserPassword(User user) {
-
+    public List getAdmins(int currentPage, int totalItemsPerPage) {
+        int beginIndex = (currentPage-1)*totalItemsPerPage;
+        String order = "id asc";
+        return userMapper.getAdmins(beginIndex, totalItemsPerPage, order);
     }
 
     @Override
-    public void updateUserInfo(User user) {
-
+    public int getAdminsNum() {
+        return userMapper.getAdminsNum();
     }
 
     @Override
-    public void setAdmin(int userid) {
-
-    }
-
-    @Override
-    public void unsetAdmin(int userid) {
-
-    }
-
-    @Override
-    public User getUserByid(int userid) {
-        return userMapper.getUserById(userid);
-    }
-
-    @Override
-    public List getCollectionsByUserId(int userid, int currentPage, int totalItemsPerPage, String order) {
-        return null;
-    }
-
-    @Override
-    public void createCollection(Collection collection) {
+    public void updateUserPassword(int userId, String oldPassword, String password) throws Exception {
+        User user = userMapper.getUserById(userId);
+        if (oldPassword.equals(user.getPassword())){
+            user.setPassword(password);
+            userMapper.updateUser(user);
+        }else {
+            throw new Exception("旧密码输入不正确");
+        }
 
     }
 
     @Override
-    public void deleteCollection(int userid, int postid) {
-
+    public void updateUserInfo(int userId, String info, String sex, String email) {
+        User user = userMapper.getUserById(userId);
+        user.setInfo(info);
+        user.setSex(sex);
+        user.setEmail(email);
+        userMapper.updateUser(user);
     }
 
     @Override
-    public Collection getCollection(int userid, int postid) {
-        return null;
+    public void setUserAdmin(int userId) {
+        userMapper.setUserAdmin(userId);
+    }
+
+    @Override
+    public void unsetUserAdmin(int userId) {
+        userMapper.unsetUserAdmin(userId);
+    }
+
+    @Override
+    public User getUserByid(int userId) {
+        return userMapper.getUserById(userId);
     }
 
     @Override

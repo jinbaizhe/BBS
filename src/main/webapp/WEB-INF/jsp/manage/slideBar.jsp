@@ -40,7 +40,10 @@
                 <ul class="sidenav-second-level collapse" id="userManage">
                     <shiro:hasRole name="SuperAdmin">
                         <li>
-                            <a href="/manage/user.action">用户设置</a>
+                            <a href="/manage/user.action">设置管理员</a>
+                        </li>
+                        <li>
+                            <a href="/manage/admin.action">撤销管理员</a>
                         </li>
                     </shiro:hasRole>
                 </ul>
