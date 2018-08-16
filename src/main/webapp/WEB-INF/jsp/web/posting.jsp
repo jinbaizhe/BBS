@@ -7,8 +7,12 @@
     <script src="/static/ckeditor/ckeditor.js"></script>
     <script type="text/javascript">
         function addOne() {
-            var fdiv=document.getElementById("filediv");
-            fdiv.innerHTML+='<div class="row mt-sm-3 mb-sm-3"><div class="col-sm-11"><input type="file" name="files" class="form-control-file" /></div><div class="col-sm-1"><input type="button" value="删除" class="btn" onclick="delOne(this)" id="delBut"></div></div>';
+            var filediv = document.getElementById('filediv');
+            var upload = document.createElement('div');
+            upload.className="row mt-sm-3 mb-sm-3"
+            upload.innerHTML='<div class="col-sm-11"><input type="file" name="files" class="form-control-file" /></div><div class="col-sm-1"><input type="button" value="删除" class="btn" onclick="delOne(this)" id="delBut"></div>'
+            filediv.appendChild(upload);
+            // fdiv.innerHTML+='<div class="row mt-sm-3 mb-sm-3"><div class="col-sm-11"><input type="file" name="files" class="form-control-file" /></div><div class="col-sm-1"><input type="button" value="删除" class="btn" onclick="delOne(this)" id="delBut"></div></div>';
         }
         function delOne(obj){
             obj.parentNode.parentNode.parentNode.removeChild(obj.parentNode.parentNode);
@@ -59,6 +63,12 @@
                         <div style="float:right;margin-right: 20px;margin-left: 20px;">
                             <input type="submit" class="btn btn-primary" value="发表">
                         </div>
+                        <div style="float:right;margin-right: 20px;margin-left: 20px;">
+                            <button type="button" onclick="addOne()" class="btn btn-primary">添加附件</button>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div id="filediv"></div>
                     </li>
                 </ul>
             </form>

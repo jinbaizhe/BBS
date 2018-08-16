@@ -19,7 +19,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-//    @RequiresRoles(value = {"Admin", "SuperAdmin"}, logical = Logical.OR)
+    @RequiresRoles(value = {"Admin", "SuperAdmin"}, logical = Logical.OR)
     @RequestMapping("/setPostTop")
     public ModelAndView setPostTop(@RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
@@ -32,7 +32,7 @@ public class PostController {
         return modelAndView;
     }
 
-//    @RequiresRoles(value = {"Admin", "SuperAdmin"}, logical = Logical.OR)
+    @RequiresRoles(value = {"Admin", "SuperAdmin"}, logical = Logical.OR)
     @RequestMapping("/unsetPostTop")
     public ModelAndView unsetPostTop(@RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {

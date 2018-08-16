@@ -51,7 +51,7 @@
     <select id="getUsersExceptAdminAndSuperAdmin" resultMap="user" useCache="true">
         select * from user where id not in
         (select user_role.user_id from user_role,role where user_role.role_id=role.id and role.name like '%Admin')
-        order by #{order} limit #{beginIndex},#{num}
+        order by ${order} limit #{beginIndex},#{num}
     </select>
     <select id="getUsersNumExceptAdminAndSuperAdmin" resultType="Integer" useCache="true">
         select count(*) from user where id not in
@@ -66,7 +66,7 @@
     <select id="getAdmins" resultMap="user" useCache="true">
         select * from user where id in
         (select user_role.user_id from user_role,role where user_role.role_id=role.id and role.name='Admin')
-        order by #{order} limit #{beginIndex},#{num}
+        order by ${order} limit #{beginIndex},#{num}
     </select>
     <select id="getAdminsNum" resultType="Integer" useCache="true">
         select count(*) from user where id in

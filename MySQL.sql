@@ -156,6 +156,7 @@ create table post
    content              text  comment '',
    send_time            datetime  comment '',
    update_time          datetime  comment '',
+   last_reply_time      datetime  comment '尽管加入这个字段会存在数据冗余,但是对数据库的压力较小',
    type                 int  comment '',
    top                  int  comment '',
    view_num             int  comment '',

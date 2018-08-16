@@ -4,6 +4,7 @@ import com.parker.bbs.pojo.Collection;
 import com.parker.bbs.pojo.Operation;
 import com.parker.bbs.pojo.Role;
 import com.parker.bbs.pojo.User;
+import com.parker.bbs.util.VerifyCode;
 
 import java.util.List;
 import java.util.Set;
@@ -24,4 +25,5 @@ public interface UserService {
     User getUserByUsername(String username);
     List<Role> getUserRoles(User user);
     Set<Operation> getUserOperations(User user);
+    VerifyCode getVerifyCode(String sessionId);
 }

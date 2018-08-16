@@ -48,7 +48,7 @@ public class PostController {
         int postLikeNum = postService.getPostLikeNum(postId);
         boolean isLike = false;
         if (user != null){
-            postService.isUserLikePost(user.getId(), postId);
+            isLike = postService.isUserLikePost(user.getId(), postId);
         }
         modelAndView.addObject("post", post);
         modelAndView.addObject("postLikeNum", postLikeNum);

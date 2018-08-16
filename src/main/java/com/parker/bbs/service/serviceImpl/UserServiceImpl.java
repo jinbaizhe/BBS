@@ -9,13 +9,17 @@ import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.UserService;
 import com.parker.bbs.util.AESEncrypt;
 import com.parker.bbs.util.Util;
+import com.parker.bbs.util.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -24,7 +28,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private RoleMapper roleMapper;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Value("#{configProperties['redisUserVerifyCodeKeyName']}")
+    private String redisUserVerifyCodeKeyName;
     @Override
     public List<Role> getUserRoles(User user) {
         return roleMapper.getUserRoles(user);
@@ -52,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public User registerUser(User user) {
         user.setLevel(0);
         user.setStatus(0);
-        user.setRegisterTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        user.setRegisterTime(new Timestamp(System.currentTimeMillis()));
         String value= AESEncrypt.encrypt(user.getUsername()).substring(0,20);
         user.setActiveKey(value);
         try{
@@ -133,5 +140,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         return userMapper.getUserByUsername(username);
+    }
+
+    @Override
+    public VerifyCode getVerifyCode(String sessionId) {
+        VerifyCode verifyCode;
+        String key = redisUserVerifyCodeKeyName+sessionId;
+        verifyCode = (VerifyCode) redisTemplate.opsForValue().get(key);
+        if (verifyCode == null){
+            verifyCode = new VerifyCode();
+            redisTemplate.opsForValue().set(key, verifyCode, 3, TimeUnit.MINUTES);
+        }
+        return verifyCode;
     }
 }

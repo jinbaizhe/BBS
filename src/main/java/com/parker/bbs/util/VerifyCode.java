@@ -1,15 +1,20 @@
 package com.parker.bbs.util;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 
 
-public class VerifyCode {
+public class VerifyCode implements Serializable {
     private int width,height,num;
     private Font font;
     private String code;
     private final String charOfCode="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    private BufferedImage image;
+    private byte[] imageByteArray;
     public VerifyCode(int width,int height,int num)
     {
         this.width=width;
@@ -19,10 +24,15 @@ public class VerifyCode {
         change();
     }
 
+    public VerifyCode()
+    {
+        this(100, 30, 5);
+    }
+
     public void change()
     {
         code="";
-        image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
         graphics.setFont(font);
         graphics.setColor(Color.WHITE);
@@ -37,13 +47,24 @@ public class VerifyCode {
             graphics.drawString(c+"",w,h);
         }
         graphics.dispose();
+        try {
+            ByteArrayOutputStream bs = new ByteArrayOutputStream();
+            ImageOutputStream imageOutputStream = null;
+            imageOutputStream = ImageIO.createImageOutputStream(bs);
+            ImageIO.write(image,"jpg",imageOutputStream);
+            imageByteArray = bs.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
     public String getCode()
     {
         return code;
     }
-    public BufferedImage getImage()
-    {
-        return image;
+
+    public byte[] getImageByteArray() {
+        return imageByteArray;
     }
+
 }

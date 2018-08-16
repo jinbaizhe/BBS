@@ -17,7 +17,10 @@
         select * from followpost where id=#{id}
     </select>
     <select id="getFollowpostsByPostId" resultMap="followpost" useCache="true">
-        select * from followpost where post_id=#{postId} order by #{order} limit #{beginIndex},#{num}
+        select * from followpost where post_id=#{postId} order by ${order} limit #{beginIndex},#{num}
+    </select>
+    <select id="getFollowpostsAllByPostId" resultMap="followpost" useCache="true">
+        select * from followpost where post_id=#{postId} order by send_time asc
     </select>
     <select id="getFollowpostsNumByPostId" resultType="Integer" useCache="true">
         select count(*) from followpost where post_id=#{postId}

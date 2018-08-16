@@ -36,13 +36,13 @@
             </div>
             <div>
                 <c:choose>
-                    <c:when test="${order=='postsend'}">
-                        <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=lastfollowpost">按最后回复时间排序</a>
-                        <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=postsend">按发帖时间排序</a>
+                    <c:when test="${order=='postsendtime'}">
+                        <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=lastreplytime">按最后回复时间排序</a>
+                        <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=postsendtime">按发帖时间排序</a>
                     </c:when>
                     <c:otherwise>
-                        <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=lastfollowpost">按最后回复时间排序</a>
-                        <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=postsend">按发帖时间排序</a>
+                        <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=lastreplytime">按最后回复时间排序</a>
+                        <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=postsendtime">按发帖时间排序</a>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -62,7 +62,6 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${posts}" var="post">
-                    <c:set var="lastfollowpostsendtime" value="${temp[1]}"/>
                     <tr>
                         <th scope="row">
                             <c:if test="${post.type==1}">
@@ -78,8 +77,8 @@
                         </th>
                         <td><a href="/user/userInfo.action?userid=<c:out value="${post.user.id}"/>"><c:out value="${post.user.username}"/></a></td>
                         <td><fmt:formatDate value="${post.sendTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td><%--<fmt:formatDate value="${lastfollowpostsendtime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>--%></td>
-                        <td><%--<c:out value="${post.followposts.size}" default="0"></c:out>--%>/<c:out value="${post.viewNum}"/></td>
+                        <td><fmt:formatDate value="${post.lastReplyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                        <td><c:out value="${post.followposts.size()}"/>/<c:out value="${post.viewNum}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -92,12 +91,12 @@
                 <ul class="pagination justify-content-center">
                     <c:if test='${pager.firstPage!=true}'>
                         <li class="page-item">
-                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=1">
+                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=1&order=<c:out value="${order}"/>">
                                 首页
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${pager.currentPage-1}"/>" aria-label="Previous">
+                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${pager.currentPage-1}"/>&order=<c:out value="${order}"/>" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
                             </a>
@@ -119,14 +118,14 @@
                             </c:when>
                             <c:otherwise>
                                 <li class="page-item">
-                                    <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${item}"/>"><c:out value="${item}"/></a>
+                                    <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${item}"/>&order=<c:out value="${order}"/>"><c:out value="${item}"/></a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                     <c:if test='${pager.lastPage!=true}'>
                         <li class="page-item">
-                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${pager.currentPage+1}"/>" aria-label="Next">
+                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${pager.currentPage+1}"/>&order=<c:out value="${order}"/>" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>
                             </a>

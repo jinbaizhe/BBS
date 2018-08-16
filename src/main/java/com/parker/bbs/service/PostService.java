@@ -2,12 +2,14 @@ package com.parker.bbs.service;
 
 import com.parker.bbs.pojo.Post;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface PostService {
     Post getPostById(int id);
     void insertPost(String title, String content, int subForumId, int userId);
     void updatePost(int postId, String title, String content);
+    void updatePostLastReplyTime(int postId, Timestamp lastReplyTime);
     void deletePost(Post post);
     void deletePost(int postId);
     List getPostsBySubForumId(int subForumId, int page, int num, String order);

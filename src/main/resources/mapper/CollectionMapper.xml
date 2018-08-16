@@ -15,7 +15,7 @@
         select * from collection where user_id=#{userId} and post_id=#{postId}
     </select>
     <select id="getCollectionsByUserId" resultMap="collection" useCache="true">
-        select * from collection where user_id=#{userId} order by #{order} limit #{beginIndex},#{num}
+        select * from collection where user_id=#{userId} order by ${order} limit #{beginIndex},#{num}
     </select>
 
     <insert id="insertCollection" parameterType="com.parker.bbs.pojo.Collection">

@@ -1,6 +1,7 @@
 package com.parker.bbs.service.serviceImpl;
 
 import com.parker.bbs.mapper.FollowpostMapper;
+import com.parker.bbs.mapper.PostMapper;
 import com.parker.bbs.pojo.Followpost;
 import com.parker.bbs.pojo.Post;
 import com.parker.bbs.pojo.User;
@@ -17,6 +18,8 @@ public class FollowpostServiceImpl implements FollowpostService {
 
     @Autowired
     private FollowpostMapper followpostMapper;
+    @Autowired
+    private PostMapper postMapper;
 
     @Override
     public Followpost getFollowpostById(int id) {
@@ -36,25 +39,27 @@ public class FollowpostServiceImpl implements FollowpostService {
     }
 
     @Override
-    public void insertFollowpost(String content, int postid, int userId) {
+    public void insertFollowpost(String content, int postId, int userId) {
         Post post = new Post();
-        post.setId(postid);
+        post.setId(postId);
         User user = new User();
         user.setId(userId);
         Followpost followpost = new Followpost();
         followpost.setContent(content);
         followpost.setPost(post);
         followpost.setUser(user);
-        followpost.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
-        followpost.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        followpost.setSendTime(timestamp);
+        followpost.setUpdateTime(timestamp);
         followpostMapper.insertFollowpost(followpost);
+        postMapper.updatePostLastReplyTime(postId, timestamp);
     }
 
     @Override
     public void updateFollowpost(int followpostId, String content) {
         Followpost followpost = followpostMapper.getFollowpostById(followpostId);
         followpost.setContent(content);
-        followpost.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        followpost.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         followpostMapper.updateFollowpost(followpost);
     }
 

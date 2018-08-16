@@ -23,6 +23,8 @@ public class Post implements java.io.Serializable {
 	private Integer type;
 	private Integer top;
 	private Integer viewNum;
+	private Timestamp lastReplyTime;
+	private List<Followpost> followposts;
 
 	public Integer getId() {
 		return id;
@@ -103,4 +105,20 @@ public class Post implements java.io.Serializable {
 	public void setViewNum(Integer viewNum) {
 		this.viewNum = viewNum;
 	}
+
+	public Timestamp getLastReplyTime() {
+		return lastReplyTime;
+	}
+
+	public void setLastReplyTime(Timestamp lastReplyTime) {
+		this.lastReplyTime = lastReplyTime;
+	}
+
+    public List<Followpost> getFollowposts() {
+        return followposts;
+    }
+
+    public void setFollowposts(List<Followpost> followposts) {
+        this.followposts = followposts;
+    }
 }

@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <label>验证码</label>
-                        <%--<img src="/getVerifyCode.action" width="100" height="30" alt="无法显示验证码">--%>
+                        <img src="/user/getVerifyCode.action" width="100" height="30" alt="无法显示验证码">
                         <input type="text" class="form-control" name="verifyCode" placeholder="请输入左侧验证码">
                     </div>
                     <!--<small class="form-text text-muted" name=""></small>-->

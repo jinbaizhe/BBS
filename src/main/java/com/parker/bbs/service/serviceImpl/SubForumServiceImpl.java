@@ -35,7 +35,7 @@ public class SubForumServiceImpl implements SubForumService {
         subForum.setMainForum(mainForum);
         subForum.setName(name);
         subForum.setInfo(info);
-        subForum.setCreateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        subForum.setCreateTime(new Timestamp(System.currentTimeMillis()));
         subForumMapper.insertSubForum(subForum);
     }
 

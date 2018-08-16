@@ -53,8 +53,10 @@ public class PostServiceImpl implements PostService {
         post.setContent(content);
         post.setSubForum(subForum);
         post.setUser(user);
-        post.setSendTime(Timestamp.valueOf(Util.getCurrentDateTime()));
-        post.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        post.setSendTime(timestamp);
+        post.setUpdateTime(timestamp);
+        post.setLastReplyTime(timestamp);
         post.setViewNum(0);
         post.setTop(0);
         post.setType(0);
@@ -66,7 +68,7 @@ public class PostServiceImpl implements PostService {
         Post post = postMapper.getPostById(postId);
         post.setTitle(title);
         post.setContent(content);
-        post.setUpdateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        post.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         postMapper.updatePost(post);
     }
 
@@ -84,6 +86,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List getPostsBySubForumId(int subForumId, int page, int num, String order) {
+        if (order.equals("postsendtime")){
+            order = "send_time desc";
+        }else{
+            order = "last_reply_time desc";
+        }
         int beginIndex = (page-1)*num;
         List<Post> posts = postMapper.getPostsBySubForumId(subForumId, beginIndex, num, order);
         for(Post post:posts){
@@ -185,5 +192,10 @@ public class PostServiceImpl implements PostService {
             num = Integer.valueOf(s).intValue();
         }
         return num;
+    }
+
+    @Override
+    public void updatePostLastReplyTime(int postId, Timestamp lastReplyTime) {
+        postMapper.updatePostLastReplyTime(postId, lastReplyTime);
     }
 }

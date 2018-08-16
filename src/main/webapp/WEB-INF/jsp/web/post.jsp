@@ -96,7 +96,7 @@
                         <h2 style="margin-left:20px;color:black;"><c:out value="${post.title}"/></h2>
                         <div style="margin-left:20px" >
                             <span class="glyphicon glyphicon-comment"></span>
-                            <%--回复数:<c:out value="${post.followposts.size()}"/>--%>
+                            回复数:<c:out value="${post.followposts.size()}"/>
                             &nbsp;|&nbsp;
                             浏览数:<c:out value="${post.viewNum}"/>
                             &nbsp;|&nbsp;

@@ -9,6 +9,7 @@ import com.parker.bbs.service.FollowpostService;
 import com.parker.bbs.service.PostService;
 import com.parker.bbs.service.UserService;
 import com.parker.bbs.util.Util;
+import com.parker.bbs.util.VerifyCode;
 import com.sun.deploy.net.HttpResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -23,7 +24,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -70,6 +77,7 @@ public class UserController {
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public ModelAndView loginPage(@RequestHeader(value = "Referer", required = false)String referURL, HttpSession session){
         Util.addReferURL(referURL, session);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user/login");
         return modelAndView;
@@ -77,7 +85,7 @@ public class UserController {
 
     @RequiresGuest
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ModelAndView loginUser(User user, @RequestParam(value = "autoLogin",defaultValue = "false") boolean isAutoLogin, HttpSession session){
+    public ModelAndView loginUser(User user, @RequestParam(value = "autoLogin",defaultValue = "false") boolean isAutoLogin, @RequestParam(value = "verifyCode",defaultValue = "") String verifyCode, HttpSession session){
         ModelAndView modelAndView = new ModelAndView();
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
@@ -85,6 +93,11 @@ public class UserController {
             token.setRememberMe(true);
         }
         try{
+            VerifyCode realVerifyCode = userService.getVerifyCode(session.getId());
+            if (!verifyCode.equalsIgnoreCase(realVerifyCode.getCode()))
+            {
+                throw new Exception("验证码错误");
+            }
             subject.login(token);
             User realUser = userService.getUserByUsername(user.getUsername());
             session.setAttribute("user", realUser);
@@ -94,7 +107,7 @@ public class UserController {
             }else {
                 modelAndView.setViewName("redirect:/mainforum.action");
             }
-        }catch (AuthenticationException e){
+        }catch (Exception e){
             modelAndView.addObject("message","登录失败："+e.getMessage());
             modelAndView.setViewName("user/login");
         }
@@ -221,5 +234,17 @@ public class UserController {
         modelAndView.addObject("message", "取消收藏成功");
         modelAndView.setViewName("web/operationStatus");
         return modelAndView;
+    }
+
+    @RequestMapping("/getVerifyCode")
+    public void getVerifyCode(HttpSession session, HttpServletResponse response)
+    {
+        VerifyCode verifyCode = userService.getVerifyCode(session.getId());
+        try {
+            ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(verifyCode.getImageByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

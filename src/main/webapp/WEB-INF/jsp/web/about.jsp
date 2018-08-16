@@ -30,6 +30,7 @@
                         <li>Spring MVC</li>
                         <li>Spring</li>
                         <li>MyBatis</li>
+                        <li>Redis</li>
                         <li>MySQL</li>
                         <li>Tomcat8.5</li>
                         <li>Bootstrap4</li>

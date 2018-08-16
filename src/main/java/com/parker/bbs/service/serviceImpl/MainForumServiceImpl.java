@@ -31,7 +31,7 @@ public class MainForumServiceImpl implements MainForumService {
         MainForum mainForum = new MainForum();
         mainForum.setName(name);
         mainForum.setInfo(info);
-        mainForum.setCreateTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        mainForum.setCreateTime(new Timestamp(System.currentTimeMillis()));
         mainForumMapper.insertMainForum(mainForum);
     }
 

@@ -9,6 +9,7 @@
         <result property="content" column="content"/>
         <result property="sendTime" column="send_time"/>
         <result property="updateTime" column="update_time"/>
+        <result property="lastReplyTime" column="last_reply_time"/>
         <result property="type" column="type"/>
         <result property="top" column="top"/>
         <result property="viewNum" column="view_num"/>
@@ -16,26 +17,32 @@
                      select="com.parker.bbs.mapper.UserMapper.getUserById"/>
         <association property="subForum" column="sub_forum_id" javaType="com.parker.bbs.pojo.SubForum"
                      select="com.parker.bbs.mapper.SubForumMapper.getSubForumById"/>
+        <collection property="followposts" column="id"
+                    select="com.parker.bbs.mapper.FollowpostMapper.getFollowpostsAllByPostId"/>
     </resultMap>
     <select id="getPostById" resultMap="post" useCache="true">
         select * from post where id=#{id}
     </select>
     <select id="getPostsBySubForumId" resultMap="post" useCache="true">
-        select * from post where sub_forum_id=#{subForumId} order by #{order} limit #{beginIndex},#{num}
+        select * from post where sub_forum_id=#{subForumId} order by top desc,${order} limit #{beginIndex},#{num}
     </select>
     <select id="getPostsNumBySubForumId" resultType="Integer" useCache="true">
         select count(*) from post where sub_forum_id=#{subForumId}
     </select>
     <insert id="insertPost" parameterType="com.parker.bbs.pojo.Post" useGeneratedKeys="true" keyProperty="post.id">
         insert into post(id,user_id, sub_forum_id, title, content, send_time,
-        update_time, type, top, view_num)
+        update_time, type, top, view_num, last_reply_time)
           values (#{post.id}, #{post.user.id}, #{post.subForum.id}, #{post.title},
           #{post.content}, #{post.sendTime}, #{post.updateTime}, #{post.type},
-          #{post.top}, #{post.viewNum})
+          #{post.top}, #{post.viewNum}, #{post.lastReplyTime})
     </insert>
     <update id="updatePost" parameterType="com.parker.bbs.pojo.Post">
         update post set sub_forum_id=#{post.subForum.id}, title=#{post.title}, content=#{post.content},
-        update_time=#{post.updateTime}, type=#{post.type}, top=#{post.top}, view_num=#{post.viewNum} where id=#{post.id}
+        update_time=#{post.updateTime}, type=#{post.type}, top=#{post.top}, view_num=#{post.viewNum},
+        last_reply_time=#{post.lastReplyTime} where id=#{post.id}
+    </update>
+    <update id="updatePostLastReplyTime">
+        update post set last_reply_time=#{lastReplyTime} where id=#{postId}
     </update>
     <delete id="deletePost" parameterType="com.parker.bbs.pojo.Post">
         delete from post where id=#{post.id}

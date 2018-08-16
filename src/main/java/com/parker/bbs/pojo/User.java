@@ -112,4 +112,5 @@ public class User implements java.io.Serializable {
     public void setActiveKey(String activeKey) {
         this.activeKey = activeKey;
     }
+
 }

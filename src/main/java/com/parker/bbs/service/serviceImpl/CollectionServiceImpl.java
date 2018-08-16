@@ -36,7 +36,7 @@ public class CollectionServiceImpl implements CollectionService {
         post.setId(postId);
         collection.setUser(user);
         collection.setPost(post);
-        collection.setStarTime(Timestamp.valueOf(Util.getCurrentDateTime()));
+        collection.setStarTime(new Timestamp(System.currentTimeMillis()));
         collectionMapper.insertCollection(collection);
     }
 
