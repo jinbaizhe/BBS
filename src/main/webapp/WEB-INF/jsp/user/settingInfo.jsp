@@ -189,129 +189,126 @@
                                 </div>
                             </div>
                         </div>
-
-
-            <c:choose>
-                <c:when test="${type=='password'}">
-                    <div class="tab-pane fade show active" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
-                </c:when>
-                <c:otherwise>
-                    <div class="tab-pane fade show" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
-                </c:otherwise>
-            </c:choose>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <form action="/user/updateUserPassword.action" method="post">
-                                    <div class="form-group">
-                                        <p class="text-danger"><c:out value="${message_password}"></c:out></p>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>旧密码</label>
-                                        <input type="password" class="form-control" name="oldpassword" placeholder="请输入密码">
-                                        <!--<small class="form-text text-muted" name=""></small>-->
-                                    </div>
-                                    <div class="form-group">
-                                        <label>新密码</label>
-                                        <input type="password" class="form-control" name="password" placeholder="请输入密码">
-                                        <!--<small class="form-text text-muted" name=""></small>-->
-                                    </div>
-                                    <div class="form-group">
-                                        <label>再次确认密码</label>
-                                        <input type="password" class="form-control" name="repeatpassword" placeholder="请再次输入密码">
-                                        <!--<small class="form-text text-muted" name=""></small>-->
-                                    </div>
-
-                                    <div class="form-group text-center mt-sm-4">
-                                        <input class="btn btn-primary btn-block" type="submit" value="保存">
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-            <c:choose>
-                <c:when test="${type=='post'}">
-                    <div class="tab-pane fade show active" id="v-pills-post" role="tabpanel" aria-labelledby="v-pills-post-tab">
-                </c:when>
-                <c:otherwise>
-                    <div class="tab-pane fade show" id="v-pills-post" role="tabpanel" aria-labelledby="v-pills-post-tab">
-                </c:otherwise>
-            </c:choose>
-                        <div class="row">
-                            <div class="col-sm-10">
-                                <c:if test="${posts.size()==0}">
-                                    <h4>暂无发帖记录</h4>
-                                </c:if>
-                                <c:forEach items="${posts}" var="post">
-                                    <div class="card my-sm-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">帖子标题：<a href="/post.action?postid=<c:out value="${post.id}"/>"><c:out value="${post.title}"/></a></h5>
-                                            <p class="card-text">
-                                                <c:out value="${post.content}"/>
-                                            </p>
+                <c:choose>
+                    <c:when test="${type=='password'}">
+                        <div class="tab-pane fade show active" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="tab-pane fade show" id="v-pills-password" role="tabpanel" aria-labelledby="v-pills-password-tab">
+                    </c:otherwise>
+                </c:choose>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <form action="/user/updateUserPassword.action" method="post">
+                                        <div class="form-group">
+                                            <p class="text-danger"><c:out value="${message_password}"></c:out></p>
                                         </div>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
-                    </div>
-            <c:choose>
-                <c:when test="${type=='followpost'}">
-                    <div class="tab-pane fade show active" id="v-pills-followpost" role="tabpanel" aria-labelledby="v-pills-followpost-tab">
-                </c:when>
-                <c:otherwise>
-                    <div class="tab-pane fade show" id="v-pills-followpost" role="tabpanel" aria-labelledby="v-pills-followpost-tab">
-                        <div class="row">
-                            <div class="col-sm-10">
-                                <c:if test="${followposts.size()==0}">
-                                    <h4>暂无回帖记录</h4>
-                                </c:if>
-                                <c:forEach items="${followposts}" var="followpost">
-                                    <div class="card my-sm-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">回复帖子：<a href="/post.action?postid=<c:out value="${followpost.post.id}"/>"><c:out value="${followpost.post.title}"/></a></h5>
-                                            <p class="card-text">
-                                                <c:out value="${followpost.content}"/>
-                                            </p>
+                                        <div class="form-group">
+                                            <label>旧密码</label>
+                                            <input type="password" class="form-control" name="oldpassword" placeholder="请输入密码">
+                                            <!--<small class="form-text text-muted" name=""></small>-->
                                         </div>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
-                    </div>
-                </c:otherwise>
-            </c:choose>
-            <c:choose>
-                <c:when test="${type=='collection'}">
-                    <div class="tab-pane fade show active" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
-                </c:when>
-                <c:otherwise>
-                    <div class="tab-pane fade show" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
-                        <div class="row">
-                            <div class="col-sm-10">
-                                <c:if test="${collections.size()==0}">
-                                    <h4>暂无收藏记录</h4>
-                                </c:if>
-                                <c:forEach items="${collections}" var="collection">
-                                    <div class="card my-sm-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">帖子标题：<a href="/post.action?postid=<c:out value="${collection.id.post.id}"/>"><c:out value="${collection.id.post.title}"/></a></h5>
-                                            <p class="card-text">
-                                                <span>收藏时间：<fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="#collection.time"/></span>
-                                                <a href="/user/unstarPost.action?postid=<c:out value="${collection.id.post.id}"/>" class="btn btn-primary float-right">取消收藏</a>
-                                            </p>
+                                        <div class="form-group">
+                                            <label>新密码</label>
+                                            <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                                            <!--<small class="form-text text-muted" name=""></small>-->
                                         </div>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
-                    </div>
-                </c:otherwise>
-            </c:choose>
+                                        <div class="form-group">
+                                            <label>再次确认密码</label>
+                                            <input type="password" class="form-control" name="repeatpassword" placeholder="请再次输入密码">
+                                            <!--<small class="form-text text-muted" name=""></small>-->
+                                        </div>
 
+                                        <div class="form-group text-center mt-sm-4">
+                                            <input class="btn btn-primary btn-block" type="submit" value="保存">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                <c:choose>
+                    <c:when test="${type=='post'}">
+                        <div class="tab-pane fade show active" id="v-pills-post" role="tabpanel" aria-labelledby="v-pills-post-tab">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="tab-pane fade show" id="v-pills-post" role="tabpanel" aria-labelledby="v-pills-post-tab">
+                    </c:otherwise>
+                </c:choose>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <c:if test="${posts.size()==0}">
+                                        <h4>暂无发帖记录</h4>
+                                    </c:if>
+                                    <c:forEach items="${posts}" var="post">
+                                        <div class="card my-sm-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">帖子标题：<a href="/post.action?postid=<c:out value="${post.id}"/>"><c:out value="${post.title}"/></a></h5>
+                                                <p class="card-text">
+                                                    <c:out value="${post.content}"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </div>
+                <c:choose>
+                    <c:when test="${type=='followpost'}">
+                        <div class="tab-pane fade show active" id="v-pills-followpost" role="tabpanel" aria-labelledby="v-pills-followpost-tab">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="tab-pane fade show" id="v-pills-followpost" role="tabpanel" aria-labelledby="v-pills-followpost-tab">
+                    </c:otherwise>
+                </c:choose>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <c:if test="${followposts.size()==0}">
+                                        <h4>暂无回帖记录</h4>
+                                    </c:if>
+                                    <c:forEach items="${followposts}" var="followpost">
+                                        <div class="card my-sm-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">回复帖子：<a href="/post.action?postid=<c:out value="${followpost.post.id}"/>"><c:out value="${followpost.post.title}"/></a></h5>
+                                                <p class="card-text">
+                                                    <c:out value="${followpost.content}"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </div>
+                <c:choose>
+                    <c:when test="${type=='collection'}">
+                        <div class="tab-pane fade show active" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="tab-pane fade show" id="v-pills-collection" role="tabpanel" aria-labelledby="v-pills-collection-tab">
+                    </c:otherwise>
+                </c:choose>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <c:if test="${collections.size()==0}">
+                                        <h4>暂无收藏记录</h4>
+                                    </c:if>
+                                    <c:forEach items="${collections}" var="collection">
+                                        <div class="card my-sm-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">帖子标题：<a href="/post.action?postid=<c:out value="${collection.post.id}"/>"><c:out value="${collection.post.title}"/></a></h5>
+                                                <p class="card-text">
+                                                    <span>收藏时间：<fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${collection.starTime}"/></span>
+                                                    <a href="/user/unstarPost.action?postid=<c:out value="${collection.post.id}"/>" class="btn btn-primary float-right">取消收藏</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
                         </div>
             </div>
         </div>
     </div>
+</div>
     <jsp:include page="/WEB-INF/jsp/web/footer.jsp"/>
     <%@include file="/WEB-INF/jsp/web/foot.jsp"%>
 </body>

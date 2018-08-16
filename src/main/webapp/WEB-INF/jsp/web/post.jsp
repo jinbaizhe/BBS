@@ -101,6 +101,15 @@
                             浏览数:<c:out value="${post.viewNum}"/>
                             &nbsp;|&nbsp;
                             发表于:<fmt:formatDate value="${post.sendTime}"  pattern="yyyy-MM-dd HH:mm:ss"/>
+                            &nbsp;|&nbsp;
+                            <c:choose>
+                                <c:when test="${isLike==true}">
+                                    <a href="/unsetPostLike.action?postid=<c:out value="${post.id}"/>">取消点亮(<c:out value="${postLikeNum}"/>)</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="/setPostLike.action?postid=<c:out value="${post.id}"/>">亮了(<c:out value="${postLikeNum}"/>)</a>
+                                </c:otherwise>
+                            </c:choose>
                             <strong style="float:right;margin-right:10px">
                                 <span class="badge" style="background: #ff6927;width: 50px;">楼主</span>
                             </strong>
@@ -125,18 +134,18 @@
                             <shiro:hasAnyRoles name="Admin,SuperAdmin">
                                 <c:choose>
                                     <c:when test="${post.top==0}">
-                                        <a style="float:right;margin-right: 20px;" href="/manage/setTop?postid=<c:out value="${post.id}"/>">置顶</a>
+                                        <a style="float:right;margin-right: 20px;" href="/manage/setPostTop.action?postid=<c:out value="${post.id}"/>">置顶</a>
                                     </c:when>
                                     <c:otherwise>
-                                        <a style="float:right;margin-right: 20px;" href="/manage/unsetTop?postid=<c:out value="${post.id}"></c:out>">取消置顶</a>
+                                        <a style="float:right;margin-right: 20px;" href="/manage/unsetPostTop.action?postid=<c:out value="${post.id}"></c:out>">取消置顶</a>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:choose>
                                     <c:when test="${post.type==0}">
-                                        <a style="float:right;margin-right: 20px;" href="/manage/setPostEssential?postid=<c:out value="${post.id}"/>">精华</a>
+                                        <a style="float:right;margin-right: 20px;" href="/manage/setPostEssential.action?postid=<c:out value="${post.id}"/>">加精</a>
                                     </c:when>
                                     <c:otherwise>
-                                        <a style="float:right;margin-right: 20px;" href="/manage/unsetPostEssential?postid=<c:out value="${post.id}"/>">取消精华</a>
+                                        <a style="float:right;margin-right: 20px;" href="/manage/unsetPostEssential.action?postid=<c:out value="${post.id}"/>">取消加精</a>
                                     </c:otherwise>
                                 </c:choose>
                             </shiro:hasAnyRoles>

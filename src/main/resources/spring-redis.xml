@@ -29,6 +29,8 @@
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="keySerializer" ref="stringRedisSerializer"/>
         <property name="valueSerializer" ref="jdkSerializationRedisSerializer"/>
+        <property name="hashKeySerializer" ref="stringRedisSerializer"/>
+        <property name="hashValueSerializer" ref="stringRedisSerializer"/>
     </bean>
 
     <!--使用注解驱动-->

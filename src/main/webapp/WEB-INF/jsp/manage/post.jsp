@@ -24,7 +24,7 @@
             <li class="breadcrumb-item">
                 <a href="/manage/index.action">后台管理系统</a>
             </li>
-            <li class="breadcrumb-item active">用户设置</li>
+            <li class="breadcrumb-item active">帖子管理</li>
         </ol>
         <div class="text-center">
             <h1><c:out value="${title}"/></h1>

@@ -115,7 +115,7 @@ public class UserController {
 
     @RequiresUser
     @RequestMapping(value = "/setting")
-    public ModelAndView settingPage(@SessionAttribute(value = "user",required = false)User user, @RequestParam(value = "type", defaultValue = "info")String type) {
+    public ModelAndView settingPage(@SessionAttribute(value = "user",required = false) User user, @RequestParam(value = "type", defaultValue = "info")String type) {
         ModelAndView modelAndView = new ModelAndView();
         List<Post> posts =  postService.getPostsByUserId(user.getId());
         List<Followpost> followposts = followpostService.getFollowpostsByUserId(user.getId(), "asc");
@@ -125,6 +125,7 @@ public class UserController {
         modelAndView.addObject("type", type);
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("followposts", followposts);
+        modelAndView.addObject("collections", collections);
         modelAndView.setViewName("user/settingInfo");
         return modelAndView;
     }
@@ -149,9 +150,11 @@ public class UserController {
         }
         List<Post> posts = postService.getPostsByUserId(real_user.getId());
         List<Followpost> followposts = followpostService.getFollowpostsByUserId(real_user.getId(), "desc");
+        List<Collection> collections = collectionService.getCollectionsByUserId(real_user.getId(), 1, collectionsNumPerPage, "desc");
         modelAndView.addObject("type", type);
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("followposts", followposts);
+        modelAndView.addObject("collections", collections);
         modelAndView.addObject("user", real_user);
         return modelAndView;
     }

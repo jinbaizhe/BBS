@@ -22,7 +22,7 @@ public class CollectionServiceImpl implements CollectionService {
 //        int beginIndex = (currentPage-1)*totalItemsPerPage;
         // TODO: 2018/8/15  以后修改
         int beginIndex = 0;
-        totalItemsPerPage =-1;
+        totalItemsPerPage = Integer.MAX_VALUE;
         order = "start_time " +order;
         return collectionMapper.getCollectionsByUserId(userId, beginIndex, totalItemsPerPage, order);
     }

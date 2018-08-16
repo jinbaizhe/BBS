@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <%@include file="head.jsp"%>
-    <%--<title><c:out value="${subForum.name}"></c:out></title>--%>
+    <title><c:out value="${subForum.name}"/></title>
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
@@ -32,17 +32,17 @@
             <h3><c:out value="${subForum.name}"/></h3>
             <p><c:out value="${subForum.info}"/></p>
             <div class="float-right mb-sm-2">
-                <a class="btn btn-primary" href="/posting.action?sfid=<c:out value="${subForum.id}"></c:out>">发帖</a>
+                <a class="btn btn-primary" href="/posting.action?sfid=<c:out value="${subForum.id}"/>">发帖</a>
             </div>
             <div>
                 <c:choose>
                     <c:when test="${order=='postsend'}">
-                        <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&order=lastfollowpost">按最后回复时间排序</a>
-                        <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&order=postsend">按发帖时间排序</a>
+                        <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=lastfollowpost">按最后回复时间排序</a>
+                        <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=postsend">按发帖时间排序</a>
                     </c:when>
                     <c:otherwise>
-                        <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&order=lastfollowpost">按最后回复时间排序</a>
-                        <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&order=postsend">按发帖时间排序</a>
+                        <a class="btn btn-primary btn-sm active" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=lastfollowpost">按最后回复时间排序</a>
+                        <a class="btn btn-primary btn-sm" href="/subforum.action?sfid=<c:out value="${subForum.id}"/>&order=postsend">按发帖时间排序</a>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -62,7 +62,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${posts}" var="post">
-                    <c:set var="lastfollowpostsendtime" value="${temp[1]}"></c:set>
+                    <c:set var="lastfollowpostsendtime" value="${temp[1]}"/>
                     <tr>
                         <th scope="row">
                             <c:if test="${post.type==1}">
@@ -92,12 +92,12 @@
                 <ul class="pagination justify-content-center">
                     <c:if test='${pager.firstPage!=true}'>
                         <li class="page-item">
-                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&page=1">
+                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=1">
                                 首页
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"></c:out>&page=<c:out value="${pager.currentPage-1}"></c:out>" aria-label="Previous">
+                            <a class="page-link" href="subforum.action?sfid=<c:out value="${subForum.id}"/>&page=<c:out value="${pager.currentPage-1}"/>" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
                             </a>

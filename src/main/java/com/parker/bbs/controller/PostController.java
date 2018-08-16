@@ -32,26 +32,32 @@ public class PostController {
     @Autowired
     private CollectionService collectionService;
 
+
     @RequestMapping("/post")
-    public ModelAndView browserPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postid, @RequestParam(value = "page", defaultValue = "1") int page) {
+    public ModelAndView browserPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId, @RequestParam(value = "page", defaultValue = "1") int page) {
         ModelAndView modelAndView = new ModelAndView();
-        Post post=postService.getPostById(postid);
-        int totalFollowpostsNum=followpostService.getFollowpostsNumByPostId(postid);
-        List<Followpost> followposts=followpostService.getFollowpostsByPostId(postid, page, followpostsNumPerPage,"asc");
+        Post post=postService.getPostById(postId);
+        int totalFollowpostsNum=followpostService.getFollowpostsNumByPostId(postId);
+        List<Followpost> followposts=followpostService.getFollowpostsByPostId(postId, page, followpostsNumPerPage,"asc");
         if (user != null){
-            Collection collection = collectionService.getCollection(user.getId(), postid);
+            Collection collection = collectionService.getCollection(user.getId(), postId);
             modelAndView.addObject("collection", collection);
         }
         Pager pager = new Pager(page,followpostsNumPerPage,totalFollowpostsNum);
         List pageList = pager.getPageList();
+        int postLikeNum = postService.getPostLikeNum(postId);
+        boolean isLike = false;
+        if (user != null){
+            postService.isUserLikePost(user.getId(), postId);
+        }
         modelAndView.addObject("post", post);
+        modelAndView.addObject("postLikeNum", postLikeNum);
+        modelAndView.addObject("isLike", isLike);
         modelAndView.addObject("followposts", followposts);
         modelAndView.addObject("pager", pager);
         modelAndView.addObject("pageList", pageList);
         modelAndView.setViewName("web/post");
         return modelAndView;
-
-
     }
 
     @RequiresUser
@@ -116,6 +122,20 @@ public class PostController {
         modelAndView.addObject("title", "帖子删除成功");
         modelAndView.setViewName("web/operationStatus");
         return modelAndView;
+    }
+
+    @RequiresUser
+    @RequestMapping("/setPostLike")
+    @ResponseBody
+    public void setPostLike(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId) {
+        postService.setPostLike(user.getId(), postId);
+    }
+
+    @RequiresUser
+    @RequestMapping("/unsetPostLike")
+    @ResponseBody
+    public void unsetPostLike(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId) {
+        postService.unsetPostLike(user.getId(), postId);
     }
 
 //    public ModelAndView searchPosts()
