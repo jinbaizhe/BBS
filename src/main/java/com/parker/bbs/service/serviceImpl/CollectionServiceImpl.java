@@ -23,7 +23,7 @@ public class CollectionServiceImpl implements CollectionService {
         // TODO: 2018/8/15  以后修改
         int beginIndex = 0;
         totalItemsPerPage = Integer.MAX_VALUE;
-        order = "start_time " +order;
+        order = "star_time " +order;
         return collectionMapper.getCollectionsByUserId(userId, beginIndex, totalItemsPerPage, order);
     }
 

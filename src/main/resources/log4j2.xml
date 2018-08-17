@@ -30,7 +30,7 @@
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
     <loggers>
         <!--建立一个默认的root的logger-->
-        <root level="error">
+        <root level="info">
             <!--<appender-ref ref="RollingFile"/>/-->
             <appender-ref ref="Console"/>
             <!--<appender-ref ref="log_error"></appender-ref>-->
@@ -38,13 +38,13 @@
         <!--additivity(多余性)开启的话，由于这个logger也是满足root的，所以会被打印两遍。
             分析：开启additivity后，先在自己的logger里判断日志级别再捕获打印，之后移交给root继续打印。
         -->
-        <logger name="com.ths.demo4" level="info" additivity="false">
+        <logger name="com.parker.bbs" level="info" additivity="false">
             <appender-ref ref="Console"/>
             <!--<appender-ref ref="log_error"/>-->
         </logger>
-        <logger name="com.ths.demo4.mapper" level="debug" additivity="false">
-            <appender-ref ref="Console_MyBatis"/>
+        <!--<logger name="com.parker.bbs.mapper" level="debug" additivity="false">-->
+            <!--<appender-ref ref="Console_MyBatis"/>-->
             <!--<appender-ref ref="log_error"/>-->
-        </logger>
+        <!--</logger>-->
     </loggers>
 </configuration>

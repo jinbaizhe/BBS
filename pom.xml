@@ -266,6 +266,13 @@
             <version>2.9.0</version>
         </dependency>
 
+        <!-- com.sun.mail/javax.mail 包含了javax.mail-api(放的是接口)，放的是具体的实现 -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>

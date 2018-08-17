@@ -24,12 +24,12 @@
                 <div class="form-group">
                     <label>用户名</label>
                     <input type="text" class="form-control" name="username" placeholder="请输入用户名">
-                    <!--<small class="form-text text-muted" name=""></small>-->
+                    <small class="form-text text-danger" id="username_message"></small>
                 </div>
                 <div class="form-group">
                     <label>密码</label>
                     <input type="password" class="form-control" name="password" placeholder="请输入密码">
-                    <!--<small class="form-text text-muted" name=""></small>-->
+                    <%--<small class="form-text text-danger" id="password_message"></small>--%>
                 </div>
                 <div class="form-group">
                     <div class="input-group">

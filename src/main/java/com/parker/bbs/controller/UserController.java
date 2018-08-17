@@ -1,5 +1,8 @@
 package com.parker.bbs.controller;
 
+import com.parker.bbs.async.EventProducter;
+import com.parker.bbs.async.event.EventModel;
+import com.parker.bbs.async.event.EventType;
 import com.parker.bbs.pojo.Collection;
 import com.parker.bbs.pojo.Followpost;
 import com.parker.bbs.pojo.Post;
@@ -44,8 +47,12 @@ public class UserController {
     private FollowpostService followpostService;
     @Autowired
     private CollectionService collectionService;
-    @Value("#{configProperties['collectionsNumPerPage']}")
+    @Value("#{configProperties[collectionsNumPerPage]}")
     private int collectionsNumPerPage;
+    @Value("#{configProperties[domainName]}")
+    private String domainName;
+    @Autowired
+    private EventProducter eventProducter;
 
     @RequiresGuest
     @RequestMapping(value = "/register",method = RequestMethod.GET)
@@ -94,7 +101,7 @@ public class UserController {
         }
         try{
             VerifyCode realVerifyCode = userService.getVerifyCode(session.getId());
-            if (!verifyCode.equalsIgnoreCase(realVerifyCode.getCode()))
+            if ((realVerifyCode == null) || (!verifyCode.equalsIgnoreCase(realVerifyCode.getCode())))
             {
                 throw new Exception("验证码错误");
             }
@@ -107,6 +114,14 @@ public class UserController {
             }else {
                 modelAndView.setViewName("redirect:/mainforum.action");
             }
+            //测试代码
+            EventModel event = new EventModel();
+            event.setType(EventType.mail);
+            event.setFromUserId(realUser.getId());
+            event.getExtraMap().put("receiver",realUser.getEmail());
+            event.getExtraMap().put("subject","账号安全提醒");
+            event.getExtraMap().put("content","您的账号在" + Util.getCurrentDateTime() + "登录成功");
+            eventProducter.sendEvent(event);
         }catch (Exception e){
             modelAndView.addObject("message","登录失败："+e.getMessage());
             modelAndView.setViewName("user/login");
@@ -239,7 +254,7 @@ public class UserController {
     @RequestMapping("/getVerifyCode")
     public void getVerifyCode(HttpSession session, HttpServletResponse response)
     {
-        VerifyCode verifyCode = userService.getVerifyCode(session.getId());
+        VerifyCode verifyCode = userService.changeVerifyCode(session.getId());
         try {
             ServletOutputStream outputStream = response.getOutputStream();
             outputStream.write(verifyCode.getImageByteArray());
@@ -247,4 +262,80 @@ public class UserController {
             e.printStackTrace();
         }
     }
+
+    @RequestMapping(value = "/forgetPassword", method = RequestMethod.GET)
+    public ModelAndView getForgetPassowrdPage()
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user/forgetPassword");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/forgetPassword", method = RequestMethod.POST)
+    public ModelAndView commitForgetPassowrd(HttpSession session, @RequestParam("username") String username, @RequestParam("verifyCode") String verifyCode)
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        VerifyCode realVerifyCode = userService.getVerifyCode(session.getId());
+        if (!verifyCode.equalsIgnoreCase(realVerifyCode.getCode())){
+            modelAndView.addObject("message", "验证码错误");
+        }else {
+            User user = userService.getUserByUsername(username);
+            if (user != null) {
+                EventModel event = new EventModel();
+                event.setType(EventType.mail);
+                event.setFromUserId(user.getId());
+                event.getExtraMap().put("receiver",user.getEmail());
+                event.getExtraMap().put("subject","重置您的密码");
+                String key = Util.getRandomCode(20);
+                String url = domainName + "/user/resetPassword.action?key=" + key;
+                String content = "忘记账号密码了吗？别着急，请在1小时内点击以下链接，我们协助您找回密码:" +
+                        "<br>"+url+
+                        "<br>如果这不是您的邮件请忽略，很抱歉打扰您，请原谅。";
+                event.getExtraMap().put("content", content);
+                eventProducter.sendEvent(event);
+                userService.saveResetPasswordKey(user.getId(), key);
+                modelAndView.addObject("message", "邮件已发送到您的邮箱，请查收。");
+            }else {
+                modelAndView.addObject("message", "此用户不存在");
+            }
+        }
+        modelAndView.setViewName("user/forgetPassword");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+    public ModelAndView getResetPassowrdPage(@RequestParam("key") String key)
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        User user = userService.verifyResetPasswordKey(key);
+        if (user != null){
+            modelAndView.addObject("user", user);
+            modelAndView.setViewName("user/resetPassword");
+        }else {
+            modelAndView.addObject("title", "出错了");
+            modelAndView.addObject("message", "链接错误或链接已过期");
+            modelAndView.setViewName("web/operationStatus");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    public ModelAndView getResetPassowrdPage(HttpSession session, @RequestParam("userid") int userId, @RequestParam("password") String password, @RequestParam("verifyCode") String verifyCode)
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        VerifyCode realVerifyCode = userService.getVerifyCode(session.getId());
+        if (verifyCode.equalsIgnoreCase(realVerifyCode.getCode())){
+            userService.updateUserPassword(userId, password);
+            modelAndView.addObject("title", "密码修改成功");
+            modelAndView.addObject("message", "密码修改成功");
+            modelAndView.setViewName("web/operationStatus");
+        }else {
+            modelAndView.addObject("message", "验证码错误");
+            modelAndView.setViewName("user/resetPassword");
+        }
+
+
+        return modelAndView;
+    }
+
 }

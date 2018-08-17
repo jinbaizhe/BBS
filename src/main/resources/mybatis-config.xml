@@ -4,8 +4,9 @@
 <configuration>
     <settings>
         <!--控制台输出sql语句-->
-        <setting name="logImpl" value="STDOUT_LOGGING"></setting>
+        <!--<setting name="logImpl" value="STDOUT_LOGGING"></setting>-->
         <!--<setting name="logImpl" value="LOG4J2"></setting>-->
-        <setting name="cacheEnabled" value="true"></setting>
+        <!--<setting name="cacheEnabled" value="true"></setting>-->
+        <setting name="cacheEnabled" value="false"></setting>
     </settings>
 </configuration>

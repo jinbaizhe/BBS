@@ -4,12 +4,16 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.parker.bbs.service,com.parker.bbs.mapper,com.parker.bbs.shiro" ></context:component-scan>
+    <context:component-scan base-package="com.parker.bbs" ></context:component-scan>
     <context:annotation-config></context:annotation-config>
 
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="location">
-            <value>classpath:setting.properties</value>
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="locations">
+            <list>
+                <value>classpath:setting.properties</value>
+                <value>classpath:mail.properties</value>
+            </list>
         </property>
     </bean>
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">

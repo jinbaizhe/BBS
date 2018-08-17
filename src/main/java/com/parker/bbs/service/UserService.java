@@ -18,6 +18,7 @@ public interface UserService {
     List getAdmins(int currentPage, int totalItemsPerPage);
     int getAdminsNum();
     void updateUserPassword(int userId, String oldPassword, String password) throws Exception;
+    void updateUserPassword(int userId, String password);
     void updateUserInfo(int userId, String info, String sex, String email);
     void setUserAdmin(int userId);
     void unsetUserAdmin(int userId);
@@ -26,4 +27,7 @@ public interface UserService {
     List<Role> getUserRoles(User user);
     Set<Operation> getUserOperations(User user);
     VerifyCode getVerifyCode(String sessionId);
+    VerifyCode changeVerifyCode(String sessionId);
+    User verifyResetPasswordKey(String key);
+    void saveResetPasswordKey(int userid, String key);
 }
