@@ -334,8 +334,24 @@ public class UserController {
             modelAndView.setViewName("user/resetPassword");
         }
 
-
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/test")
+    @ResponseBody
+    public ModelAndView getTestPage()
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("web/test");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/test1")
+    @ResponseBody
+    public User getTest1Page(@RequestParam(value = "username",required = false) String username)
+    {
+        User user = userService.getUserByUsername(username);
+        return user;
     }
 
 }
