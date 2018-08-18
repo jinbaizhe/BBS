@@ -18,6 +18,9 @@
                     <li>
                         <a href="/manage/mainForum.action">版块管理</a>
                     </li>
+                    <li>
+                        <a href="/manage/post.action">帖子管理</a>
+                    </li>
                     <!--
                     <li>
                         <a href="#">公告管理</a>
@@ -38,12 +41,12 @@
                     <span class="nav-link-text">用户管理</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="userManage">
+                    <li>
+                        <a href="/manage/user.action">查看用户</a>
+                    </li>
                     <shiro:hasRole name="SuperAdmin">
                         <li>
-                            <a href="/manage/user.action">设置管理员</a>
-                        </li>
-                        <li>
-                            <a href="/manage/admin.action">撤销管理员</a>
+                            <a href="/manage/admin.action">查看管理员</a>
                         </li>
                     </shiro:hasRole>
                 </ul>
@@ -85,13 +88,18 @@
                 </form>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">
-                    返回网站
+                <a class="nav-link">
+                    欢迎您，<c:out value="${sessionScope.user.username}"/>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
                     <i class="fa fa-fw fa-sign-out"></i>退出
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    返回网站
                 </a>
             </li>
         </ul>

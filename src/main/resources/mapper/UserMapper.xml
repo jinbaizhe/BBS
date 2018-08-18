@@ -72,4 +72,11 @@
         select count(*) from user where id in
         (select user_role.user_id from user_role,role where user_role.role_id=role.id and role.name='Admin')
     </select>
+
+    <select id="getSearchUsers" resultMap="user" useCache="true">
+        select * from user where ( id like #{key} or username like #{key} )
+         and id not in
+        (select user_role.user_id from user_role,role where user_role.role_id=role.id and role.name like '%Admin')
+         order by ${order} limit ${beginIndex},${num}
+    </select>
 </mapper>

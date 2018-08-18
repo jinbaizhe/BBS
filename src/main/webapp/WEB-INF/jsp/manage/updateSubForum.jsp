@@ -17,7 +17,7 @@
                 <a href="/manage/index.action">后台管理系统</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="/manage/subforum.action?mfid=<c:out value="${mainForum.id}"/>">子版块管理</a>
+                <a href="/manage/subForum.action?mfid=<c:out value="${subForum.mainForum.id}"/>">子版块管理</a>
             </li>
             <li class="breadcrumb-item active">修改子版块</li>
         </ol>

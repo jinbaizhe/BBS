@@ -7,21 +7,72 @@
     <%@include file="/WEB-INF/jsp/web/head.jsp"%>
     <script type="text/javascript">
         function checkUsername(){
-            var inputName = $("#username").val();
-            alert(inputName);
-            $.ajax({
-                type: 'post',
-                url: '/user/test1.action',
-                data: {username: inputName},
-                dataType: 'json',
-                success: function(user){
-                    alert(user.username);
-                    alert(user.sex);
-                },
-                error: function () {
-                    alert("出错了！！！");
-                }
-            });
+            var inputName = document.getElementById('username').value;
+            var user_message = document.getElementById("username_message");
+            var isPass = true;
+            var pattern = /^\w{3,}$/;
+            if (!pattern.test(inputName)){
+                user_message.className = 'form-text text-danger';
+                user_message.innerText = '用户名不符合规范，要求3个及以上的字符';
+                isPass = false;
+            }else {
+                $.ajax({
+                    type: 'post',
+                    url: '/user/isExistUser.action',
+                    data: {username: inputName},
+                    dataType: 'json',
+                    async: false,
+                    success: function(data){
+                        user_message.innerText = data.message;
+                        if (data.isExist) {
+                            user_message.className = 'form-text text-danger';
+                            isPass = false;
+                        }else {
+                            user_message.className = 'form-text text-success';
+                        }
+                    },
+                    error: function () {
+                        user_message.innerText = '连接服务器失败';
+                        isPass = false;
+                    }
+                });
+            }
+            return isPass;
+        }
+
+        function checkPassword() {
+            var password = document.getElementById('password');
+            var password_message = document.getElementById('password_message');
+            var pattern = /^\w{6,}/;
+            if (!pattern.test(password.value)){
+                password_message.innerText = '密码输入不符合规范，要求6位及以上';
+                return false;
+            }
+            else {
+                password_message.innerText = '';
+                return true;
+            }
+        }
+
+        function confirmPassword() {
+            var password = document.getElementById('password');
+            var repeatPassword = document.getElementById('repeat_password');
+            var repeatPassword_message = document.getElementById('repeat_password_message');
+            if (password.value !== repeatPassword.value){
+                repeatPassword_message.innerText = '两次密码输入不一致';
+                return false;
+            }
+            else {
+                repeatPassword_message.innerText = '';
+                return true;
+            }
+        }
+        
+        function validateForm() {
+            var checkUsernameResult = checkUsername();
+            var checkPasswordResult = checkPassword();
+            var confirmPasswordResult = confirmPassword();
+            return checkUsernameResult && checkPasswordResult && confirmPasswordResult;
         }
     </script>
     <title>注册</title>
@@ -32,7 +83,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4 border my-sm-3" style="border: grey;border-radius: 15px;padding: 20px;margin-left: auto;margin-right: auto;">
-            <form method="post" action="/user/register.action" id="register_form">
+            <form method="post" action="/user/register.action" id="register_form" onsubmit="return validateForm();">
                 <div class="form-group">
                     <div class="text-danger text-center">
                         <h5>
@@ -42,7 +93,7 @@
                 </div>
                 <div class="form-group">
                     <label>用户名</label>
-                    <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名" onblur="">
+                    <input type="text" class="form-control" name="username" id="username" placeholder="请输入用户名" onblur="checkUsername(this)">
                     <small class="form-text text-danger" id="username_message"></small>
                 </div>
                 <div class="form-group">
@@ -52,13 +103,13 @@
                 </div>
                 <div class="form-group">
                     <label>密码</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码" onblur="checkPassword()">
                     <small class="form-text text-danger" id="password_message"></small>
                 </div>
                 <div class="form-group">
                     <label>再次确认密码</label>
-                    <input type="password" class="form-control" name="repeat_password" id="repeat_password" placeholder="请再次输入密码">
-                    <small class="form-text text-danger" id="repeat_password_message"></small>
+                    <input type="password" class="form-control" name="repeat_password" id="repeat_password" placeholder="请再次输入密码" onblur="confirmPassword()">
+                    <small class="form-text text-danger" name="repeat_password_message" id="repeat_password_message"></small>
                 </div>
 
                 <div class="form-group">
@@ -75,7 +126,6 @@
                 </div>
                 <button class="btn btn-primary btn-block mt-sm-4" type="submit">注册</button>
                 <button class="btn btn-primary btn-block mt-sm-4" type="reset">重置</button>
-                <button class="btn btn-primary btn-block mt-sm-4" type="button" onclick="checkUsername()">重置</button>
                 <a href="/user/login.action" class="mt-sm-3 float-right">已有账号,直接登录</a>
             </form>
         </div>

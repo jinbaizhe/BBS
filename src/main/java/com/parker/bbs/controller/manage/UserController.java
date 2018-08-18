@@ -23,22 +23,33 @@ public class UserController {
     @Value("#{configProperties['manageUserPerPageNum']}")
     private int manageUserPerPageNum;
 
-    @RequiresRoles(value = "SuperAdmin")
+    @RequiresRoles(value = {"Admin","SuperAdmin"}, logical = Logical.OR)
     @RequestMapping(value = "/user")
-    public ModelAndView getUserPage(@RequestParam(value = "page", defaultValue = "1") int page)
+    public ModelAndView getUserPage(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "search",defaultValue = "")String searchKey)
     {
-        List<User> users=userService.getUsersExceptAdminAndSuperAdmin(page, manageUserPerPageNum);
+        ModelAndView modelAndView = new ModelAndView();
+        List<User> users;
+        if (searchKey.equals("")) {
+           users  = userService.getUsersExceptAdminAndSuperAdmin(page, manageUserPerPageNum);
+            modelAndView.addObject("search", "");
+        }else {
+            users = userService.getSearchUsers(searchKey, page, manageUserPerPageNum);
+            modelAndView.addObject("message", "搜索关键字："+searchKey);
+            modelAndView.addObject("search", searchKey);
+        }
         int totalUsersNum=userService.getUsersNumExceptAdminAndSuperAdmin();
         Pager pager=new Pager(page,manageUserPerPageNum,totalUsersNum);
-        ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("users", users);
         modelAndView.addObject("page", page);
         modelAndView.addObject("pager", pager);
-        modelAndView.addObject("title", "设置管理员");
+        modelAndView.addObject("title", "查看用户");
         modelAndView.addObject("type", "user");
         modelAndView.setViewName("manage/user");
         return modelAndView;
     }
+
+
+
 
     @RequiresRoles(value = "SuperAdmin")
     @RequestMapping(value = "/admin")
@@ -51,7 +62,7 @@ public class UserController {
         modelAndView.addObject("users", users);
         modelAndView.addObject("page", page);
         modelAndView.addObject("pager", pager);
-        modelAndView.addObject("title", "撤销管理员");
+        modelAndView.addObject("title", "查看管理员");
         modelAndView.addObject("type", "admin");
         modelAndView.setViewName("manage/user");
         return modelAndView;

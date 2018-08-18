@@ -34,7 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -54,7 +56,6 @@ public class UserController {
     @Autowired
     private EventProducter eventProducter;
 
-    @RequiresGuest
     @RequestMapping(value = "/register",method = RequestMethod.GET)
     public ModelAndView registerPage(){
         ModelAndView modelAndView = new ModelAndView();
@@ -80,7 +81,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequiresGuest
+
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public ModelAndView loginPage(@RequestHeader(value = "Referer", required = false)String referURL, HttpSession session){
         Util.addReferURL(referURL, session);
@@ -333,25 +334,43 @@ public class UserController {
             modelAndView.addObject("message", "验证码错误");
             modelAndView.setViewName("user/resetPassword");
         }
-
         return modelAndView;
     }
 
-    @RequestMapping(value = "/test")
+    @RequestMapping(value = "/isExistUser")
     @ResponseBody
-    public ModelAndView getTestPage()
+    public Map isExistUser(@RequestParam(value = "username",required = false) String username)
     {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("web/test");
-        return modelAndView;
+        String message;
+        boolean isExist = userService.isExistUser(username);
+        if (!isExist){
+            message = "此用户名可用";
+        }else {
+            message = "此用户名已被使用";
+        }
+        Map map = new HashMap(4);
+        map.put("message", message);
+        map.put("isExist", isExist);
+        return map;
     }
 
-    @RequestMapping(value = "/test1")
+    @RequestMapping("/checkVerifyCode")
     @ResponseBody
-    public User getTest1Page(@RequestParam(value = "username",required = false) String username)
+    public Map checkVerifyCode(HttpSession session, @RequestParam("verifyCode") String verifyCode)
     {
-        User user = userService.getUserByUsername(username);
-        return user;
+        Map map = new HashMap(4);
+        boolean isRight = false;
+        String message;
+        VerifyCode realVerifyCode = userService.getVerifyCode(session.getId());
+        if (verifyCode.equalsIgnoreCase(realVerifyCode.getCode())){
+            isRight = true;
+            message = "验证码输入正确";
+        }else {
+            message = "验证码输入错误";
+        }
+        map.put("isRight", isRight);
+        map.put("message", message);
+        return map;
     }
 
 }

@@ -14,4 +14,12 @@ public class WebController {
         modelAndView.setViewName("web/about");
         return modelAndView;
     }
+
+    @RequestMapping("/404")
+    public ModelAndView get404Page()
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("web/404");
+        return modelAndView;
+    }
 }

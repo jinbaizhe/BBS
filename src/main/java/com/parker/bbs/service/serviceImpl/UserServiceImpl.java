@@ -76,6 +76,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isExistUser(String username) {
+        User user = userMapper.getUserByUsername(username);
+        if (user != null){
+            return true;
+        }
         return false;
     }
 
@@ -182,5 +186,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveResetPasswordKey(int userId, String key) {
         redisTemplate.opsForValue().set(redisResetPasswordPrefix+key, userId, 1, TimeUnit.HOURS);
+    }
+
+    @Override
+    public List<User> getSearchUsers(String key, int currentPage, int totalItemsPerPage) {
+        key = key + "%";
+        int beginIndex = (currentPage-1)*totalItemsPerPage;
+        String order = "id asc";
+        return userMapper.getSearchUsers(key, beginIndex, totalItemsPerPage, order);
     }
 }

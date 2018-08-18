@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class MainForumController {
     @Autowired
     private SubForumService subForumService;
 
-    @RequestMapping("mainforum")
+    @RequestMapping("/mainforum")
     public ModelAndView browserMainForum(@RequestParam(value = "mfid",defaultValue = "-1")int mainForumId)
     {
         ModelAndView modelAndView = new ModelAndView();
@@ -44,5 +45,12 @@ public class MainForumController {
         }
         modelAndView.addObject("mainForumMap",map);
         return modelAndView;
+    }
+
+    @RequestMapping("/getMainForumsData")
+    @ResponseBody
+    public List<MainForum> getMainForumsToJSON() {
+        List<MainForum> mainForums = mainForumService.getAllMainForums();
+        return mainForums;
     }
 }

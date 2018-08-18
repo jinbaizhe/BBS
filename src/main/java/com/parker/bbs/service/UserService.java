@@ -30,4 +30,5 @@ public interface UserService {
     VerifyCode changeVerifyCode(String sessionId);
     User verifyResetPasswordKey(String key);
     void saveResetPasswordKey(int userid, String key);
+    List<User> getSearchUsers(String key, int currentPage, int totalItemsPerPage);
 }

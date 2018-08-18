@@ -100,4 +100,6 @@ public class MainForumController {
         modelAndView.setViewName("web/operationStatus");
         return modelAndView;
     }
+
+
 }

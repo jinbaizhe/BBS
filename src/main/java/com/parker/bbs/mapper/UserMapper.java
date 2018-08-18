@@ -17,4 +17,5 @@ public interface UserMapper {
     int unsetUserAdmin(@Param("userId") int userId);
     List<User> getAdmins(@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
     int getAdminsNum();
+    List<User> getSearchUsers(@Param("key") String key,@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
 }
