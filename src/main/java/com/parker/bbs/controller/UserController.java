@@ -65,9 +65,14 @@ public class UserController {
 
     @RequiresGuest
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public ModelAndView registerUser(User user){
+    public ModelAndView registerUser(User user, @RequestParam(value = "verifyCode",defaultValue = "") String verifyCode, HttpSession session){
         ModelAndView modelAndView = new ModelAndView();
         try{
+            VerifyCode realVerifyCode = userService.getVerifyCode(session.getId());
+            if ((realVerifyCode == null) || (!verifyCode.equalsIgnoreCase(realVerifyCode.getCode())))
+            {
+                throw new Exception("验证码错误");
+            }
             User real_user = userService.registerUser(user);
             if (real_user != null){
                 modelAndView.addObject("message","注册成功");
@@ -121,7 +126,7 @@ public class UserController {
             event.setFromUserId(realUser.getId());
             event.getExtraMap().put("receiver",realUser.getEmail());
             event.getExtraMap().put("subject","账号安全提醒");
-            event.getExtraMap().put("content","您的账号在" + Util.getCurrentDateTime() + "登录成功");
+            event.getExtraMap().put("content","您的账号（"+ realUser.getUsername() + "）在" + Util.getCurrentDateTime() + "登录成功");
             eventProducter.sendEvent(event);
         }catch (Exception e){
             modelAndView.addObject("message","登录失败："+e.getMessage());

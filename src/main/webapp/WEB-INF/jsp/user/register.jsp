@@ -6,6 +6,32 @@
 <head>
     <%@include file="/WEB-INF/jsp/web/head.jsp"%>
     <script type="text/javascript">
+        function checkVerifyCode(){
+            var inputVerifyCode = document.getElementById('verifyCode').value;
+            var verifyCode_message = document.getElementById("verifyCode_message");
+            var isRight = true;
+            $.ajax({
+                type: 'post',
+                url: '/user/checkVerifyCode.action',
+                data: {'verifyCode': inputVerifyCode},
+                dataType: 'json',
+                async: false,
+                success: function(data){
+                    verifyCode_message.innerText = data.message;
+                    if (data.isRight) {
+                        verifyCode_message.className = 'form-text text-success';
+                    }else {
+                        verifyCode_message.className = 'form-text text-danger';
+                        isRight = false;
+                    }
+                },
+                error: function () {
+                    verifyCode_message.innerText = '连接服务器失败';
+                    isRight = false;
+                }
+            });
+            return isRight;
+        }
         function checkUsername(){
             var inputName = document.getElementById('username').value;
             var user_message = document.getElementById("username_message");
@@ -53,7 +79,6 @@
                 return true;
             }
         }
-
         function confirmPassword() {
             var password = document.getElementById('password');
             var repeatPassword = document.getElementById('repeat_password');
@@ -67,12 +92,18 @@
                 return true;
             }
         }
-        
+        function changeVerifyCode() {
+            var verifyCode = document.getElementById('verifyCodeImg');
+            var num = (Math.random()*100)*(Math.log(Math.random()*10));
+            num = Math.round(num);
+            verifyCode.src = '/user/getVerifyCode.action?num=' + num;
+        }
         function validateForm() {
             var checkUsernameResult = checkUsername();
             var checkPasswordResult = checkPassword();
             var confirmPasswordResult = confirmPassword();
-            return checkUsernameResult && checkPasswordResult && confirmPasswordResult;
+            var checkVerifyCodeResult = checkVerifyCode();
+            return checkUsernameResult && checkPasswordResult && confirmPasswordResult && checkVerifyCodeResult;
         }
     </script>
     <title>注册</title>
@@ -123,6 +154,14 @@
                     <label>个人简介</label>
                     <input type="text" class="form-control" name="info" id="info" placeholder="请输入个人简介">
                     <small class="form-text text-danger" id="info_message"></small>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>验证码</label>
+                        <img src="/user/getVerifyCode.action" id="verifyCodeImg" width="120" height="40" alt="无法显示验证码" onclick="changeVerifyCode();">
+                        <input type="text" class="form-control" name="verifyCode" id="verifyCode" onblur="checkVerifyCode()" placeholder="请输入验证码">
+                        <small class="form-text text-muted" name="verifyCode_message" id="verifyCode_message"></small>
+                    </div>
                 </div>
                 <button class="btn btn-primary btn-block mt-sm-4" type="submit">注册</button>
                 <button class="btn btn-primary btn-block mt-sm-4" type="reset">重置</button>

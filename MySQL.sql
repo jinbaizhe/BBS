@@ -220,7 +220,6 @@ create table role_operation
   operation_id 			int references operation(id),
   primary key (role_id, operation_id)
 );
-grant all privileges on bbs.* to 'test'@'%' identified by 'parker123456';
 
 alter table collection add constraint FK_COLLECTI_RELATIONS_USER foreign key (user_id)
       references user (id) on delete cascade on update cascade;
@@ -266,3 +265,5 @@ alter table role_operation add constraint FK_ROLE_OPERATION_RELATIONS_ROLE forei
 	  
 alter table role_operation add constraint FK_ROLE_OPERATION_RELATIONS_PERATION foreign key (operation_id)
       references operation (id) on update cascade;
+
+grant all privileges on bbs.* to 'test'@'%' identified by 'parker123456';

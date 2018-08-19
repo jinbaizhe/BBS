@@ -57,6 +57,12 @@
                 return true;
             }
         }
+        function changeVerifyCode() {
+            var verifyCode = document.getElementById('verifyCodeImg');
+            var num = (Math.random()*100)*(Math.log(Math.random()*10));
+            num = Math.round(num);
+            verifyCode.src = '/user/getVerifyCode.action?num=' + num;
+        }
         function checkForum() {
             var checkUsernameResult = checkUsername();
             var checkPasswordResult = checkPassword();
@@ -92,10 +98,10 @@
                 <div class="form-group">
                     <div class="input-group">
                         <label>验证码</label>
-                        <img src="/user/getVerifyCode.action" width="100" height="30" alt="无法显示验证码">
+                        <img src="/user/getVerifyCode.action" id="verifyCodeImg" width="120" height="40" alt="无法显示验证码" onclick="changeVerifyCode();">
                         <input type="text" class="form-control" name="verifyCode" id="verifyCode" onblur="checkVerifyCode()" placeholder="请输入验证码">
+                        <small class="form-text text-muted" name="verifyCode_message" id="verifyCode_message"></small>
                     </div>
-                    <small class="form-text text-muted" name="verifyCode_message" id="verifyCode_message"></small>
                 </div>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="autoLogin" value="true">

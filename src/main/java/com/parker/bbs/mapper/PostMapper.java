@@ -15,6 +15,6 @@ public interface PostMapper {
     int updatePostLastReplyTime(@Param("postId") int postId, @Param("lastReplyTime") Timestamp lastReplyTime);
     int deletePost(@Param("post") Post post);
     List getPostsByUserId(@Param("userid") int userid, @Param("order") String order);
-    List getSearchResult(@Param("keyWord") String keyWord, @Param("currentPage") int currentPage, @Param("order") String order);
-    int getSearchResultNum(@Param("keyWord") String keyWord, @Param("order") String order);
+    List<Post> getSearchPosts(@Param("key") String key,@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
+    int getSearchPostsNum(@Param("key") String key);
 }

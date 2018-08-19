@@ -198,4 +198,18 @@ public class PostServiceImpl implements PostService {
     public void updatePostLastReplyTime(int postId, Timestamp lastReplyTime) {
         postMapper.updatePostLastReplyTime(postId, lastReplyTime);
     }
+
+    @Override
+    public List<Post> getSearchPosts(String key, int currentPage, int totalItemsPerPage) {
+        key = "%" + key + "%";
+        int beginIndex = (currentPage-1)*totalItemsPerPage;
+        String order = "id asc";
+        return postMapper.getSearchPosts(key, beginIndex, totalItemsPerPage, order);
+    }
+
+    @Override
+    public int getSearchPostsNum(String key) {
+        key = "%" + key + "%";
+        return postMapper.getSearchPostsNum(key);
+    }
 }

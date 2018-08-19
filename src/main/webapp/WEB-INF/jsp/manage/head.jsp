@@ -9,5 +9,8 @@
 <link rel="stylesheet" type="text/css" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
 <!-- Custom styles for this template-->
 <link href="/static/css/sb-admin.min.css" rel="stylesheet" type="text/css">
-
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/sb-admin.js"></script>
 <script src="/static/ckeditor/ckeditor.js"></script>

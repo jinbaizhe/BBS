@@ -2,6 +2,7 @@ package com.parker.bbs.controller.manage;
 
 import com.parker.bbs.pojo.Post;
 import com.parker.bbs.service.PostService;
+import com.parker.bbs.util.Pager;
 import com.parker.bbs.util.Util;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -11,9 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller("postManageController")
@@ -26,23 +29,32 @@ public class PostController {
 
     @RequiresRoles(value = {"Admin", "SuperAdmin"}, logical = Logical.OR)
     @RequestMapping("/post")
-    public ModelAndView getPostPage(@RequestParam(value = "mfid",required = false) Integer mainForumId, @RequestParam(value = "sfid",required = false) Integer subForumId, @RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "search",defaultValue = "")String searchKey)
+    public ModelAndView getPostPage(@RequestParam(value = "mfid",required = false) Integer mainForumId, @RequestParam(value = "sfid",required = false) Integer subForumId, @RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "search",defaultValue = "")String searchKey, @RequestParam(value = "type",required = false)String type)
     {
         ModelAndView modelAndView = new ModelAndView();
-//        List<Post> posts;
-//        if (searchKey.equals("")) {
-//            posts  = postService.getUsersExceptAdminAndSuperAdmin(page, managePostPerPageNum);
-//            modelAndView.addObject("search", "");
-//        }else {
-//            posts  = postService.getSearchUsers(searchKey, page, managePostPerPageNum);
-//            modelAndView.addObject("message", "搜索关键字："+searchKey);
-//            modelAndView.addObject("search", searchKey);
-//        }
-
+        List<Post> posts=null;
+        int totalPostsNum = 0;
+        if ((type!=null) && (subForumId!=null) && type.equals("browse")){
+            posts  = postService.getPostsBySubForumId(subForumId, page, managePostPerPageNum, "postsendtime");
+            modelAndView.addObject("mainForumId", mainForumId);
+            modelAndView.addObject("subForumId", subForumId);
+        }else if ((type!=null) && type.equals("search")){
+            posts  = postService.getSearchPosts(searchKey, page, managePostPerPageNum);
+            totalPostsNum = postService.getSearchPostsNum(searchKey);
+            modelAndView.addObject("message", "搜索关键字："+searchKey);
+        }else {
+            posts  = new ArrayList<>();
+        }
+        Pager pager = new Pager(page, managePostPerPageNum, totalPostsNum);
         modelAndView.addObject("title", "帖子管理");
+        modelAndView.addObject("posts", posts);
+        modelAndView.addObject("page", page);
+        modelAndView.addObject("pager", pager);
+        modelAndView.addObject("search", searchKey);
         modelAndView.setViewName("manage/post");
         return modelAndView;
     }
+
 
 
     @RequiresRoles(value = {"Admin", "SuperAdmin"}, logical = Logical.OR)

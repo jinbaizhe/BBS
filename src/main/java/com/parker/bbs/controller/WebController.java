@@ -22,4 +22,12 @@ public class WebController {
         modelAndView.setViewName("web/404");
         return modelAndView;
     }
+
+    @RequestMapping("/test")
+    public ModelAndView getTestPage()
+    {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("web/test");
+        return modelAndView;
+    }
 }

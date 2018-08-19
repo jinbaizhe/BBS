@@ -31,7 +31,8 @@ public class PostController {
     private SubForumService subForumService;
     @Autowired
     private CollectionService collectionService;
-
+    @Value("#{configProperties[managePostPerPageNum]}")
+    private int managePostPerPageNum;
 
     @RequestMapping("/post")
     public ModelAndView browserPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId, @RequestParam(value = "page", defaultValue = "1") int page) {
@@ -136,6 +137,18 @@ public class PostController {
     @ResponseBody
     public void unsetPostLike(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId) {
         postService.unsetPostLike(user.getId(), postId);
+    }
+
+    @RequestMapping("/getPostsData")
+    @ResponseBody
+    public List<Post> getPostsData(@RequestParam(value = "sfid",required = false) Integer subForumId, @RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "search",defaultValue = "")String searchKey) {
+        List<Post> posts=null;
+        if (searchKey.equals("")) {
+            posts  = postService.getPostsBySubForumId(subForumId, page, managePostPerPageNum, "postsendtime");
+        }else {
+//            posts  = postService.getSearchUsers(searchKey, subForumId, page, managePostPerPageNum);
+        }
+        return posts;
     }
 
 //    public ModelAndView searchPosts()

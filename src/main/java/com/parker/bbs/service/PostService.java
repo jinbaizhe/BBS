@@ -27,4 +27,6 @@ public interface PostService {
     boolean isUserLikePost(int userId, int postId);
     int addPostViewNum(int postId);
     int getPostViewNum(int postId);
+    List<Post> getSearchPosts(String key, int currentPage, int totalItemsPerPage);
+    int getSearchPostsNum(String key);
 }

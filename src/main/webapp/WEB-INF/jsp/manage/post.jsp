@@ -14,46 +14,70 @@
     <%@include file="head.jsp"%>
     <title><c:out value="${title}"/></title>
     <script type="text/javascript">
+        $(document).ready(function(){
+            getMainForumsData();
+        });
+
         function getMainForumsData() {
             var mainForumSelect = document.getElementById('mainForum');
+            var selectMainForumId = document.getElementById('selectMainForumId').value;
             $.ajax({
-                type: 'post',
+                type: 'get',
                 url: '/getMainForumsData.action',
                 data: {},
                 dataType: 'json',
                 success: function (data) {
+                    mainForumSelect.options.length=0;
+                    var index = 0;
                     for (var i = 0; i < data.length; i++) {
-                        mainForumSelect.innerHTML += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        if (data[i].id == selectMainForumId) {
+                            index = i;
+                        }
+                        mainForumSelect.add(new Option(data[i].name, data[i].id));
                     }
+                    mainForumSelect.options[index].selected = true;
+                    var mfid = mainForumSelect.options[index].value;
+                    getSubForumsData(mfid);
                 },
-                error: function (e) {
-                    alert(e.value)
+                error: function () {
+                    alert('出错了！');
                 }
             });
         }
-        function getSubForumsData() {
+        function getSubForumsData(mainForumId) {
             var subForumSelect = document.getElementById('subForum');
-            var mainForumId = document.getElementById('mainForum').value;
-            subForumSelect.innerHTML = '';
+            var selectSubForumId = document.getElementById('selectSubForumId').value;
             $.ajax({
-                type: 'post',
+                type: 'get',
                 url: '/getSubForumsData.action',
                 data: {'mfid': mainForumId},
                 dataType: 'json',
                 success: function (data) {
+                    subForumSelect.options.length=0;
+                    var index = -1;
+                    if (selectSubForumId == ''){
+                        subForumSelect.add(new Option('请选择子版块', ''));
+                        subForumSelect.options[0].hidden = true;
+                    }
                     for(var i=0;i<data.length;i++){
-                        subForumSelect.innerHTML+='<option value="' + data[i].id +  '">' + data[i].name + '</option>';
+                        if (selectSubForumId == data[i].id) {
+                            index = i;
+                        }
+                        subForumSelect.add(new Option(data[i].name, data[i].id));
+                    }
+                    if (index !== -1){
+                        subForumSelect.options[index].selected = true;
                     }
                 },
-                error: function (e) {
-                    alert(e.value)
+                error: function () {
+                    alert('出错了！');
                 }
             })
         }
     </script>
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top" onload="getMainForumsData();">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <%@ include file="slideBar.jsp"%>
 <div class="content-wrapper">
     <div class="container">
@@ -71,16 +95,23 @@
         </div>
         <div class="row my-sm-2">
             <div class="col-sm-12">
-                <form action="/manage/post.action" method="get">
-                    <div class="input-group" style="width: 100%">
-                        <select class="form-control mr-5" name="mfid" id="mainForum" onchange="getSubForumsData();">
-                            <option hidden>请选择主板块</option>
-                        </select>
-                        <select class="form-control mr-5" name="mfid" id="subForum">
-                            <option hidden>请选择子板块</option>
-                        </select>
+                <input type="hidden" id="selectMainForumId" value="<c:out value="${mainForumId}"/>">
+                <input type="hidden" id="selectSubForumId" value="<c:out value="${subForumId}"/>">
+                <form action="/manage/post.action" method="post" style="width: 40%">
+                    <div class="input-group-append">
                         <input class="form-control mr-5" type="text" name="search" id="search" placeholder="帖子ID/帖子标题">
+                        <input type="hidden" name="type" value="search">
                         <input class="btn btn-primary mr-5" type="submit" value="搜索">
+                    </div>
+                </form>
+                <form action="/manage/post.action" method="post">
+                    <div class="input-group" style="width: 100%">
+                        <select autocomplete="off" class="form-control mr-5" name="mfid" id="mainForum" onchange="getSubForumsData(this.value);">
+                        </select>
+                        <select autocomplete="off" class="form-control mr-5" name="sfid" id="subForum">
+                        </select>
+                        <input type="hidden" name="type" value="browse">
+                        <input class="btn btn-primary mr-5" type="submit" value="确定">
                     </div>
                 </form>
             </div>
@@ -92,19 +123,20 @@
                 </c:if>
                 <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th scope="col">帖子ID</th>
-                        <th scope="col">所属子版块</th>
-                        <th scope="col">标题</th>
-                        <th scope="col">发帖者</th>
-                        <th scope="col">发帖时间</th>
-                        <th scope="col">最后回复时间</th>
-                        <th scope="col">浏览数</th>
-                        <th scope="col">加精</th>
-                        <th scope="col">置顶</th>
-                        <th scope="col">操作</th>
-                    </tr>
+                        <tr>
+                            <th scope="col">帖子ID</th>
+                            <th scope="col">所属子版块</th>
+                            <th scope="col">标题</th>
+                            <th scope="col">发帖者</th>
+                            <th scope="col">发帖时间</th>
+                            <th scope="col">最后回复时间</th>
+                            <th scope="col">浏览数</th>
+                            <th scope="col">加精</th>
+                            <th scope="col">置顶</th>
+                            <th scope="col">操作</th>
+                        </tr>
                     </thead>
+                    <tbody id="dataBody">
                     <c:if test="${users.size()==0}">
                         <tr>
                             <td colspan="8">
@@ -112,27 +144,37 @@
                             </td>
                         </tr>
                     </c:if>
-                    <c:forEach items="${users}" var="user">
+                    <c:forEach items="${posts}" var="post">
                         <tr>
-                            <th scope="row"><c:out value="${user.id}"/></th>
-                            <td><c:out value="${user.username}"/></td>
-                            <td><c:out value="${user.email}"/></td>
-                            <td><fmt:formatDate value="${user.registerTime}"  pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                            <td></td>
-                            <td></td>
+                            <th scope="row"><c:out value="${post.id}"/></th>
+                            <td><c:out value="${post.subForum.id}"/></td>
+                            <td><c:out value="${post.title}"/></td>
+                            <td><c:out value="${post.user.id}"/></td>
+                            <td><fmt:formatDate value="${post.sendTime}"  pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                            <td><fmt:formatDate value="${post.lastReplyTime}"  pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                            <td><c:out value="${post.viewNum}"/></td>
+                            <td><c:out value="${post.type}"/></td>
                             <td><c:out value="${user.status}"/></td>
                             <td>
-                                <shiro:hasRole name="SuperAdmin">
-                                    <c:if test="${type=='user'}">
-                                        <a class="btn btn-success btn-sm mr-sm-2" href="/manage/setUserAdmin.action?userid=<c:out value="${user.id}"/>">设为管理员</a>
-                                    </c:if>
-                                    <c:if test="${type=='admin'}">
-                                        <a class="btn btn-success btn-sm mr-sm-2" href="/manage/unsetUserAdmin.action?userid=<c:out value="${user.id}"/>">撤销管理员</a>
-                                    </c:if>
-                                </shiro:hasRole>
-                                <a class="btn btn-info btn-sm mr-sm-2" href="#">重置密码</a>
-                                <a class="btn btn-warning btn-sm mr-sm-2" href="#">禁言</a>
-                                <a class="btn btn-danger btn-sm mr-sm-2" href="#">删除</a>
+                                <shiro:hasAnyRoles name="Admin,SuperAdmin">
+                                    <c:choose>
+                                        <c:when test="${post.top==0}">
+                                            <a class="btn btn-info btn-sm mr-sm-2" href="/manage/setPostTop.action?postid=<c:out value="${post.id}"/>">置顶</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class="btn btn-info btn-sm mr-sm-2" href="/manage/unsetPostTop.action?postid=<c:out value="${post.id}"></c:out>">取消置顶</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when test="${post.type==0}">
+                                            <a class="btn btn-warning btn-sm mr-sm-2" href="/manage/setPostEssential.action?postid=<c:out value="${post.id}"/>">加精</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class="btn btn-warning btn-sm mr-sm-2" href="/manage/unsetPostEssential.action?postid=<c:out value="${post.id}"/>">取消加精</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <a class="btn btn-danger btn-sm mr-sm-2" href="/manage/deletePost.action?postid=<c:out value="${post.id}"/>">删除</a>
+                                </shiro:hasAnyRoles>
                             </td>
                         </tr>
                     </c:forEach>
@@ -147,12 +189,12 @@
 
                         <c:if test='${pager.firstPage!=true}'>
                             <li class="page-item">
-                                <a class="page-link" href="/manage/user.action?page=1&search=<c:out value="${search}"/>">
+                                <a class="page-link" href="/manage/post.action?page=1&search=<c:out value="${search}"/>">
                                     首页
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="/manage/user.action?page=<c:out value="${pager.getCurrentPage-1}"/>&search=<c:out value="${search}"/>" aria-label="Previous">
+                                <a class="page-link" href="/manage/post.action?page=<c:out value="${pager.getCurrentPage-1}"/>&search=<c:out value="${search}"/>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
@@ -162,7 +204,7 @@
                             <c:choose>
                                 <c:when test="${item==pager.currentPage}">
                                     <li class="page-item active">
-                                        <a class="page-link" href="/manage/user.action?page=<c:out value="${item}"/>&search=<c:out value="${search}"/>">
+                                        <a class="page-link" href="/manage/post.action?page=<c:out value="${item}"/>&search=<c:out value="${search}"/>">
                                             <c:out value="${item}"/>
                                         </a>
                                     </li>
@@ -176,7 +218,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <li class="page-item">
-                                        <a class="page-link" href="/manage/user.action?page=<c:out value="${item}"/>&search=<c:out value="${search}"/>">
+                                        <a class="page-link" href="/manage/post.action?page=<c:out value="${item}"/>&search=<c:out value="${search}"/>">
                                             <c:out value="${item}"/>
                                         </a>
                                     </li>
@@ -186,7 +228,7 @@
                         </c:forEach>
                         <c:if test='${pager.lastPage!=true}'>
                             <li class="page-item">
-                                <a class="page-link" href="/manage/user.action?page=<c:out value="${pager.getCurrentPage+1}"/>&search=<c:out value="${search}"/>" aria-label="Next">
+                                <a class="page-link" href="/manage/post.action?page=<c:out value="${pager.getCurrentPage+1}"/>&search=<c:out value="${search}"/>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>

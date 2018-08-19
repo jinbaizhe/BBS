@@ -50,4 +50,10 @@
     <select id="getPostsByUserId"  resultMap="post" useCache="true">
         select * from post where user_id=#{userid}
     </select>
+    <select id="getSearchPosts"  resultMap="post" useCache="true">
+        select * from post where id like #{key} or post.title like #{key} order by ${order} limit ${beginIndex},${num}
+    </select>
+    <select id="getSearchPostsNum"  resultType="Integer" useCache="true">
+        select count(*) from post where id like #{key} or post.title like #{key}
+    </select>
 </mapper>
