@@ -115,7 +115,6 @@
                             </strong>
                             <shiro:user>
                                 <c:if test="${post.user.id==sessionScope.user.id}">
-                                    <%--还需要加入管理员删除的权限验证--%>
                                     <a style="float:right;margin-right: 20px;" href="/deletePost.action?postid=<c:out value="${post.id}"/>">删除</a>
                                 </c:if>
                                 <c:if test="${post.user.id==sessionScope.user.id}">
@@ -131,24 +130,6 @@
                                     </c:otherwise>
                                 </c:choose>
                             </shiro:user>
-                            <shiro:hasAnyRoles name="Admin,SuperAdmin">
-                                <c:choose>
-                                    <c:when test="${post.top==0}">
-                                        <a style="float:right;margin-right: 20px;" href="/manage/setPostTop.action?postid=<c:out value="${post.id}"/>">置顶</a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a style="float:right;margin-right: 20px;" href="/manage/unsetPostTop.action?postid=<c:out value="${post.id}"></c:out>">取消置顶</a>
-                                    </c:otherwise>
-                                </c:choose>
-                                <c:choose>
-                                    <c:when test="${post.type==0}">
-                                        <a style="float:right;margin-right: 20px;" href="/manage/setPostEssential.action?postid=<c:out value="${post.id}"/>">加精</a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a style="float:right;margin-right: 20px;" href="/manage/unsetPostEssential.action?postid=<c:out value="${post.id}"/>">取消加精</a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </shiro:hasAnyRoles>
                         </div>
                     </div>
                     <div style="margin: 20px">

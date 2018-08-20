@@ -47,7 +47,6 @@
                     url: '/user/isExistUser.action',
                     data: {username: inputName},
                     dataType: 'json',
-                    async: false,
                     success: function(data){
                         user_message.innerText = data.message;
                         if (data.isExist) {
