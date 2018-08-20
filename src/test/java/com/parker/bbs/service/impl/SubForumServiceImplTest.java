@@ -1,10 +1,7 @@
-package com.parker.bbs.service.serviceImpl;
+package com.parker.bbs.service.impl;
 
-import com.parker.bbs.mapper.SubForumMapper;
-import com.parker.bbs.pojo.MainForum;
 import com.parker.bbs.pojo.SubForum;
 import com.parker.bbs.service.SubForumService;
-import com.parker.bbs.util.Util;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,10 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -33,7 +27,7 @@ public class SubForumServiceImplTest {
         String name = "test专区";
         String info = "testinfo";
         int mainForumId = 1;
-        subForumService.insertSubForum(mainForumId, name, info);
+        subForumService.insertSubForumNeedLog(mainForumId, name, info);
     }
 
 

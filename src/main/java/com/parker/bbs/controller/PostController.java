@@ -77,7 +77,7 @@ public class PostController {
     @RequestMapping(value = "/posting", method = RequestMethod.POST)
     public ModelAndView commitAddPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("title")String title, @RequestParam("content")String content, @RequestParam("sfid") int subforumId)
     {
-        postService.insertPost(title, content, subforumId, user.getId());
+        postService.insertPostNeedLog(title, content, subforumId, user.getId());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "帖子发表成功");
         modelAndView.addObject("message", "发表成功");
@@ -103,7 +103,7 @@ public class PostController {
     public ModelAndView commitUpdatePost(@RequestParam("postid") int postId, @RequestParam("title") String title,@RequestParam("content") String content)
     {
         // TODO: 2018/8/14 还需加入用户权限的判断
-        postService.updatePost(postId, title, content);
+        postService.updatePostNeedLog(postId, title, content);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "修改成功");
         modelAndView.addObject("title", "帖子修改成功");
@@ -117,7 +117,7 @@ public class PostController {
     {
         // TODO: 2018/8/14 还需加入用户权限的判断
         Util.addReferURL(referURL, session);
-        postService.deletePost(postId);
+        postService.deletePostNeedLog(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "删除成功");
         modelAndView.addObject("title", "帖子删除成功");
@@ -129,14 +129,14 @@ public class PostController {
     @RequestMapping("/setPostLike")
     @ResponseBody
     public void setPostLike(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId) {
-        postService.setPostLike(user.getId(), postId);
+        postService.setPostLikeNeedLog(user.getId(), postId);
     }
 
     @RequiresUser
     @RequestMapping("/unsetPostLike")
     @ResponseBody
     public void unsetPostLike(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId) {
-        postService.unsetPostLike(user.getId(), postId);
+        postService.unsetPostLikeNeedLog(user.getId(), postId);
     }
 
     @RequestMapping("/getPostsData")

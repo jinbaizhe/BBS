@@ -8,14 +8,14 @@ import java.sql.Timestamp;
 
 public class Log implements java.io.Serializable {
 
-	// Fields
-
 	private Integer id;
 	private User user;
-	private Integer type;
+	private String loginIP;
 	private String operationType;
-	private String operationLog;
-	private Timestamp time;
+	private String operationTarget;
+	private String operationInfo;
+	private String operationArgs;
+	private Timestamp createTime;
 
     public Integer getId() {
         return id;
@@ -33,12 +33,12 @@ public class Log implements java.io.Serializable {
         this.user = user;
     }
 
-    public Integer getType() {
-        return type;
+    public String getLoginIP() {
+        return loginIP;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setLoginIP(String loginIP) {
+        this.loginIP = loginIP;
     }
 
     public String getOperationType() {
@@ -49,19 +49,35 @@ public class Log implements java.io.Serializable {
         this.operationType = operationType;
     }
 
-    public String getOperationLog() {
-        return operationLog;
+    public String getOperationTarget() {
+        return operationTarget;
     }
 
-    public void setOperationLog(String operationLog) {
-        this.operationLog = operationLog;
+    public void setOperationTarget(String operationTarget) {
+        this.operationTarget = operationTarget;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public String getOperationInfo() {
+        return operationInfo;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setOperationInfo(String operationInfo) {
+        this.operationInfo = operationInfo;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getOperationArgs() {
+        return operationArgs;
+    }
+
+    public void setOperationArgs(String operationArgs) {
+        this.operationArgs = operationArgs;
     }
 }

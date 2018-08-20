@@ -1,10 +1,7 @@
-package com.parker.bbs.service.serviceImpl;
+package com.parker.bbs.service.impl;
 
 import com.parker.bbs.pojo.Followpost;
-import com.parker.bbs.pojo.Post;
-import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.FollowpostService;
-import com.parker.bbs.util.Util;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.Timestamp;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -49,13 +43,13 @@ public class FollowpostServiceImplTest {
 
     @Test
     public void getFollowpostsNumByPostId() {
-        Assert.assertNotEquals(0, followpostService.getFollowpostsNumByPostId(1));
+        Assert.assertNotEquals(new Integer(0), followpostService.getFollowpostsNumByPostId(1));
     }
 
     @Test
     public void insertFollowpost() {
         String content = "test followpost";
-        followpostService.insertFollowpost(content, 1, 1);
+        followpostService.insertFollowpostNeedLog(content, 1, 1);
     }
 
     @Test

@@ -5,9 +5,8 @@ import java.util.List;
 
 public interface MainForumService {
     List getAllMainForums();
-    MainForum getMainForumById(int id);
-    void insertMainForum(String name, String info);
-    void updateMainForum(int id, String name, String info);
-    void deleteMainForum(MainForum mainForum);
-    void deleteMainForum(int id);
+    MainForum getMainForumById(Integer id);
+    void insertMainForumNeedLog(String name, String info);
+    void updateMainForumNeedLog(Integer id, String name, String info);
+    void deleteMainForumNeedLog(Integer id);
 }

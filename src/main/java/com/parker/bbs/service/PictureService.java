@@ -5,7 +5,7 @@ import com.parker.bbs.pojo.Picture;
 import java.io.File;
 
 public interface PictureService {
-    Picture getPictureById(int id);
-    Picture uploadPicture(File file, String uploadFileName, String uploadContentType);
+    Picture getPictureById(Integer id);
+    Picture uploadPictureNeedLog(File file, String uploadFileName, String uploadContentType);
 
 }

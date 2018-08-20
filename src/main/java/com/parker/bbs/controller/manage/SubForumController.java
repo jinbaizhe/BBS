@@ -55,7 +55,7 @@ public class SubForumController {
     @RequestMapping(value = "/addSubForum",method = RequestMethod.POST)
     public ModelAndView commitAddSubForum(@RequestParam("mfid") int mainForumId, @RequestParam("name") String name, @RequestParam("info") String info)
     {
-        subForumService.insertSubForum(mainForumId, name, info);
+        subForumService.insertSubForumNeedLog(mainForumId, name, info);
         ModelAndView modelAndView  = new ModelAndView();
         modelAndView.addObject("title", "子版块添加成功");
         modelAndView.addObject("message", "添加成功");
@@ -79,7 +79,7 @@ public class SubForumController {
     @RequestMapping(value = "/updateSubForum",method = RequestMethod.POST)
     public ModelAndView commitUpdateSubForum(@RequestParam("sfid") int subForumId, @RequestParam("name") String name, @RequestParam("info") String info)
     {
-        subForumService.updateSubForum(subForumId, name, info);
+        subForumService.updateSubForumNeedLog(subForumId, name, info);
         ModelAndView modelAndView  = new ModelAndView();
         modelAndView.addObject("title", "子版块修改成功");
         modelAndView.addObject("message", "修改成功");
@@ -92,7 +92,7 @@ public class SubForumController {
     public ModelAndView commitDeleteSubForum(@RequestParam("sfid") int subForumId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         Util.addReferURL(referURL, session);
-        subForumService.deleteSubForum(subForumId);
+        subForumService.deleteSubForumNeedLog(subForumId);
         ModelAndView modelAndView  = new ModelAndView();
         modelAndView.addObject("title", "子版块删除成功");
         modelAndView.addObject("message", "删除成功");

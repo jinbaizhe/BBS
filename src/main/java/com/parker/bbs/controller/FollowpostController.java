@@ -28,7 +28,7 @@ public class FollowpostController {
         Util.addReferURL(referURL, session);
         ModelAndView modelAndView = new ModelAndView();
         int userId = user.getId();
-        followpostService.insertFollowpost(content, postid, userId);
+        followpostService.insertFollowpostNeedLog(content, postid, userId);
         modelAndView.addObject("title", "回帖发表成功");
         modelAndView.addObject("content", "发表成功");
         modelAndView.setViewName("web/operationStatus");
@@ -55,7 +55,7 @@ public class FollowpostController {
     {
         // TODO: 2018/8/14 还需加入用户权限的判断
         ModelAndView modelAndView = new ModelAndView();
-        followpostService.updateFollowpost(followpostid, content);
+        followpostService.updateFollowpostNeedLog(followpostid, content);
         modelAndView.addObject("title", "回帖修改成功");
         modelAndView.addObject("content", "修改成功");
         modelAndView.setViewName("web/operationStatus");
@@ -71,7 +71,7 @@ public class FollowpostController {
         ModelAndView modelAndView = new ModelAndView();
         Followpost followpost = new Followpost();
         followpost.setId(followpostid);
-        followpostService.deleteFollowpost(followpost);
+        followpostService.deleteFollowpostNeedLog(followpostid);
         modelAndView.addObject("title", "回帖删除成功");
         modelAndView.addObject("content", "删除成功");
         modelAndView.setViewName("web/operationStatus");

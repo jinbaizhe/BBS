@@ -14,7 +14,7 @@
 
     <!--配置JedisConnectionFactory-->
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="hostName" value="localhost"/>
+        <property name="hostName" value="96.45.186.159"/>
         <property name="port" value="6379"/>
         <property name="password" value="parker"/>
         <property name="poolConfig" ref="poolConfig"/>

@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface CollectionMapper {
-    List getCollectionsByUserId(@Param("userId") int userId, @Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
+    List getCollectionsByUserId(@Param("userId") Integer userId, @Param("beginIndex") Integer beginIndex, @Param("num") Integer num, @Param("order") String order);
     void insertCollection(@Param("collection") Collection collection);
-    void deleteCollection(@Param("userId") int userId, @Param("postId") int postId);
-    Collection getCollection(@Param("userId") int userId, @Param("postId") int postId);
+    void deleteCollection(@Param("userId") Integer userId, @Param("postId") Integer postId);
+    Collection getCollection(@Param("userId") Integer userId, @Param("postId") Integer postId);
 }

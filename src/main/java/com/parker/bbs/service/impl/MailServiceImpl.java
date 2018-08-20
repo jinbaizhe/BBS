@@ -1,4 +1,4 @@
-package com.parker.bbs.service.serviceImpl;
+package com.parker.bbs.service.impl;
 
 import com.parker.bbs.service.MailService;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +20,7 @@ public class MailServiceImpl implements MailService {
     @Value("#{configProperties['mail.host']}")
     private String host;
     @Value("#{configProperties['mail.port']}")
-    private int port;
+    private Integer port;
     @Value("#{configProperties['mail.username']}")
     private String username;
     @Value("#{configProperties['mail.password']}")

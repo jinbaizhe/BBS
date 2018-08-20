@@ -13,26 +13,19 @@ import com.parker.bbs.service.PostService;
 import com.parker.bbs.service.UserService;
 import com.parker.bbs.util.Util;
 import com.parker.bbs.util.VerifyCode;
-import com.sun.deploy.net.HttpResponse;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +66,7 @@ public class UserController {
             {
                 throw new Exception("验证码错误");
             }
-            User real_user = userService.registerUser(user);
+            User real_user = userService.registerUserNeedLog(user);
             if (real_user != null){
                 modelAndView.addObject("message","注册成功");
             }else{
@@ -111,8 +104,11 @@ public class UserController {
             {
                 throw new Exception("验证码错误");
             }
-            subject.login(token);
             User realUser = userService.getUserByUsername(user.getUsername());
+            //tempUser用于aop中的日志记录，使其记录尝试登录的账号
+            session.setAttribute("tempUser", realUser);
+            subject.login(token);
+            session.removeAttribute("tempUser");
             session.setAttribute("user", realUser);
             String referURL = (String)session.getAttribute("referURL");
             if (referURL!=null){
@@ -127,7 +123,7 @@ public class UserController {
             event.getExtraMap().put("receiver",realUser.getEmail());
             event.getExtraMap().put("subject","账号安全提醒");
             event.getExtraMap().put("content","您的账号（"+ realUser.getUsername() + "）在" + Util.getCurrentDateTime() + "登录成功");
-            eventProducter.sendEvent(event);
+//            eventProducter.sendEvent(event);
         }catch (Exception e){
             modelAndView.addObject("message","登录失败："+e.getMessage());
             modelAndView.setViewName("user/login");
@@ -199,7 +195,7 @@ public class UserController {
     {
         ModelAndView modelAndView = new ModelAndView();
         User user = (User)session.getAttribute("user");
-        userService.updateUserInfo(user.getId(), info, sex, email);
+        userService.updateUserInfoNeedLog(user.getId(), info, sex, email);
         user = userService.getUserByid(user.getId());
         session.setAttribute("user", user);
         modelAndView.addObject("message_info", "资料修改成功");
@@ -219,7 +215,7 @@ public class UserController {
             if (!password.equals(repeatPassword)){
                 throw new Exception("两次密码输入不一致");
             }
-            userService.updateUserPassword(user.getId(), oldPassword, password);
+            userService.updateUserPasswordNeedLog(user.getId(), oldPassword, password);
             user = userService.getUserByid(user.getId());
             session.setAttribute("user", user);
         } catch (Exception e) {
@@ -236,7 +232,7 @@ public class UserController {
     public ModelAndView starPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         Util.addReferURL(referURL, session);
-        collectionService.insertCollection(user.getId(), postId);
+        collectionService.insertCollectionNeedLog(user.getId(), postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "收藏成功");
         modelAndView.addObject("message", "收藏成功");
@@ -249,7 +245,7 @@ public class UserController {
     public ModelAndView unstarPost(@SessionAttribute(value = "user", required = false) User user, @RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         Util.addReferURL(referURL, session);
-        collectionService.deleteCollection(user.getId(), postId);
+        collectionService.deleteCollectionNeedLog(user.getId(), postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "取消收藏成功");
         modelAndView.addObject("message", "取消收藏成功");

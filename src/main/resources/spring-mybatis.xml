@@ -13,7 +13,7 @@
     <!--配置数据源-->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url" value="jdbc:mysql://localhost:3306/bbs?characterEncoding=UTF-8"></property>
+        <property name="url" value="jdbc:mysql://96.45.186.159:3306/bbs?characterEncoding=UTF-8"></property>
         <property name="username" value="test"></property>
         <property name="password" value="parker123456"></property>
         <property name="minIdle" value="5"></property>

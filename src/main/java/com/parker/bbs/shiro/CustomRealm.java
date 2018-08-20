@@ -49,7 +49,7 @@ public class CustomRealm extends AuthorizingRealm {
         user.setUsername(token.getUsername());
         //token.getPassword()返回的是char[]数组
         user.setPassword(new String(token.getPassword()));
-        if (userService.validateUser(user) != null) {
+        if (userService.validateUserNeedLog(user) != null) {
             return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());
         }
         throw new AuthenticationException("用户名或密码错误");

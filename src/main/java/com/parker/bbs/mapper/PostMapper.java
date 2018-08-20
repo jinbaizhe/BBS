@@ -7,14 +7,14 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface PostMapper {
-    Post getPostById(@Param("id") int id);
-    List getPostsBySubForumId(@Param(value = "subForumId") int subForumId, @Param("beginIndex") int beginIndex, @Param("num")int endIndex, @Param("order") String order);
-    int getPostsNumBySubForumId(@Param("subForumId") int subForumId);
-    int insertPost(@Param("post") Post post);
-    int updatePost(@Param("post") Post post);
-    int updatePostLastReplyTime(@Param("postId") int postId, @Param("lastReplyTime") Timestamp lastReplyTime);
-    int deletePost(@Param("post") Post post);
-    List getPostsByUserId(@Param("userid") int userid, @Param("order") String order);
-    List<Post> getSearchPosts(@Param("key") String key,@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
-    int getSearchPostsNum(@Param("key") String key);
+    Post getPostById(@Param("id") Integer id);
+    List getPostsBySubForumId(@Param(value = "subForumId") Integer subForumId, @Param("beginIndex") Integer beginIndex, @Param("num")Integer endIndex, @Param("order") String order);
+    Integer getPostsNumBySubForumId(@Param("subForumId") Integer subForumId);
+    Integer insertPost(@Param("post") Post post);
+    Integer updatePost(@Param("post") Post post);
+    Integer updatePostLastReplyTime(@Param("postId") Integer postId, @Param("lastReplyTime") Timestamp lastReplyTime);
+    Integer deletePost(@Param("post") Post post);
+    List getPostsByUserId(@Param("userid") Integer userid, @Param("order") String order);
+    List<Post> getSearchPosts(@Param("key") String key,@Param("beginIndex") Integer beginIndex, @Param("num") Integer num, @Param("order") String order);
+    Integer getSearchPostsNum(@Param("key") String key);
 }

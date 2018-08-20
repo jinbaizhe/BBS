@@ -100,10 +100,12 @@ create table log
 (
    id                   int not null auto_increment  comment '',
    user_id              int  comment '',
-   type                 int  comment '',
-   operation_type       varchar(20)  comment '',
-   operation_log        varchar(100)  comment '',
-   time                 datetime  comment '',
+   login_ip             char(15),
+   operation_type       varchar(10)  comment '',
+   operation_target     varchar(20)  comment '',
+   operation_info       varchar(20)  comment '',
+   operation_args       varchar(100)  comment '',
+   create_time          datetime  comment '',
    primary key (id)
 );
 
@@ -237,7 +239,7 @@ alter table game_link add constraint FK_GAME_LIN_RELATIONS_GAME foreign key (gam
       references game (id) on delete cascade on update cascade;
 
 alter table log add constraint FK_LOG_RELATIONS_USER foreign key (user_id)
-      references user (id) on delete cascade on update cascade;
+      references user (id) on delete SET NULL on update cascade;
 
 alter table message add constraint FK_MESSAGE_RELATIONS_USER foreign key (user_id)
       references user (id) on delete cascade on update cascade;

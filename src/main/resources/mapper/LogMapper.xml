@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.parker.bbs.mapper.LogMapper">
+    <!--<cache></cache>-->
+    <resultMap id="log" type="com.parker.bbs.pojo.Log">
+        <id property="id" column="id"/>
+        <result property="loginIP" column="login_ip"/>
+        <result property="operationType" column="operation_type"/>
+        <result property="operationTarget" column="operation_target"/>
+        <result property="operationInfo" column="operation_info"/>
+        <result property="createTime" column="create_time"/>
+        <association property="user" column="user_id"
+                     select="com.parker.bbs.mapper.UserMapper.getUserById"/>
+    </resultMap>
+    <select id="getLogById" resultMap="log" useCache="true">
+        select * from log where id = #{id}
+    </select>
+
+    <insert id="insertLog" parameterType="com.parker.bbs.pojo.Log">
+        insert into log(user_id,login_ip,operation_type,operation_target,operation_info,operation_args,create_time)
+          values (#{log.user.id}, #{log.loginIP},#{log.operationType},#{log.operationTarget},#{log.operationInfo},#{log.operationArgs},#{log.createTime})
+    </insert>
+    <delete id="deleteLog">
+        delete from log where id = #{id}
+    </delete>
+
+</mapper>

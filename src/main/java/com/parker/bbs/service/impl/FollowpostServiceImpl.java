@@ -1,12 +1,14 @@
-package com.parker.bbs.service.serviceImpl;
+package com.parker.bbs.service.impl;
 
+import com.parker.bbs.annotation.LogAnnotation;
 import com.parker.bbs.mapper.FollowpostMapper;
 import com.parker.bbs.mapper.PostMapper;
 import com.parker.bbs.pojo.Followpost;
 import com.parker.bbs.pojo.Post;
 import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.FollowpostService;
-import com.parker.bbs.util.Util;
+import com.parker.bbs.util.OperationTarget;
+import com.parker.bbs.util.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,24 +24,25 @@ public class FollowpostServiceImpl implements FollowpostService {
     private PostMapper postMapper;
 
     @Override
-    public Followpost getFollowpostById(int id) {
+    public Followpost getFollowpostById(Integer id) {
         return followpostMapper.getFollowpostById(id);
     }
 
     @Override
-    public List getFollowpostsByPostId(int postId, int page, int num, String order) {
-        int beginIndex = (page-1)*num;
+    public List getFollowpostsByPostId(Integer postId, Integer page, Integer num, String order) {
+        Integer beginIndex = (page-1)*num;
         order = "send_time "+order;
         return followpostMapper.getFollowpostsByPostId(postId, beginIndex, num, order);
     }
 
     @Override
-    public int getFollowpostsNumByPostId(int postId) {
+    public Integer getFollowpostsNumByPostId(Integer postId) {
         return followpostMapper.getFollowpostsNumByPostId(postId);
     }
 
     @Override
-    public void insertFollowpost(String content, int postId, int userId) {
+    @LogAnnotation(operationType = OperationType.Insert, operationTarget = OperationTarget.Followpost, operationInfo = "发表回帖")
+    public void insertFollowpostNeedLog(String content, Integer postId, Integer userId) {
         Post post = new Post();
         post.setId(postId);
         User user = new User();
@@ -56,7 +59,8 @@ public class FollowpostServiceImpl implements FollowpostService {
     }
 
     @Override
-    public void updateFollowpost(int followpostId, String content) {
+    @LogAnnotation(operationType = OperationType.Update, operationTarget = OperationTarget.Followpost, operationInfo = "修改回帖")
+    public void updateFollowpostNeedLog(Integer followpostId, String content) {
         Followpost followpost = followpostMapper.getFollowpostById(followpostId);
         followpost.setContent(content);
         followpost.setUpdateTime(new Timestamp(System.currentTimeMillis()));
@@ -64,18 +68,13 @@ public class FollowpostServiceImpl implements FollowpostService {
     }
 
     @Override
-    public void deleteFollowpost(Followpost followpost) {
-        followpostMapper.deleteFollowpost(followpost);
+    @LogAnnotation(operationType = OperationType.Delete, operationTarget = OperationTarget.Followpost, operationInfo = "删除回帖")
+    public void deleteFollowpostNeedLog(Integer followpostId) {
+        followpostMapper.deleteFollowpost(followpostId);
     }
 
     @Override
-    public void deleteFollowpost(int followpostId) {
-        Followpost followpost = new Followpost();
-        followpostMapper.deleteFollowpost(followpost);
-    }
-
-    @Override
-    public List getFollowpostsByUserId(int userId, String order) {
+    public List getFollowpostsByUserId(Integer userId, String order) {
         return followpostMapper.getFollowpostsByUserId(userId, order);
     }
 }

@@ -4,9 +4,9 @@ import com.parker.bbs.pojo.Picture;
 import java.util.List;
 
 public interface PictureMapper {
-    int insertPicture(Picture picture);
-    int deletePicture(Picture picture);
-    Picture getPictureById(int id);
-    List getPicturesByPostId(int id);
-    List getPicturesByFollowpostId(int id);
+    Integer insertPicture(Picture picture);
+    Integer deletePicture(Picture picture);
+    Picture getPictureById(Integer id);
+    List getPicturesByPostId(Integer id);
+    List getPicturesByFollowpostId(Integer id);
 }

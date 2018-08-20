@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -72,7 +71,7 @@ public class UserController {
     @RequestMapping(value = "/setUserAdmin")
     public ModelAndView setUserAdmin(@RequestParam("userid") int userId)
     {
-        userService.setUserAdmin(userId);
+        userService.setUserAdminNeedLog(userId);
         User user = userService.getUserByid(userId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "设置管理员[用户名：" + user.getUsername() + "]成功");
@@ -84,7 +83,7 @@ public class UserController {
     @RequestMapping(value = "/unsetUserAdmin")
     public ModelAndView unsetUserAdmin(@RequestParam("userid") int userId)
     {
-        userService.unsetUserAdmin(userId);
+        userService.unsetUserAdminNeedLog(userId);
         User user = userService.getUserByid(userId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "撤销管理员[用户名：" + user.getUsername() + "]成功");

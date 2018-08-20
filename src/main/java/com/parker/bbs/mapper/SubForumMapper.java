@@ -8,7 +8,7 @@ import java.util.List;
 public interface SubForumMapper {
     List getSubForumsByMainForumId(@Param("mainForumId") Integer mainForumId);
     SubForum getSubForumById(@Param("id") Integer id);
-    int insertSubForum(@Param("subForum") SubForum subForum);
-    int updateSubForum(@Param("subForum") SubForum subForum);
-    int deleteSubForum(@Param("subForum") SubForum subForum);
+    Integer insertSubForum(@Param("subForum") SubForum subForum);
+    Integer updateSubForum(@Param("subForum") SubForum subForum);
+    Integer deleteSubForum(@Param("subForum") SubForum subForum);
 }

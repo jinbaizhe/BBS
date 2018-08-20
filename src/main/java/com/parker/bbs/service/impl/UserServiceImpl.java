@@ -1,15 +1,13 @@
-package com.parker.bbs.service.serviceImpl;
+package com.parker.bbs.service.impl;
 
+import com.parker.bbs.annotation.LogAnnotation;
 import com.parker.bbs.mapper.RoleMapper;
 import com.parker.bbs.mapper.UserMapper;
-import com.parker.bbs.pojo.Collection;
 import com.parker.bbs.pojo.Operation;
 import com.parker.bbs.pojo.Role;
 import com.parker.bbs.pojo.User;
 import com.parker.bbs.service.UserService;
-import com.parker.bbs.util.AESEncrypt;
-import com.parker.bbs.util.Util;
-import com.parker.bbs.util.VerifyCode;
+import com.parker.bbs.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -49,7 +47,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User validateUser(User user) {
+    @LogAnnotation(operationType = OperationType.Select, operationTarget = OperationTarget.User, operationInfo = "登录账号")
+    public User validateUserNeedLog(User user) {
         User realUser = userMapper.getUserByUsername(user.getUsername());
         if (realUser != null && realUser.getPassword().equals(user.getPassword())) {
             return realUser;
@@ -58,7 +57,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(User user) {
+    @LogAnnotation(operationType = OperationType.Insert, operationTarget = OperationTarget.User, operationInfo = "注册账号")
+    public User registerUserNeedLog(User user) {
         user.setLevel(0);
         user.setStatus(0);
         user.setRegisterTime(new Timestamp(System.currentTimeMillis()));
@@ -84,31 +84,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List getUsersExceptAdminAndSuperAdmin(int currentPage, int totalItemsPerPage) {
-        int beginIndex = (currentPage-1)*totalItemsPerPage;
+    public List getUsersExceptAdminAndSuperAdmin(Integer currentPage, Integer totalItemsPerPage) {
+        Integer beginIndex = (currentPage-1)*totalItemsPerPage;
         String order = "user.id desc";
         return userMapper.getUsersExceptAdminAndSuperAdmin(beginIndex, totalItemsPerPage, order);
     }
 
     @Override
-    public int getUsersNumExceptAdminAndSuperAdmin() {
+    public Integer getUsersNumExceptAdminAndSuperAdmin() {
         return userMapper.getUsersNumExceptAdminAndSuperAdmin();
     }
 
     @Override
-    public List getAdmins(int currentPage, int totalItemsPerPage) {
-        int beginIndex = (currentPage-1)*totalItemsPerPage;
+    public List getAdmins(Integer currentPage, Integer totalItemsPerPage) {
+        Integer beginIndex = (currentPage-1)*totalItemsPerPage;
         String order = "id asc";
         return userMapper.getAdmins(beginIndex, totalItemsPerPage, order);
     }
 
     @Override
-    public int getAdminsNum() {
+    public Integer getAdminsNum() {
         return userMapper.getAdminsNum();
     }
 
     @Override
-    public void updateUserPassword(int userId, String oldPassword, String password) throws Exception {
+    @LogAnnotation(operationType = OperationType.Update, operationTarget = OperationTarget.User, operationInfo = "修改密码")
+    public void updateUserPasswordNeedLog(Integer userId, String oldPassword, String password) throws Exception {
         User user = userMapper.getUserById(userId);
         if (oldPassword.equals(user.getPassword())){
             user.setPassword(password);
@@ -120,14 +121,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserPassword(int userId, String password) {
+    public void updateUserPassword(Integer userId, String password) {
         User user = userMapper.getUserById(userId);
         user.setPassword(password);
         userMapper.updateUser(user);
     }
 
     @Override
-    public void updateUserInfo(int userId, String info, String sex, String email) {
+    @LogAnnotation(operationType = OperationType.Update, operationTarget = OperationTarget.User, operationInfo = "修改个人信息")
+    public void updateUserInfoNeedLog(Integer userId, String info, String sex, String email) {
         User user = userMapper.getUserById(userId);
         user.setInfo(info);
         user.setSex(sex);
@@ -136,17 +138,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setUserAdmin(int userId) {
+    @LogAnnotation(operationType = OperationType.Insert, operationTarget = OperationTarget.UserRole, operationInfo = "设置管理员")
+    public void setUserAdminNeedLog(Integer userId) {
         userMapper.setUserAdmin(userId);
     }
 
     @Override
-    public void unsetUserAdmin(int userId) {
+    @LogAnnotation(operationType = OperationType.Delete, operationTarget = OperationTarget.UserRole, operationInfo = "撤销管理员")
+    public void unsetUserAdminNeedLog(Integer userId) {
         userMapper.unsetUserAdmin(userId);
     }
 
     @Override
-    public User getUserByid(int userId) {
+    public User getUserByid(Integer userId) {
         return userMapper.getUserById(userId);
     }
 
@@ -184,14 +188,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveResetPasswordKey(int userId, String key) {
+    public void saveResetPasswordKey(Integer userId, String key) {
         redisTemplate.opsForValue().set(redisResetPasswordPrefix+key, userId, 1, TimeUnit.HOURS);
     }
 
     @Override
-    public List<User> getSearchUsers(String key, int currentPage, int totalItemsPerPage) {
+    public List<User> getSearchUsers(String key, Integer currentPage, Integer totalItemsPerPage) {
         key = key + "%";
-        int beginIndex = (currentPage-1)*totalItemsPerPage;
+        Integer beginIndex = (currentPage-1)*totalItemsPerPage;
         String order = "id asc";
         return userMapper.getSearchUsers(key, beginIndex, totalItemsPerPage, order);
     }

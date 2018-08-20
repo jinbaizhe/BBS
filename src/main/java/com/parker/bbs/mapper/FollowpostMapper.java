@@ -6,12 +6,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface FollowpostMapper {
-     Followpost getFollowpostById(@Param("id") int id);
-     List getFollowpostsByPostId(@Param("postId") int postId, @Param("beginIndex") int beginIndex, @Param("num")int num, @Param("order") String order);
-     List getFollowpostsAllByPostId(@Param("postId") int postId);
-     int getFollowpostsNumByPostId(@Param("postId") int postId);
-     int insertFollowpost(@Param("followpost") Followpost followpost);
-     int updateFollowpost(@Param("followpost") Followpost followpost);
-     int deleteFollowpost(@Param("followpost") Followpost followpost);
-     List getFollowpostsByUserId(@Param("userId") int userId, @Param("order") String order);
+     Followpost getFollowpostById(@Param("id") Integer id);
+     List getFollowpostsByPostId(@Param("postId") Integer postId, @Param("beginIndex") Integer beginIndex, @Param("num")Integer num, @Param("order") String order);
+     List getFollowpostsAllByPostId(@Param("postId") Integer postId);
+     Integer getFollowpostsNumByPostId(@Param("postId") Integer postId);
+     Integer insertFollowpost(@Param("followpost") Followpost followpost);
+     Integer updateFollowpost(@Param("followpost") Followpost followpost);
+     Integer deleteFollowpost(@Param("followpostId") Integer followpostId);
+     List getFollowpostsByUserId(@Param("userId") Integer userId, @Param("order") String order);
 }

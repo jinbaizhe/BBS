@@ -35,7 +35,7 @@
          where id=#{followpost.id}
     </update>
     <delete id="deleteFollowpost" parameterType="com.parker.bbs.pojo.Followpost">
-        delete from followpost where id=#{followpost.id}
+        delete from followpost where id=#{followpostId}
     </delete>
     <select id="getFollowpostsByUserId"  resultMap="followpost" useCache="true">
         select * from followpost where user_id=#{userId}

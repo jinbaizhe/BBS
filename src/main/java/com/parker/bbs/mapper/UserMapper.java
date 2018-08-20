@@ -6,16 +6,16 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UserMapper {
-    User getUserById(@Param("id") int id);
-    int insertUser(@Param("user") User user);
-    int updateUser(@Param("user")User user);
-    int deleteUser(@Param("user")User user);
+    User getUserById(@Param("id") Integer id);
+    Integer insertUser(@Param("user") User user);
+    Integer updateUser(@Param("user")User user);
+    Integer deleteUser(@Param("user")User user);
     User getUserByUsername(@Param("username") String username);
-    List<User> getUsersExceptAdminAndSuperAdmin(@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
-    int getUsersNumExceptAdminAndSuperAdmin();
-    int setUserAdmin(@Param("userId") int userId);
-    int unsetUserAdmin(@Param("userId") int userId);
-    List<User> getAdmins(@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
-    int getAdminsNum();
-    List<User> getSearchUsers(@Param("key") String key,@Param("beginIndex") int beginIndex, @Param("num") int num, @Param("order") String order);
+    List<User> getUsersExceptAdminAndSuperAdmin(@Param("beginIndex") Integer beginIndex, @Param("num") Integer num, @Param("order") String order);
+    Integer getUsersNumExceptAdminAndSuperAdmin();
+    Integer setUserAdmin(@Param("userId") Integer userId);
+    Integer unsetUserAdmin(@Param("userId") Integer userId);
+    List<User> getAdmins(@Param("beginIndex") Integer beginIndex, @Param("num") Integer num, @Param("order") String order);
+    Integer getAdminsNum();
+    List<User> getSearchUsers(@Param("key") String key,@Param("beginIndex") Integer beginIndex, @Param("num") Integer num, @Param("order") String order);
 }

@@ -62,7 +62,7 @@ public class PostController {
     public ModelAndView setPostTop(@RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         Util.addReferURL(referURL, session);
-        postService.setPostTop(postId);
+        postService.setPostTopNeedLog(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "置顶帖子成功");
         modelAndView.addObject("message", "置顶成功");
@@ -75,7 +75,7 @@ public class PostController {
     public ModelAndView unsetPostTop(@RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         Util.addReferURL(referURL, session);
-        postService.unsetPostTop(postId);
+        postService.unsetPostTopNeedLog(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "撤销置顶帖子成功");
         modelAndView.addObject("message", "撤销置顶成功");
@@ -88,7 +88,7 @@ public class PostController {
     public ModelAndView setPostEssential(@RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         Util.addReferURL(referURL, session);
-        postService.setPostEssential(postId);
+        postService.setPostEssentialNeedLog(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "帖子加精成功");
         modelAndView.addObject("message", "加精成功");
@@ -101,7 +101,7 @@ public class PostController {
     public ModelAndView unsetPostEssential(@RequestParam("postid") int postId, @RequestHeader(value = "Referer", required = false)String referURL, HttpSession session)
     {
         Util.addReferURL(referURL, session);
-        postService.unsetPostEssential(postId);
+        postService.unsetPostEssentialNeedLog(postId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "帖子撤销加精成功");
         modelAndView.addObject("message", "撤销加精成功");

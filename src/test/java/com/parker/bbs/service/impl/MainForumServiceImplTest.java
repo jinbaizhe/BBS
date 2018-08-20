@@ -1,8 +1,7 @@
-package com.parker.bbs.service.serviceImpl;
+package com.parker.bbs.service.impl;
 
 import com.parker.bbs.pojo.MainForum;
 import com.parker.bbs.service.MainForumService;
-import com.parker.bbs.util.Util;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.Timestamp;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -28,7 +24,7 @@ public class MainForumServiceImplTest {
         MainForum mainForum = new MainForum();
         String name = "test篮球场";
         String info = "test篮球场简介";
-        mainForumService.insertMainForum(name, info);
+        mainForumService.insertMainForumNeedLog(name, info);
     }
 
     @Test
